@@ -1,0 +1,1 @@
+"""Standard sustainability indicator definitions."""

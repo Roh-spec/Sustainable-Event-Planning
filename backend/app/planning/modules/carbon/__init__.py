@@ -1,0 +1,1 @@
+"""Carbon footprint accounting submodule."""
