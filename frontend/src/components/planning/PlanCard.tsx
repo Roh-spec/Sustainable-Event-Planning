@@ -12,6 +12,13 @@ import {
 } from 'lucide-react';
 import { PlanAlternative, PLANNING_OBJECTIVE_CONFIG } from '../../types';
 import { ExplainableMetric } from '../sustainability/ExplainableMetric';
+import {
+  formatCurrency,
+  formatReusablePercentage,
+  formatAssumptionKey,
+  formatAssumptionValue,
+  formatProvenanceLabel,
+} from '../../utils/metricFormatting';
 
 interface PlanCardProps {
   plan: PlanAlternative;
@@ -33,25 +40,25 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     label: plan.name,
     badge: 'Alternative',
     icon: 'Sparkles',
-    description: '',
+    description: 'Deterministic alternative balancing budget, waste and attendee preferences.',
     tagColor: 'bg-slate-100 text-slate-800 border-slate-200',
   };
 
-  const estimatedCostNum = plan.estimated_cost ? Number(plan.estimated_cost) : null;
-  const budgetNum = eventBudget ? Number(eventBudget) : null;
+  const estimatedCostNum =
+    plan.estimated_cost !== null && plan.estimated_cost !== undefined && plan.estimated_cost !== ''
+      ? Number(plan.estimated_cost)
+      : null;
+  const budgetNum =
+    eventBudget !== null && eventBudget !== undefined && eventBudget !== ''
+      ? Number(eventBudget)
+      : null;
+
   const isOverBudget =
     estimatedCostNum !== null && budgetNum !== null && estimatedCostNum > budgetNum;
   const budgetDifference =
     estimatedCostNum !== null && budgetNum !== null ? budgetNum - estimatedCostNum : null;
 
-  const formattedCost =
-    estimatedCostNum !== null
-      ? new Intl.NumberFormat('en-IN', {
-          style: 'currency',
-          currency,
-          maximumFractionDigits: 0,
-        }).format(estimatedCostNum)
-      : 'Not estimated';
+  const formattedCost = formatCurrency(plan.estimated_cost, currency);
 
   const getObjectiveIcon = () => {
     switch (plan.planning_objective) {
@@ -70,15 +77,69 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     ? 'border-2 border-emerald-600 ring-4 ring-emerald-100 shadow-xl'
     : plan.planning_objective === 'SUSTAINABILITY_FOCUSED'
     ? 'border-2 border-emerald-400 hover:border-emerald-500 shadow-md'
-    : 'border border-slate-200 hover:border-slate-300 shadow-sm';
+    : 'border border-slate-200/90 hover:border-slate-300 shadow-sm';
+
+  // Metrics mapping
+  const hasWasteKg =
+    plan.food_metrics?.estimated_waste_kg !== null &&
+    plan.food_metrics?.estimated_waste_kg !== undefined &&
+    plan.food_metrics?.estimated_waste_kg !== '';
+  const hasWasteServings =
+    plan.food_metrics?.estimated_waste_servings !== null &&
+    plan.food_metrics?.estimated_waste_servings !== undefined &&
+    plan.food_metrics?.estimated_waste_servings !== '';
+
+  const foodWasteValue = hasWasteKg
+    ? plan.food_metrics!.estimated_waste_kg
+    : hasWasteServings
+    ? plan.food_metrics!.estimated_waste_servings
+    : null;
+
+  const foodWasteUnit = hasWasteKg ? 'kg' : hasWasteServings ? 'servings' : undefined;
+
+  const reusableBadge = formatReusablePercentage(plan.waste_metrics);
+
+  const plasticCount = plan.waste_metrics?.total_plastic_items;
+  const isZeroPlastic =
+    plasticCount !== null &&
+    plasticCount !== undefined &&
+    plasticCount !== '' &&
+    (plasticCount === 0 || plasticCount === '0' || Number(plasticCount) === 0);
+  const plasticBadge = isZeroPlastic ? 'Zero Plastic' : undefined;
+
+  // Plain-language explanations (Section A)
+  const foodWasteExplanation =
+    foodWasteValue !== null
+      ? `We estimate how much food may be left uneaten based on the planned meals and expected leftovers (${foodWasteValue} ${foodWasteUnit || 'kg'} estimated).`
+      : 'We estimate how much food may be left uneaten based on the planned meals and expected leftovers.';
+
+  const reusableExplanation =
+    plan.waste_metrics?.reusable_packaging_items !== null &&
+    plan.waste_metrics?.reusable_packaging_items !== undefined
+      ? reusableBadge
+        ? `These are serving items expected to be reusable, helping reduce disposable waste (${plan.waste_metrics.reusable_packaging_items} items, ${reusableBadge} reusable).`
+        : `These are serving items expected to be reusable, helping reduce disposable waste (${plan.waste_metrics.reusable_packaging_items} items).`
+      : 'These are serving items expected to be reusable, helping reduce disposable waste.';
+
+  const singleUseExplanation =
+    plan.waste_metrics?.single_use_packaging_items !== null &&
+    plan.waste_metrics?.single_use_packaging_items !== undefined
+      ? `These are disposable serving items expected to be used during the event (${plan.waste_metrics.single_use_packaging_items} items estimated).`
+      : 'These are disposable serving items expected to be used during the event.';
+
+  const plasticExplanation = isZeroPlastic
+    ? 'We estimate plastic items such as bottles or cups based on the event size and available assumptions (0 plastic items — plastic-free alternative).'
+    : plasticCount !== null && plasticCount !== undefined
+    ? `We estimate plastic items such as bottles or cups based on the event size and available assumptions (${plasticCount} items estimated).`
+    : 'We estimate plastic items such as bottles or cups based on the event size and available assumptions.';
 
   return (
-    <div className={`bg-white rounded-2xl flex flex-col justify-between transition-all ${borderClass}`}>
-      <div className="p-5 sm:p-6">
+    <div className={`bg-white rounded-2xl flex flex-col justify-between transition-all h-full ${borderClass}`}>
+      <div className="p-5 sm:p-6 flex flex-col flex-grow">
         {/* Header: Objective Badge & Feasibility */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center space-x-2">
-            <div className="p-2 rounded-xl bg-slate-50 border border-slate-200">
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <div className="flex items-start space-x-3">
+            <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex-shrink-0 mt-0.5">
               {getObjectiveIcon()}
             </div>
             <div>
@@ -86,11 +147,14 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 {config.badge}
               </span>
               <h3 className="text-lg font-bold text-slate-900 tracking-tight mt-1">{plan.name}</h3>
+              <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                {config.description}
+              </p>
             </div>
           </div>
 
           {isSelected && (
-            <span className="inline-flex items-center space-x-1 text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white shadow-sm">
+            <span className="inline-flex items-center space-x-1 text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white shadow-sm flex-shrink-0">
               <Check className="w-3.5 h-3.5" />
               <span>Selected</span>
             </span>
@@ -99,9 +163,13 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
         {/* Cost & Budget Status */}
         <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 mb-5">
-          <div className="flex justify-between items-baseline">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Estimated Total Cost</span>
-            <span className="text-2xl font-extrabold text-slate-900 tracking-tight">{formattedCost}</span>
+          <div className="flex justify-between items-baseline gap-2">
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+              Estimated Total Cost
+            </span>
+            <span className="text-2xl font-extrabold text-slate-900 tracking-tight">
+              {formattedCost}
+            </span>
           </div>
 
           {budgetNum !== null && (
@@ -109,12 +177,12 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               <span className="text-slate-500">Budget Limit:</span>
               {isOverBudget ? (
                 <span className="text-rose-600 font-semibold flex items-center space-x-1">
-                  <AlertTriangle className="w-3.5 h-3.5" />
+                  <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>Deficit of ₹{Math.abs(budgetDifference || 0).toLocaleString()}</span>
                 </span>
               ) : (
                 <span className="text-emerald-700 font-semibold flex items-center space-x-1">
-                  <CheckCircle className="w-3.5 h-3.5" />
+                  <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>Remaining: ₹{(budgetDifference || 0).toLocaleString()}</span>
                 </span>
               )}
@@ -123,7 +191,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         </div>
 
         {/* Key Measurable Sustainability Metrics */}
-        <div className="mb-5">
+        <div className="mb-5 flex-grow">
           <div className="flex items-center justify-between mb-2.5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center space-x-1.5">
               <Leaf className="w-3.5 h-3.5 text-emerald-600" />
@@ -131,25 +199,14 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             </h4>
           </div>
 
-          <div className="grid grid-cols-2 gap-2.5">
+          <div className="grid grid-cols-2 gap-2.5 items-stretch">
             {/* Food Waste */}
             <ExplainableMetric
               label="Food Waste"
-              value={
-                plan.food_metrics?.estimated_waste_kg !== null && plan.food_metrics?.estimated_waste_kg !== undefined
-                  ? plan.food_metrics.estimated_waste_kg
-                  : plan.food_metrics?.estimated_waste_servings !== null && plan.food_metrics?.estimated_waste_servings !== undefined
-                  ? plan.food_metrics.estimated_waste_servings
-                  : null
-              }
-              unit={
-                plan.food_metrics?.estimated_waste_kg !== null && plan.food_metrics?.estimated_waste_kg !== undefined
-                  ? 'kg'
-                  : 'servings'
-              }
+              value={foodWasteValue}
+              unit={foodWasteUnit}
               sourceType="ESTIMATED"
-              explanation="Calculated by multiplying servings by per-serving weight and expected food waste percentage."
-              assumptionParam="food_waste_percentage"
+              explanation={foodWasteExplanation}
             />
 
             {/* Reusable Items */}
@@ -157,13 +214,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               label="Reusable Items"
               value={plan.waste_metrics?.reusable_packaging_items}
               unit="items"
-              badge={
-                plan.waste_metrics?.reusable_percentage !== null && plan.waste_metrics?.reusable_percentage !== undefined
-                  ? `${Math.round(Number(plan.waste_metrics.reusable_percentage) * 100)}%`
-                  : undefined
-              }
+              badge={reusableBadge}
               sourceType="ESTIMATED"
-              explanation="Based on organizer preference or domain assumptions for reusable cutlery/plates."
+              explanation={reusableExplanation}
             />
 
             {/* Single-Use Items */}
@@ -172,7 +225,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               value={plan.waste_metrics?.single_use_packaging_items}
               unit="items"
               sourceType="ESTIMATED"
-              explanation="Disposable packaging items required to serve the scheduled meal courses."
+              explanation={singleUseExplanation}
             />
 
             {/* Plastic Items */}
@@ -180,49 +233,45 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               label="Plastic Items"
               value={plan.waste_metrics?.total_plastic_items}
               unit="items"
-              badge={
-                plan.waste_metrics?.total_plastic_items === 0 ||
-                plan.waste_metrics?.total_plastic_items === '0'
-                  ? 'Zero Plastic'
-                  : undefined
-              }
+              badge={plasticBadge}
               sourceType="ESTIMATED"
-              explanation="Estimated plastic bottles and cups calculated per person/meal."
+              explanation={plasticExplanation}
             />
           </div>
         </div>
 
         {/* Why this plan? */}
         {plan.explanations && plan.explanations.length > 0 && (
-          <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/60 mb-4 text-xs text-emerald-900">
+          <div className="p-3 rounded-xl bg-emerald-50/70 border border-emerald-200/60 mb-3 text-xs text-emerald-900">
             <span className="font-bold block text-emerald-950 mb-0.5">Why this plan?</span>
-            <p className="line-clamp-2">{plan.explanations[0]}</p>
+            <p className="line-clamp-2 leading-relaxed">{plan.explanations[0]}</p>
           </div>
         )}
 
         {/* Trade-offs */}
         {plan.tradeoffs && plan.tradeoffs.length > 0 && (
-          <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/60 mb-4 text-xs text-amber-900">
+          <div className="p-3 rounded-xl bg-amber-50/70 border border-amber-200/60 mb-3 text-xs text-amber-900">
             <span className="font-bold block text-amber-950 mb-0.5">Important Trade-off:</span>
-            <p className="line-clamp-2">{plan.tradeoffs[0]}</p>
+            <p className="line-clamp-2 leading-relaxed">{plan.tradeoffs[0]}</p>
           </div>
         )}
 
-        {/* Constraint Status */}
-        <div className="text-xs text-slate-600 mb-4 flex items-center justify-between">
-          <span className="text-slate-500 font-medium">Constraints:</span>
+        {/* Preferences / Constraints Status */}
+        <div className="text-xs text-slate-600 mb-2 flex items-center justify-between">
+          <span className="text-slate-500 font-medium">Preferences:</span>
           {plan.constraint_result.feasible ? (
             <span className="text-emerald-700 font-semibold flex items-center space-x-1">
-              <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+              <CheckCircle className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0" />
               <span>
-                {plan.constraint_result.relaxed_constraints.length > 0
+                {plan.constraint_result.relaxed_constraints &&
+                plan.constraint_result.relaxed_constraints.length > 0
                   ? `Feasible (${plan.constraint_result.relaxed_constraints.length} relaxed)`
-                  : 'All constraints satisfied'}
+                  : 'All preferences satisfied'}
               </span>
             </span>
           ) : (
             <span className="text-rose-600 font-semibold flex items-center space-x-1">
-              <AlertTriangle className="w-3.5 h-3.5" />
+              <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
               <span>Hard constraints violated</span>
             </span>
           )}
@@ -230,49 +279,83 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
         {/* Expandable Technical Details Drawer */}
         {showDetails && (
-          <div className="mt-4 pt-4 border-t border-slate-200 space-y-3 text-xs">
+          <div className="mt-4 pt-4 border-t border-slate-200 space-y-3.5 text-xs">
+            {/* A preference we couldn't fully meet (Section C) */}
+            {plan.constraint_result.relaxed_constraints &&
+              plan.constraint_result.relaxed_constraints.length > 0 && (
+                <div className="bg-amber-50/90 border border-amber-200/80 rounded-xl p-3 text-xs text-amber-950 space-y-2">
+                  <div className="flex items-center space-x-1.5 font-bold text-amber-900">
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                    <span>A preference we couldn't fully meet</span>
+                  </div>
+                  <ul className="space-y-2 text-slate-700">
+                    {plan.constraint_result.relaxed_constraints.map((r, idx) => (
+                      <li key={idx} className="bg-white/90 p-2.5 rounded-lg border border-amber-200/50 leading-relaxed">
+                        <p className="font-semibold text-slate-900">
+                          You preferred: <span className="font-normal text-slate-700">{r.description}</span>
+                        </p>
+                        {r.relaxation_reason && (
+                          <p className="mt-1 text-slate-600">
+                            <strong>Plan trade-off:</strong> {r.relaxation_reason}
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+            {/* What we based this estimate on (Section B) */}
+            {plan.assumptions_used && plan.assumptions_used.length > 0 && (
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 space-y-2 text-xs">
+                <h5 className="font-bold text-slate-800">What we based this estimate on:</h5>
+                <div className="max-h-48 overflow-y-auto space-y-1.5 pr-1">
+                  {plan.assumptions_used.map((a, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white p-2.5 rounded-lg border border-slate-200/60 flex items-center justify-between text-xs gap-2"
+                    >
+                      <div className="min-w-0">
+                        <span className="font-medium text-slate-800 block truncate">
+                          {formatAssumptionKey(a.parameter)}
+                        </span>
+                        <span className="text-[11px] text-slate-500 block">
+                          {formatProvenanceLabel(a.source_type)}
+                        </span>
+                      </div>
+                      <span className="font-bold text-slate-900 text-right whitespace-nowrap">
+                        {formatAssumptionValue(a.value, a.unit, a.parameter)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* All Sustainability Indicators */}
             {plan.sustainability_metrics && plan.sustainability_metrics.length > 0 && (
-              <div>
-                <h5 className="font-bold text-slate-800 mb-1.5">All Sustainability Metrics:</h5>
-                <ul className="space-y-1 bg-slate-50 p-2.5 rounded-lg border border-slate-200/70 font-mono text-[11px]">
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 space-y-2 text-xs">
+                <h5 className="font-bold text-slate-800">All sustainability indicators:</h5>
+                <ul className="space-y-1.5">
                   {plan.sustainability_metrics.map((m, idx) => (
-                    <li key={idx} className="flex justify-between items-center text-slate-700">
-                      <span className="font-sans text-slate-600">{m.metric_name}:</span>
-                      <span className="font-bold">
-                        {m.value} {m.unit} <span className="text-[9px] text-slate-400 font-sans">({m.source_type})</span>
+                    <li
+                      key={idx}
+                      className="bg-white p-2.5 rounded-lg border border-slate-200/60 flex justify-between items-center text-xs text-slate-700 gap-2"
+                    >
+                      <div className="min-w-0">
+                        <span className="font-medium text-slate-800 block truncate">
+                          {formatAssumptionKey(m.metric_name)}
+                        </span>
+                        <span className="text-[11px] text-slate-500 block">
+                          {formatProvenanceLabel(m.source_type)}
+                        </span>
+                      </div>
+                      <span className="font-bold text-slate-900 whitespace-nowrap">
+                        {m.value} {m.unit}
                       </span>
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
-
-            {/* Relaxed Constraints */}
-            {plan.constraint_result.relaxed_constraints.length > 0 && (
-              <div>
-                <h5 className="font-bold text-amber-900 mb-1">Soft Constraints Relaxed:</h5>
-                <ul className="space-y-1 text-slate-700 bg-amber-50 p-2.5 rounded-lg border border-amber-200 text-[11px]">
-                  {plan.constraint_result.relaxed_constraints.map((r, idx) => (
-                    <li key={idx}>
-                      <strong>{r.description}:</strong> {r.relaxation_reason}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {/* Assumptions Used */}
-            {plan.assumptions_used && plan.assumptions_used.length > 0 && (
-              <div>
-                <h5 className="font-bold text-slate-800 mb-1">Assumptions Resolved:</h5>
-                <div className="max-h-32 overflow-y-auto space-y-1 bg-slate-50 p-2 rounded-lg border border-slate-200 text-[10px] font-mono">
-                  {plan.assumptions_used.map((a, idx) => (
-                    <div key={idx} className="text-slate-600 truncate">
-                      <strong>{a.parameter}</strong>: {a.value} {a.unit} ({a.source_type})
-                    </div>
-                  ))}
-                </div>
               </div>
             )}
           </div>

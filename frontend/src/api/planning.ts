@@ -1,5 +1,6 @@
 import { apiClient } from './client';
 import { PlanningRequest, PlanningResponse, PlanAlternative } from '../types/planning';
+import { CompletePlanRequest, CompletePlanResponse } from '../types/completePlan';
 
 export interface PlanSelectionResult {
   success: boolean;
@@ -11,6 +12,10 @@ export interface PlanSelectionResult {
 export const planningApi = {
   generate: (request: PlanningRequest): Promise<PlanningResponse> => {
     return apiClient.post<PlanningResponse>('/planning/generate', request);
+  },
+
+  getCompletePlan: (request: CompletePlanRequest): Promise<CompletePlanResponse> => {
+    return apiClient.post<CompletePlanResponse>('/planning/complete-plan', request);
   },
 
   /**
@@ -47,3 +52,4 @@ export const planningApi = {
     }
   },
 };
+

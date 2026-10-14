@@ -11,6 +11,12 @@ import {
   PlanningResponse,
   PlanAlternative,
   PlanningRequest,
+  MainPriority,
+  PRIORITY_OBJECTIVE_MAP,
+  PlanningObjective,
+  FoodPlanResponse,
+  WastePlanResponse,
+  CompletePlanResponse,
 } from '../types';
 import { eventsApi } from '../api/events';
 import { planningApi, PlanSelectionResult } from '../api/planning';
@@ -19,6 +25,8 @@ export interface FoodConfigState {
   meals: MealInput[];
   default_dietary_preference: DietaryPreference;
   vegetarian_ratio: string;
+  budgetMode: 'ESTIMATE' | 'ENTER';
+  food_budget: string;
   costApproach: 'ESTIMATE' | 'UNIT' | 'TOTAL';
   known_unit_cost: string;
   known_total_cost: string;
@@ -26,6 +34,8 @@ export interface FoodConfigState {
 }
 
 export interface WasteConfigState {
+  include_food_waste: boolean;
+  food_waste_override_servings?: string;
   packaging_items: PackagingItemInput[];
   plastic_items: PlasticItemInput[];
   other_waste_items: OtherWasteItemInput[];
@@ -40,6 +50,10 @@ interface PlanningWizardContextType {
   budget: { total_budget: string; currency: string };
   setBudget: (budget: { total_budget: string; currency: string }) => void;
 
+  // Priority
+  priority: MainPriority;
+  setPriority: (priority: MainPriority) => void;
+
   // Constraints
   constraints: ConstraintBase[];
   setConstraints: React.Dispatch<React.SetStateAction<ConstraintBase[]>>;
@@ -51,6 +65,8 @@ interface PlanningWizardContextType {
   setFoodConfig: React.Dispatch<React.SetStateAction<FoodConfigState>>;
   addMeal: (meal: MealInput) => void;
   removeMeal: (index: number) => void;
+  foodPlanResponse: FoodPlanResponse | null;
+  setFoodPlanResponse: (response: FoodPlanResponse | null) => void;
 
   // Waste
   wasteConfig: WasteConfigState;
@@ -61,6 +77,8 @@ interface PlanningWizardContextType {
   removePlasticItem: (index: number) => void;
   addOtherWasteItem: (item: OtherWasteItemInput) => void;
   removeOtherWasteItem: (index: number) => void;
+  wastePlanResponse: WastePlanResponse | null;
+  setWastePlanResponse: (response: WastePlanResponse | null) => void;
 
   // Plans & Generation
   planningResponse: PlanningResponse | null;
@@ -72,6 +90,12 @@ interface PlanningWizardContextType {
   // Selection
   selectedPlan: PlanAlternative | null;
   selectPlan: (plan: PlanAlternative) => Promise<PlanSelectionResult>;
+
+  // Complete Plan (Step 7)
+  completePlan: CompletePlanResponse | null;
+  setCompletePlan: (plan: CompletePlanResponse | null) => void;
+  timingConfig: { eventDate: string; startTime: string; endTime: string };
+  setTimingConfig: React.Dispatch<React.SetStateAction<{ eventDate: string; startTime: string; endTime: string }>>;
 
   // Reset
   resetWizard: () => void;
@@ -88,6 +112,8 @@ const defaultFoodConfig: FoodConfigState = {
   ],
   default_dietary_preference: 'MIXED',
   vegetarian_ratio: '0.70',
+  budgetMode: 'ESTIMATE',
+  food_budget: '',
   costApproach: 'ESTIMATE',
   known_unit_cost: '',
   known_total_cost: '',
@@ -95,6 +121,8 @@ const defaultFoodConfig: FoodConfigState = {
 };
 
 const defaultWasteConfig: WasteConfigState = {
+  include_food_waste: true,
+  food_waste_override_servings: '',
   packaging_items: [
     {
       item_type: 'PLATE',
@@ -117,7 +145,7 @@ const defaultWasteConfig: WasteConfigState = {
 const PlanningWizardContext = createContext<PlanningWizardContextType | undefined>(undefined);
 
 export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [event, setEvent] = useState<EventResponse | null>(() => {
+  const [event, setEventState] = useState<EventResponse | null>(() => {
     const saved = sessionStorage.getItem('wizard_event');
     return saved ? JSON.parse(saved) : null;
   });
@@ -127,34 +155,34 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
     return saved ? JSON.parse(saved) : { total_budget: '50000', currency: 'INR' };
   });
 
+  const [priority, setPriority] = useState<MainPriority>(() => {
+    const saved = sessionStorage.getItem('wizard_priority');
+    return (saved as MainPriority) || 'BALANCED';
+  });
+
   const [constraints, setConstraints] = useState<ConstraintBase[]>(() => {
     const saved = sessionStorage.getItem('wizard_constraints');
-    return saved
-      ? JSON.parse(saved)
-      : [
-          {
-            category: 'FOOD',
-            description: 'Vegetarian meals provided for all dietary preferences',
-            constraint_type: 'REQUIRED',
-            value: 'VEGETARIAN_OPTIONS',
-          },
-          {
-            category: 'WASTE',
-            description: 'Prefer reusable plates and cups over disposable packaging',
-            constraint_type: 'PREFERRED',
-            value: 'REUSABLE_PACKAGING',
-          },
-        ];
+    return saved ? JSON.parse(saved) : [];
   });
 
   const [foodConfig, setFoodConfig] = useState<FoodConfigState>(() => {
     const saved = sessionStorage.getItem('wizard_food_config');
-    return saved ? JSON.parse(saved) : defaultFoodConfig;
+    return saved ? { ...defaultFoodConfig, ...JSON.parse(saved) } : defaultFoodConfig;
+  });
+
+  const [foodPlanResponse, setFoodPlanResponse] = useState<FoodPlanResponse | null>(() => {
+    const saved = sessionStorage.getItem('wizard_food_plan_response');
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [wasteConfig, setWasteConfig] = useState<WasteConfigState>(() => {
     const saved = sessionStorage.getItem('wizard_waste_config');
     return saved ? JSON.parse(saved) : defaultWasteConfig;
+  });
+
+  const [wastePlanResponse, setWastePlanResponse] = useState<WastePlanResponse | null>(() => {
+    const saved = sessionStorage.getItem('wizard_waste_plan_response');
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [planningResponse, setPlanningResponse] = useState<PlanningResponse | null>(() => {
@@ -165,6 +193,16 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
   const [selectedPlan, setSelectedPlan] = useState<PlanAlternative | null>(() => {
     const saved = sessionStorage.getItem('wizard_selected_plan');
     return saved ? JSON.parse(saved) : null;
+  });
+
+  const [completePlan, setCompletePlan] = useState<CompletePlanResponse | null>(() => {
+    const saved = sessionStorage.getItem('wizard_complete_plan');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const [timingConfig, setTimingConfig] = useState<{ eventDate: string; startTime: string; endTime: string }>(() => {
+    const saved = sessionStorage.getItem('wizard_timing_config');
+    return saved ? JSON.parse(saved) : { eventDate: '', startTime: '09:00', endTime: '17:00' };
   });
 
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
@@ -180,6 +218,10 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
   }, [budget]);
 
   useEffect(() => {
+    sessionStorage.setItem('wizard_priority', priority);
+  }, [priority]);
+
+  useEffect(() => {
     sessionStorage.setItem('wizard_constraints', JSON.stringify(constraints));
   }, [constraints]);
 
@@ -188,8 +230,18 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
   }, [foodConfig]);
 
   useEffect(() => {
+    if (foodPlanResponse) sessionStorage.setItem('wizard_food_plan_response', JSON.stringify(foodPlanResponse));
+    else sessionStorage.removeItem('wizard_food_plan_response');
+  }, [foodPlanResponse]);
+
+  useEffect(() => {
     sessionStorage.setItem('wizard_waste_config', JSON.stringify(wasteConfig));
   }, [wasteConfig]);
+
+  useEffect(() => {
+    if (wastePlanResponse) sessionStorage.setItem('wizard_waste_plan_response', JSON.stringify(wastePlanResponse));
+    else sessionStorage.removeItem('wizard_waste_plan_response');
+  }, [wastePlanResponse]);
 
   useEffect(() => {
     if (planningResponse) sessionStorage.setItem('wizard_planning_response', JSON.stringify(planningResponse));
@@ -199,10 +251,71 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
     if (selectedPlan) sessionStorage.setItem('wizard_selected_plan', JSON.stringify(selectedPlan));
   }, [selectedPlan]);
 
+  useEffect(() => {
+    if (completePlan) sessionStorage.setItem('wizard_complete_plan', JSON.stringify(completePlan));
+    else sessionStorage.removeItem('wizard_complete_plan');
+  }, [completePlan]);
+
+  useEffect(() => {
+    sessionStorage.setItem('wizard_timing_config', JSON.stringify(timingConfig));
+  }, [timingConfig]);
+
+  const setEvent = (newEvent: EventResponse | null) => {
+    if (newEvent) {
+      const storedEventId = sessionStorage.getItem('wizard_event_id');
+      if (storedEventId && storedEventId !== String(newEvent.id)) {
+        // Event changed: reset module configs so new event doesn't inherit stale values
+        setFoodConfig(defaultFoodConfig);
+        setFoodPlanResponse(null);
+        setWasteConfig(defaultWasteConfig);
+        setWastePlanResponse(null);
+        setPlanningResponse(null);
+        setSelectedPlan(null);
+        setCompletePlan(null);
+        sessionStorage.removeItem('wizard_food_config');
+        sessionStorage.removeItem('wizard_food_plan_response');
+        sessionStorage.removeItem('wizard_waste_config');
+        sessionStorage.removeItem('wizard_waste_plan_response');
+        sessionStorage.removeItem('wizard_planning_response');
+        sessionStorage.removeItem('wizard_selected_plan');
+        sessionStorage.removeItem('wizard_complete_plan');
+      }
+      sessionStorage.setItem('wizard_event_id', String(newEvent.id));
+    } else {
+      sessionStorage.removeItem('wizard_event_id');
+    }
+    setEventState(newEvent);
+  };
+
   const loadEvent = async (eventId: number): Promise<EventResponse> => {
-    if (event && event.id === eventId) return event;
+    const storedEventId = sessionStorage.getItem('wizard_event_id');
+    const isDifferentEvent = storedEventId !== String(eventId);
+
+    if (event && event.id === eventId && !isDifferentEvent) return event;
+
     const fetched = await eventsApi.getById(eventId);
-    setEvent(fetched);
+    setEventState(fetched);
+
+    if (isDifferentEvent) {
+      // Clear stale wizard state from previous event
+      sessionStorage.setItem('wizard_event_id', String(eventId));
+      sessionStorage.setItem('wizard_event', JSON.stringify(fetched));
+      setFoodConfig(defaultFoodConfig);
+      setFoodPlanResponse(null);
+      setWasteConfig(defaultWasteConfig);
+      setWastePlanResponse(null);
+      setPlanningResponse(null);
+      setSelectedPlan(null);
+      setCompletePlan(null);
+      sessionStorage.removeItem('wizard_food_config');
+      sessionStorage.removeItem('wizard_food_plan_response');
+      sessionStorage.removeItem('wizard_waste_config');
+      sessionStorage.removeItem('wizard_waste_plan_response');
+      sessionStorage.removeItem('wizard_planning_response');
+      sessionStorage.removeItem('wizard_selected_plan');
+      sessionStorage.removeItem('wizard_complete_plan');
+    }
+
     if (fetched.budget?.total_budget) {
       setBudget({
         total_budget: String(fetched.budget.total_budget),
@@ -288,11 +401,18 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
     setGenerationError(null);
 
     try {
+      const mappedObjective = PRIORITY_OBJECTIVE_MAP[priority] || 'BALANCED';
+      const planningObjectives: PlanningObjective[] =
+        priority === 'BALANCED'
+          ? ['BALANCED', 'BUDGET_FOCUSED', 'SUSTAINABILITY_FOCUSED']
+          : [mappedObjective];
+
       // Build clean request payload matching PlanningRequest backend schema exactly
       const requestPayload: PlanningRequest = {
         event_id: event.id,
         budget: budget.total_budget ? Number(budget.total_budget) : undefined,
         constraints: constraints.length > 0 ? constraints : undefined,
+        planning_objectives: planningObjectives,
         allow_budget_increase: overrideBudgetApproval ?? false,
         max_approved_budget: maxApprovedBudget ? Number(maxApprovedBudget) : undefined,
         module_context: {
@@ -301,18 +421,36 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
             meals: foodConfig.meals,
             default_dietary_preference: foodConfig.default_dietary_preference,
             vegetarian_ratio: foodConfig.vegetarian_ratio ? Number(foodConfig.vegetarian_ratio) : undefined,
+            food_budget:
+              foodConfig.budgetMode === 'ENTER' && foodConfig.food_budget
+                ? Number(foodConfig.food_budget)
+                : undefined,
             known_unit_cost:
-              foodConfig.costApproach === 'UNIT' && foodConfig.known_unit_cost
+              foodConfig.costApproach === 'UNIT' && foodConfig.known_unit_cost && Number(foodConfig.known_unit_cost) > 0
                 ? Number(foodConfig.known_unit_cost)
                 : undefined,
             known_total_cost:
-              foodConfig.costApproach === 'TOTAL' && foodConfig.known_total_cost
+              foodConfig.costApproach === 'TOTAL' && foodConfig.known_total_cost && Number(foodConfig.known_total_cost) > 0
                 ? Number(foodConfig.known_total_cost)
                 : undefined,
             cost_pricing_unit: foodConfig.costApproach === 'UNIT' ? foodConfig.cost_pricing_unit : undefined,
           },
           waste: {
             event_id: event.id,
+            food_waste: wasteConfig.include_food_waste
+              ? {
+                  food_plan_request: {
+                    event_id: event.id,
+                    meals: foodConfig.meals,
+                    default_dietary_preference: foodConfig.default_dietary_preference,
+                    vegetarian_ratio: foodConfig.vegetarian_ratio ? Number(foodConfig.vegetarian_ratio) : undefined,
+                  },
+                  user_override_servings:
+                    wasteConfig.food_waste_override_servings && Number(wasteConfig.food_waste_override_servings) > 0
+                      ? Number(wasteConfig.food_waste_override_servings)
+                      : undefined,
+                }
+              : undefined,
             packaging_items: wasteConfig.packaging_items,
             plastic_items: wasteConfig.plastic_items,
             other_waste_items: wasteConfig.other_waste_items,
@@ -344,11 +482,16 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
   const resetWizard = () => {
     setEvent(null);
     setBudget({ total_budget: '50000', currency: 'INR' });
+    setPriority('BALANCED');
     setConstraints([]);
     setFoodConfig(defaultFoodConfig);
+    setFoodPlanResponse(null);
     setWasteConfig(defaultWasteConfig);
+    setWastePlanResponse(null);
     setPlanningResponse(null);
     setSelectedPlan(null);
+    setCompletePlan(null);
+    setTimingConfig({ eventDate: '', startTime: '09:00', endTime: '17:00' });
     sessionStorage.clear();
   };
 
@@ -360,6 +503,8 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
         loadEvent,
         budget,
         setBudget,
+        priority,
+        setPriority,
         constraints,
         setConstraints,
         addConstraint,
@@ -368,6 +513,8 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
         setFoodConfig,
         addMeal,
         removeMeal,
+        foodPlanResponse,
+        setFoodPlanResponse,
         wasteConfig,
         setWasteConfig,
         addPackagingItem,
@@ -376,6 +523,8 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
         removePlasticItem,
         addOtherWasteItem,
         removeOtherWasteItem,
+        wastePlanResponse,
+        setWastePlanResponse,
         planningResponse,
         setPlanningResponse,
         isGenerating,
@@ -383,6 +532,10 @@ export const PlanningWizardProvider: React.FC<{ children: ReactNode }> = ({ chil
         generatePlans,
         selectedPlan,
         selectPlan,
+        completePlan,
+        setCompletePlan,
+        timingConfig,
+        setTimingConfig,
         resetWizard,
       }}
     >

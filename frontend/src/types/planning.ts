@@ -5,6 +5,14 @@ import { ResolvedAssumption } from './assumptions';
 
 export type PlanningObjective = 'BUDGET_FOCUSED' | 'BALANCED' | 'SUSTAINABILITY_FOCUSED';
 
+export type MainPriority = 'SAVE_MONEY' | 'BALANCED' | 'REDUCE_WASTE';
+
+export const PRIORITY_OBJECTIVE_MAP: Record<MainPriority, PlanningObjective> = {
+  SAVE_MONEY: 'BUDGET_FOCUSED',
+  BALANCED: 'BALANCED',
+  REDUCE_WASTE: 'SUSTAINABILITY_FOCUSED',
+};
+
 export const PLANNING_OBJECTIVE_CONFIG: Record<
   PlanningObjective,
   { label: string; badge: string; icon: string; description: string; tagColor: string }

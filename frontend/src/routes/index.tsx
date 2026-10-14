@@ -10,6 +10,7 @@ import { FoodPlanningPage } from '../pages/FoodPlanningPage';
 import { WastePlanningPage } from '../pages/WastePlanningPage';
 import { PlansPage } from '../pages/PlansPage';
 import { PlanComparisonPage } from '../pages/PlanComparisonPage';
+import { CompletePlanPage } from '../pages/CompletePlanPage';
 import { NotFoundPage } from '../pages/NotFoundPage';
 
 export const AppRoutes: React.FC = () => {
@@ -29,6 +30,7 @@ export const AppRoutes: React.FC = () => {
         <Route path="/events/:eventId/waste" element={<WastePlanningPage />} />
         <Route path="/events/:eventId/plans" element={<PlansPage />} />
         <Route path="/events/:eventId/compare" element={<PlanComparisonPage />} />
+        <Route path="/events/:eventId/complete-plan" element={<CompletePlanPage />} />
 
         {/* Fallback */}
         <Route path="/404" element={<NotFoundPage />} />

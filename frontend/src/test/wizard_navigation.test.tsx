@@ -17,7 +17,7 @@ describe('Wizard Navigation & State Preservation', () => {
     budget: { id: 1, event_id: 10, total_budget: '75000', currency: 'INR' },
   };
 
-  it('renders all 6 wizard steps with proper progress indicator', () => {
+  it('renders all 7 wizard steps with proper progress indicator', () => {
     render(
       <BrowserRouter>
         <PlanningWizardProvider>
@@ -32,6 +32,7 @@ describe('Wizard Navigation & State Preservation', () => {
     expect(screen.getByText('Food')).toBeInTheDocument();
     expect(screen.getByText('Waste')).toBeInTheDocument();
     expect(screen.getByText('Plans')).toBeInTheDocument();
+    expect(screen.getByText('Complete Event Plan')).toBeInTheDocument();
   });
 
   it('EventSummaryBanner displays attendee count, duration, and budget limit', () => {

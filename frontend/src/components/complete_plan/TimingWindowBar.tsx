@@ -1,0 +1,208 @@
+import React, { useState } from 'react';
+import { Clock, AlertCircle, Sparkles, CheckCircle2, Info } from 'lucide-react';
+import { Time12HourPicker } from './Time12HourPicker';
+import { format12Hour } from '../../utils/timeFormatting';
+
+interface TimingWindowBarProps {
+  eventDate: string;
+  startTime: string;
+  endTime: string;
+  durationDays: number;
+  isGenerating: boolean;
+  hasPlan: boolean;
+  onTimingChange: (eventDate: string, startTime: string, endTime: string) => void;
+  onGenerate: (timing: { eventDate: string; startTime: string; endTime: string }) => void;
+}
+
+export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
+  eventDate,
+  startTime,
+  endTime,
+  durationDays,
+  isGenerating,
+  hasPlan,
+  onTimingChange,
+  onGenerate,
+}) => {
+  const [localDate, setLocalDate] = useState(eventDate);
+  const [localStart, setLocalStart] = useState(startTime || '09:00');
+  const [localEnd, setLocalEnd] = useState(endTime || '17:00');
+  const [isOrganizerConfirmed, setIsOrganizerConfirmed] = useState(Boolean(eventDate));
+  const [validationError, setValidationError] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (eventDate) {
+      setLocalDate(eventDate);
+    }
+  }, [eventDate]);
+
+  const handleDateChange = (val: string) => {
+    setLocalDate(val);
+    setIsOrganizerConfirmed(true);
+    setValidationError(null);
+    onTimingChange(val, localStart, localEnd);
+  };
+
+  const handleStartChange = (val: string) => {
+    setLocalStart(val);
+    setIsOrganizerConfirmed(true);
+    setValidationError(null);
+    onTimingChange(localDate, val, localEnd);
+  };
+
+  const handleEndChange = (val: string) => {
+    setLocalEnd(val);
+    setIsOrganizerConfirmed(true);
+    setValidationError(null);
+    onTimingChange(localDate, localStart, val);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setValidationError(null);
+
+    if (!localDate || localDate.trim() === '') {
+      setValidationError('Please select a valid event date before generating your schedule.');
+      return;
+    }
+
+    if (!localStart || !localEnd) {
+      setValidationError('Please provide both daily start time and end time.');
+      return;
+    }
+
+    const [sh, sm] = localStart.split(':').map(Number);
+    const [eh, em] = localEnd.split(':').map(Number);
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    if (isNaN(startMinutes) || isNaN(endMinutes)) {
+      setValidationError('Please enter valid times in 24-hour format (HH:MM).');
+      return;
+    }
+
+    if (endMinutes <= startMinutes) {
+      setValidationError(
+        `Event end time (${format12Hour(localEnd)}) must be strictly after start time (${format12Hour(localStart)}). Please provide a positive operational window.`
+      );
+      return;
+    }
+
+    onGenerate({
+      eventDate: localDate,
+      startTime: localStart,
+      endTime: localEnd,
+    });
+  };
+
+  return (
+    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-6 mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-slate-100 gap-2">
+        <div className="flex items-center space-x-2">
+          <Clock className="w-5 h-5 text-emerald-600" />
+          <h2 className="text-base sm:text-lg font-extrabold text-slate-900">Event Timing & Schedule Window</h2>
+        </div>
+
+        <div className="flex items-center space-x-2 text-xs">
+          {isOrganizerConfirmed && localDate ? (
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Organizer configured ({format12Hour(localStart)} – {format12Hour(localEnd)})</span>
+            </span>
+          ) : (
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold">
+              <Info className="w-3.5 h-3.5 text-amber-600" />
+              <span>Default timing suggestion ({format12Hour('09:00')} – {format12Hour('17:00')})</span>
+            </span>
+          )}
+        </div>
+      </div>
+
+      <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Event Date */}
+          <div>
+            <label htmlFor="timing-event-date" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Event Date <span className="text-rose-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                id="timing-event-date"
+                type="date"
+                value={localDate}
+                onChange={(e) => handleDateChange(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors"
+                required
+              />
+            </div>
+            <p className="text-[11px] text-slate-400 mt-1">Calendar date for Day 1</p>
+          </div>
+
+          {/* Start Time - 12-Hour Selector */}
+          <div>
+            <Time12HourPicker
+              id="timing-start-time"
+              label="Daily Start Time"
+              value={localStart}
+              onChange={handleStartChange}
+              helpText="Doors open / setup begins"
+              required
+            />
+          </div>
+
+          {/* End Time - 12-Hour Selector */}
+          <div>
+            <Time12HourPicker
+              id="timing-end-time"
+              label="Daily End Time"
+              value={localEnd}
+              onChange={handleEndChange}
+              helpText="Cleanup concludes"
+              required
+            />
+          </div>
+        </div>
+
+        {/* Multi-day Notice */}
+        {durationDays > 1 && (
+          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 flex items-start space-x-2.5">
+            <Info className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <strong className="font-semibold text-slate-800">Multi-day Operating Hours:</strong> The current planning system applies this same operating window ({format12Hour(localStart)} – {format12Hour(localEnd)}) across all {durationDays} days of your event.
+            </div>
+          </div>
+        )}
+
+        {/* Validation Error Alert */}
+        {validationError && (
+          <div role="alert" className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center space-x-2.5">
+            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+            <span className="font-medium">{validationError}</span>
+          </div>
+        )}
+
+        {/* Submit Action */}
+        <div className="pt-2 flex justify-end">
+          <button
+            id="generate-plan-btn"
+            type="submit"
+            disabled={isGenerating}
+            className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
+          >
+            {isGenerating ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Scheduling Timetable...</span>
+              </>
+            ) : (
+              <>
+                <Sparkles className="w-4 h-4" />
+                <span>{hasPlan ? 'Regenerate Event Plan' : 'Generate Complete Event Plan'}</span>
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};

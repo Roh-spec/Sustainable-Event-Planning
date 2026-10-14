@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, DollarSign, Wallet, Info } from 'lucide-react';
+import { ArrowLeft, ArrowRight, DollarSign } from 'lucide-react';
 import { usePlanningWizard } from '../context/PlanningWizardContext';
 import { WizardProgress } from '../components/wizard/WizardProgress';
 import { EventSummaryBanner } from '../components/wizard/EventSummaryBanner';
@@ -41,12 +41,6 @@ export const BudgetPage: React.FC = () => {
     const targetId = eventId || event?.id;
     navigate(targetId ? `/events/${targetId}/edit` : '/events/new');
   };
-
-  const formattedExample = new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: currency || 'INR',
-    maximumFractionDigits: 0,
-  }).format(Number(totalBudget) || 0);
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
@@ -127,27 +121,6 @@ export const BudgetPage: React.FC = () => {
                 required
               />
             </div>
-
-            <div className="mt-4 flex items-center space-x-2 text-xs text-emerald-800 bg-emerald-50/80 p-3 rounded-xl border border-emerald-200">
-              <Info className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-              <span>
-                Current maximum limit is configured at <strong>{formattedExample}</strong>.
-              </span>
-            </div>
-          </div>
-
-          {/* Transparent Principle Callout */}
-          <div className="border border-slate-200 rounded-2xl p-5 bg-white text-xs text-slate-600 space-y-2">
-            <h4 className="font-bold text-slate-800 flex items-center space-x-2">
-              <Wallet className="w-4 h-4 text-emerald-600" />
-              <span>Zero-Silent Budget Inflation Policy</span>
-            </h4>
-            <p>
-              Unlike generic tools that automatically inflate budgets to accommodate expensive options, our planning
-              engine strictly checks feasibility against your stated ceiling. If a budget is insufficient
-              (<code>INFEASIBLE_BUDGET</code>), the engine reports the deficit and asks for your explicit confirmation
-              before any adjustment.
-            </p>
           </div>
 
           {/* Action buttons */}

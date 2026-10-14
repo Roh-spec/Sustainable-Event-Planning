@@ -14,9 +14,14 @@ from backend.app.planning.orchestrator.schemas import (
     PlanningRequest,
     PlanningResponse,
 )
+from backend.app.planning.modules.scheduling.schemas import (
+    CompletePlanRequest,
+    CompletePlanResponse,
+)
 from backend.app.services.food_planning_service import food_planning_service
 from backend.app.services.waste_planning_service import waste_planning_service
 from backend.app.services.planning_service import planning_service
+from backend.app.services.complete_plan_service import complete_plan_service
 
 router = APIRouter(prefix="/planning", tags=["Planning"])
 
@@ -94,4 +99,30 @@ def plan_waste(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=str(e),
         )
+
+
+@router.post(
+    "/complete-plan",
+    response_model=CompletePlanResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Generate complete, actionable event plan with timetable, checklist, resources, and budget",
+)
+def generate_complete_plan(
+    request: CompletePlanRequest,
+    db: Session = Depends(get_db),
+) -> CompletePlanResponse:
+    """
+    Combines the Scheduling Engine with existing event information, the selected
+    sustainable plan alternative, food and waste estimates, and budget data.
+    Produces an actionable timetable, preparation checklist, resource manifest,
+    and sustainability actions without recalculating existing domain models.
+    """
+    try:
+        return complete_plan_service.generate_complete_plan(db=db, request=request)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=str(e),
+        )
+
 

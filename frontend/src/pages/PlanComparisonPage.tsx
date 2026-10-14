@@ -10,6 +10,7 @@ import {
 import { usePlanningWizard } from '../context/PlanningWizardContext';
 import { EventSummaryBanner } from '../components/wizard/EventSummaryBanner';
 import { PlanAlternative } from '../types/planning';
+import { formatReusablePercentage } from '../utils/metricFormatting';
 
 export const PlanComparisonPage: React.FC = () => {
   const { eventId } = useParams<{ eventId: string }>();
@@ -204,16 +205,19 @@ export const PlanComparisonPage: React.FC = () => {
                   {/* Row: Reusable Items */}
                   <tr className="hover:bg-slate-50/50">
                     <td className="py-3.5 px-4 font-bold text-slate-700">Reusable Packaging Items</td>
-                    {plans.map((p) => (
-                      <td key={p.plan_id} className="py-3.5 px-4 font-bold text-emerald-800">
-                        {formatMetric(p.waste_metrics?.reusable_packaging_items, 'items')}{' '}
-                        {p.waste_metrics?.reusable_percentage && (
-                          <span className="text-[11px] text-emerald-600 font-normal">
-                            ({Math.round(Number(p.waste_metrics.reusable_percentage) * 100)}%)
-                          </span>
-                        )}
-                      </td>
-                    ))}
+                    {plans.map((p) => {
+                      const reusablePctBadge = formatReusablePercentage(p.waste_metrics);
+                      return (
+                        <td key={p.plan_id} className="py-3.5 px-4 font-bold text-emerald-800">
+                          {formatMetric(p.waste_metrics?.reusable_packaging_items, 'items')}{' '}
+                          {reusablePctBadge && (
+                            <span className="text-[11px] text-emerald-600 font-normal">
+                              ({reusablePctBadge})
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Plastic Items */}

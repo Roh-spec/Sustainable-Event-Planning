@@ -25,7 +25,7 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({ event, b
         <div>
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="text-xs uppercase font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              {event.event_type.replace('_', ' ')}
+              {event.event_type?.replace('_', ' ') || 'EVENT'}
             </span>
             <span className="text-xs text-slate-400">Event ID #{event.id}</span>
           </div>

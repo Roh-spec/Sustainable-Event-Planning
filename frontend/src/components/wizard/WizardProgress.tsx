@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Calendar, DollarSign, Sliders, Utensils, Trash2, Award } from 'lucide-react';
+import { Check, Calendar, DollarSign, Sliders, Utensils, Trash2, Award, ClipboardList } from 'lucide-react';
 import { usePlanningWizard } from '../../context/PlanningWizardContext';
 
 export interface WizardStep {
   id: number;
-  key: 'event' | 'budget' | 'constraints' | 'food' | 'waste' | 'plans';
+  key: 'event' | 'budget' | 'constraints' | 'food' | 'waste' | 'plans' | 'completePlan';
   label: string;
   path: (eventId?: number) => string;
   icon: React.ComponentType<{ className?: string }>;
@@ -18,6 +18,7 @@ export const WIZARD_STEPS: WizardStep[] = [
   { id: 4, key: 'food', label: 'Food', path: (id) => (id ? `/events/${id}/food` : '/events/new'), icon: Utensils },
   { id: 5, key: 'waste', label: 'Waste', path: (id) => (id ? `/events/${id}/waste` : '/events/new'), icon: Trash2 },
   { id: 6, key: 'plans', label: 'Plans', path: (id) => (id ? `/events/${id}/plans` : '/events/new'), icon: Award },
+  { id: 7, key: 'completePlan', label: 'Complete Event Plan', path: (id) => (id ? `/events/${id}/complete-plan` : '/events/new'), icon: ClipboardList },
 ];
 
 interface WizardProgressProps {

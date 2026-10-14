@@ -656,3 +656,80 @@ def test_removed_recommendations_never_generated():
     assert "REC_FOOD_DONATION_PARTNER" not in rec_codes
     assert "REC_FOOD_REUSABLE_SERVICEWARE" not in rec_codes
 
+
+def test_hundred_attendees_hundred_percent_participation():
+    """100-attendee event with 100% meal participation yields 100 servings."""
+    request = FoodPlanRequest(
+        event_id=1,
+        meals=[
+            MealInput(
+                meal_type=MealType.LUNCH,
+                user_participation_rate=Decimal("1.0"),
+            )
+        ],
+    )
+    result = FoodCalculator.calculate(
+        request=request,
+        event_name="Workshop",
+        event_type="WORKSHOP",
+        expected_attendees=100,
+        resolved_assumptions={},
+        constraints=[],
+    )
+    assert result.total_estimated_servings == 100
+    assert result.meal_plans[0].estimated_servings == 100
+
+
+def test_hundred_attendees_sixty_percent_participation():
+    """100-attendee event with 60% participation yields 60 servings."""
+    request = FoodPlanRequest(
+        event_id=1,
+        meals=[
+            MealInput(
+                meal_type=MealType.LUNCH,
+                user_participation_rate=Decimal("0.60"),
+            )
+        ],
+    )
+    result = FoodCalculator.calculate(
+        request=request,
+        event_name="Workshop",
+        event_type="WORKSHOP",
+        expected_attendees=100,
+        resolved_assumptions={},
+        constraints=[],
+    )
+    assert result.total_estimated_servings == 60
+    assert result.meal_plans[0].estimated_servings == 60
+
+
+def test_sixty_servings_mixed_diet_thirty_percent_veg():
+    """60-serving mixed-diet meal with a 30% vegetarian ratio yields 18 veg and 42 non-veg servings."""
+    request = FoodPlanRequest(
+        event_id=1,
+        meals=[
+            MealInput(
+                meal_type=MealType.LUNCH,
+                user_participation_rate=Decimal("0.60"),
+                dietary_preference=DietaryPreference.MIXED,
+            )
+        ],
+        default_dietary_preference=DietaryPreference.MIXED,
+        vegetarian_ratio=Decimal("0.30"),
+    )
+    result = FoodCalculator.calculate(
+        request=request,
+        event_name="Seminar",
+        event_type="SEMINAR",
+        expected_attendees=100,
+        resolved_assumptions={},
+        constraints=[],
+    )
+    assert result.total_estimated_servings == 60
+    assert result.total_veg_servings == 18
+    assert result.total_non_veg_servings == 42
+    meal = result.meal_plans[0]
+    assert meal.veg_servings == 18
+    assert meal.non_veg_servings == 42
+
+

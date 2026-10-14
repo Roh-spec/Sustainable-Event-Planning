@@ -3,6 +3,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import {
   Sparkles,
   ArrowLeft,
+  ArrowRight,
   Columns3,
   CheckCircle,
   AlertCircle,
@@ -17,6 +18,7 @@ import { PlanCard } from '../components/planning/PlanCard';
 import { InfeasibleBudgetAlert } from '../components/planning/InfeasibleBudgetAlert';
 import { PlanAlternative } from '../types/planning';
 import { PlanSelectionResult } from '../api/planning';
+import { formatCurrency } from '../utils/metricFormatting';
 
 export const PlansPage: React.FC = () => {
   const navigate = useNavigate();
@@ -86,35 +88,39 @@ export const PlansPage: React.FC = () => {
   const plans = planningResponse?.plans || [];
   const isInfeasible = planningResponse?.status === 'INFEASIBLE_BUDGET';
 
+  // Dynamic grid configuration based on plan count to prevent narrow cards & excessive empty space
+  const getGridContainerClass = (count: number) => {
+    if (count === 1) return 'max-w-3xl mx-auto';
+    if (count === 2) return 'grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6';
+    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+  };
+
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <WizardProgress currentStep={6} eventId={event?.id || Number(eventId)} />
       <EventSummaryBanner event={event} budget={budget} />
 
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 mb-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-100 pb-6 mb-8">
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-8 lg:p-8 mb-8">
+        {/* Top Header Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 mb-6 border-b border-slate-100">
           <div>
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-3 border border-emerald-200">
+            <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-2 border border-emerald-200">
               <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Step 6 of 6 • Generated Sustainable Plans</span>
+              <span>Step 6 of 7 • Generated Sustainable Plans</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Recommended Event Plan Alternatives
+              Your Sustainable Event Plan
             </h1>
-            <p className="text-slate-600 text-sm mt-1.5 max-w-2xl">
-              The Planning Engine evaluated candidate variations across food, packaging, plastics, and budget constraints.
-              Select a plan to adopt, or compare them side-by-side.
-            </p>
           </div>
 
-          {/* Quick Actions */}
-          {plans.length > 0 && (
-            <div className="flex items-center gap-3">
+          {/* Secondary Action: Compare Plans (only when at least 2 distinct plans exist) */}
+          {plans.length >= 2 && (
+            <div className="flex items-center gap-3 flex-shrink-0">
               <Link
                 to={`/events/${event?.id || eventId}/compare`}
-                className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition-all focus:outline-none"
+                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs shadow-sm transition-all focus:outline-none"
               >
-                <Columns3 className="w-4 h-4 text-emerald-400" />
+                <Columns3 className="w-4 h-4 text-emerald-600" />
                 <span>Compare Plans Side-by-Side</span>
               </Link>
             </div>
@@ -139,26 +145,34 @@ export const PlansPage: React.FC = () => {
           />
         )}
 
-        {/* Selected Plan Active Banner */}
+        {/* Selected Plan Status Banner */}
         {selectedPlan && (
-          <div className="mb-8 p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex items-center justify-between shadow-sm">
-            <div className="flex items-center space-x-3">
-              <div className="p-2 rounded-xl bg-emerald-600 text-white">
-                <Check className="w-5 h-5" />
+          <div className="mb-6 py-3 px-4 rounded-xl bg-emerald-50/90 border border-emerald-200 text-emerald-950 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+            <div className="flex items-center space-x-2.5">
+              <div className="p-1 rounded-md bg-emerald-600 text-white flex-shrink-0">
+                <Check className="w-3.5 h-3.5" />
               </div>
-              <div>
-                <span className="text-xs uppercase font-extrabold text-emerald-700 tracking-wider">
-                  Active Selected Plan
-                </span>
-                <h4 className="text-base font-bold text-emerald-900">{selectedPlan.name}</h4>
-              </div>
+              <span>
+                Active Selection: <strong className="font-bold text-emerald-950">{selectedPlan.name}</strong>
+              </span>
             </div>
-            <Link
-              to={`/events/${event?.id || eventId}/compare`}
-              className="text-xs font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-2"
-            >
-              Review in Comparison Table →
-            </Link>
+            <div className="flex items-center gap-3">
+              {plans.length > 1 && (
+                <Link
+                  to={`/events/${event?.id || eventId}/compare`}
+                  className="font-bold text-emerald-700 hover:text-emerald-900 underline underline-offset-2 flex-shrink-0"
+                >
+                  Compare Side-by-Side
+                </Link>
+              )}
+              <Link
+                to={`/events/${event?.id || eventId}/complete-plan`}
+                className="inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition-all"
+              >
+                <span>Continue to Complete Event Plan</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
         )}
 
@@ -186,7 +200,7 @@ export const PlansPage: React.FC = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className={getGridContainerClass(plans.length)}>
             {plans.map((plan) => (
               <PlanCard
                 key={plan.plan_id}
@@ -200,26 +214,38 @@ export const PlansPage: React.FC = () => {
           </div>
         )}
 
-        {/* Bottom Back Button */}
-        <div className="pt-8 mt-8 border-t border-slate-100 flex justify-between items-center">
+        {/* Bottom Navigation */}
+        <div className="pt-8 mt-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
           <button
             type="button"
             onClick={() => navigate(`/events/${event?.id || eventId}/waste`)}
-            className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition-colors focus:outline-none"
+            className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition-colors focus:outline-none w-full sm:w-auto justify-center"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Waste Step</span>
           </button>
 
-          {plans.length > 0 && (
-            <Link
-              to={`/events/${event?.id || eventId}/compare`}
-              className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
-            >
-              <span>View Side-by-Side Comparison</span>
-              <Columns3 className="w-4 h-4" />
-            </Link>
-          )}
+          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto justify-end">
+            {plans.length >= 2 && (
+              <Link
+                to={`/events/${event?.id || eventId}/compare`}
+                className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm shadow-sm transition-all focus:outline-none"
+              >
+                <Columns3 className="w-4 h-4 text-emerald-600" />
+                <span>Compare Plans</span>
+              </Link>
+            )}
+            {selectedPlan && (
+              <button
+                type="button"
+                onClick={() => navigate(`/events/${event?.id || eventId}/complete-plan`)}
+                className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
+              >
+                <span>Continue to Complete Event Plan</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -260,13 +286,17 @@ export const PlansPage: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-slate-500">Estimated Total Cost:</span>
                 <span className="font-bold text-slate-900">
-                  ₹{Number(selectionModalPlan.estimated_cost || 0).toLocaleString()}
+                  {formatCurrency(selectionModalPlan.estimated_cost, budget.currency || 'INR')}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Food Waste:</span>
                 <span className="font-bold text-slate-900">
-                  {selectionModalPlan.food_metrics?.estimated_waste_kg ?? 'Not estimated'} kg
+                  {selectionModalPlan.food_metrics?.estimated_waste_kg
+                    ? `${selectionModalPlan.food_metrics.estimated_waste_kg} kg`
+                    : selectionModalPlan.food_metrics?.estimated_waste_servings
+                    ? `${selectionModalPlan.food_metrics.estimated_waste_servings} servings`
+                    : 'Not estimated'}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -284,19 +314,30 @@ export const PlansPage: React.FC = () => {
             </div>
 
             {selectionResult ? (
-              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-900 space-y-2">
+              <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-xs text-emerald-900 space-y-3">
                 <div className="flex items-center space-x-2 font-bold text-emerald-950">
                   <CheckCircle className="w-4 h-4 text-emerald-600" />
                   <span>Plan Selection Confirmed</span>
                 </div>
                 <p>{selectionResult.message}</p>
-                <div className="pt-2 flex justify-end">
+                <div className="pt-2 flex flex-col sm:flex-row justify-end gap-2">
                   <button
                     type="button"
                     onClick={() => setSelectionModalPlan(null)}
-                    className="px-5 py-2 rounded-xl bg-emerald-600 text-white font-bold text-xs"
+                    className="px-4 py-2 rounded-xl border border-slate-300 bg-white text-slate-700 font-bold text-xs hover:bg-slate-50"
                   >
-                    Done
+                    Stay on Plans / Select Different
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectionModalPlan(null);
+                      navigate(`/events/${event?.id || eventId}/complete-plan`);
+                    }}
+                    className="inline-flex items-center justify-center space-x-1.5 px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md shadow-emerald-600/20"
+                  >
+                    <span>Continue to Complete Event Plan</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
