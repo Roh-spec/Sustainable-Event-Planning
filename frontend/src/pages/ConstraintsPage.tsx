@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
@@ -11,82 +11,89 @@ import {
   Scale,
   Leaf,
   X,
-} from 'lucide-react';
-import { usePlanningWizard } from '../context/PlanningWizardContext';
-import { WizardProgress } from '../components/wizard/WizardProgress';
-import { EventSummaryBanner } from '../components/wizard/EventSummaryBanner';
-import { ConstraintType } from '../types/constraints';
-import { MainPriority } from '../types/planning';
+} from "lucide-react";
+import { usePlanningWizard } from "../context/PlanningWizardContext";
+import { WizardProgress } from "../components/wizard/WizardProgress";
+import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
+import { ConstraintType } from "../types/constraints";
+import { MainPriority } from "../types/planning";
 
 const inferCategory = (desc: string): string => {
   const d = desc.toLowerCase();
   if (
-    d.includes('plastic') ||
-    d.includes('waste') ||
-    d.includes('reusable') ||
-    d.includes('bottle') ||
-    d.includes('plate') ||
-    d.includes('cup') ||
-    d.includes('cutlery') ||
-    d.includes('packaging') ||
-    d.includes('disposable') ||
-    d.includes('trash')
+    d.includes("plastic") ||
+    d.includes("waste") ||
+    d.includes("reusable") ||
+    d.includes("bottle") ||
+    d.includes("plate") ||
+    d.includes("cup") ||
+    d.includes("cutlery") ||
+    d.includes("packaging") ||
+    d.includes("disposable") ||
+    d.includes("trash")
   ) {
-    return 'WASTE';
+    return "WASTE";
   }
   if (
-    d.includes('food') ||
-    d.includes('veg') ||
-    d.includes('meal') ||
-    d.includes('meat') ||
-    d.includes('diet') ||
-    d.includes('cater') ||
-    d.includes('lunch') ||
-    d.includes('dinner') ||
-    d.includes('breakfast')
+    d.includes("food") ||
+    d.includes("veg") ||
+    d.includes("meal") ||
+    d.includes("meat") ||
+    d.includes("diet") ||
+    d.includes("cater") ||
+    d.includes("lunch") ||
+    d.includes("dinner") ||
+    d.includes("breakfast")
   ) {
-    return 'FOOD';
+    return "FOOD";
   }
-  if (d.includes('budget') || d.includes('cost') || d.includes('money') || d.includes('price')) {
-    return 'BUDGET';
+  if (
+    d.includes("budget") ||
+    d.includes("cost") ||
+    d.includes("money") ||
+    d.includes("price")
+  ) {
+    return "BUDGET";
   }
-  return 'GENERAL';
+  return "GENERAL";
 };
 
 const inferValue = (desc: string, type: ConstraintType): string | undefined => {
   const d = desc.toUpperCase();
-  if (d.includes('PLASTIC') && type === 'NOT_ALLOWED') return 'NO_PLASTIC_BOTTLES';
-  if (d.includes('VEG') && type === 'REQUIRED') return 'VEGETARIAN_OPTIONS';
-  if (d.includes('REUSABLE') && (type === 'PREFERRED' || type === 'REQUIRED')) return 'REUSABLE_PACKAGING';
+  if (d.includes("PLASTIC") && type === "NOT_ALLOWED")
+    return "NO_PLASTIC_BOTTLES";
+  if (d.includes("VEG") && type === "REQUIRED") return "VEGETARIAN_OPTIONS";
+  if (d.includes("REUSABLE") && (type === "PREFERRED" || type === "REQUIRED"))
+    return "REUSABLE_PACKAGING";
   return undefined;
 };
 
 const getPreferenceBadge = (type: ConstraintType) => {
   switch (type) {
-    case 'REQUIRED':
+    case "REQUIRED":
       return {
-        label: 'Must Have',
-        badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+        label: "Must Have",
+        badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
       };
-    case 'NOT_ALLOWED':
+    case "NOT_ALLOWED":
       return {
-        label: 'Avoid',
-        badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
+        label: "Avoid",
+        badgeColor: "bg-rose-100 text-rose-800 border-rose-300",
       };
-    case 'PREFERRED':
+    case "PREFERRED":
       return {
-        label: 'Would Be Nice',
-        badgeColor: 'bg-blue-100 text-blue-800 border-blue-300',
+        label: "Would Be Nice",
+        badgeColor: "bg-blue-100 text-blue-800 border-blue-300",
       };
-    case 'FLEXIBLE':
+    case "FLEXIBLE":
       return {
-        label: 'Flexible',
-        badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
+        label: "Flexible",
+        badgeColor: "bg-amber-100 text-amber-800 border-amber-300",
       };
     default:
       return {
         label: type,
-        badgeColor: 'bg-slate-100 text-slate-800 border-slate-300',
+        badgeColor: "bg-slate-100 text-slate-800 border-slate-300",
       };
   }
 };
@@ -106,13 +113,16 @@ export const ConstraintsPage: React.FC = () => {
   } = usePlanningWizard();
 
   const [isAdding, setIsAdding] = useState(false);
-  const [description, setDescription] = useState('');
-  const [preferenceType, setPreferenceType] = useState<ConstraintType>('REQUIRED');
+  const [description, setDescription] = useState("");
+  const [preferenceType, setPreferenceType] =
+    useState<ConstraintType>("REQUIRED");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (eventId && (!event || event.id !== Number(eventId))) {
-      loadEvent(Number(eventId)).catch((err) => setError(`Failed to load event: ${err.message}`));
+      loadEvent(Number(eventId)).catch((err) =>
+        setError(`Failed to load event: ${err.message}`),
+      );
     }
   }, [eventId]);
 
@@ -123,21 +133,21 @@ export const ConstraintsPage: React.FC = () => {
     icon: React.ComponentType<{ className?: string }>;
   }[] = [
     {
-      id: 'SAVE_MONEY',
-      title: 'Save Money',
-      description: 'Keep event costs as low as possible.',
+      id: "SAVE_MONEY",
+      title: "Save Money",
+      description: "Keep event costs as low as possible.",
       icon: Wallet,
     },
     {
-      id: 'BALANCED',
-      title: 'Balanced',
-      description: 'Balance affordability and sustainability.',
+      id: "BALANCED",
+      title: "Balanced",
+      description: "Balance affordability and sustainability.",
       icon: Scale,
     },
     {
-      id: 'REDUCE_WASTE',
-      title: 'Reduce Waste',
-      description: 'Prioritize waste reduction and reusable items.',
+      id: "REDUCE_WASTE",
+      title: "Reduce Waste",
+      description: "Prioritize waste reduction and reusable items.",
       icon: Leaf,
     },
   ];
@@ -145,7 +155,7 @@ export const ConstraintsPage: React.FC = () => {
   const handleAddPreference = (e: React.FormEvent) => {
     e.preventDefault();
     if (!description.trim()) {
-      setError('Please enter a description for your preference.');
+      setError("Please enter a description for your preference.");
       return;
     }
     setError(null);
@@ -157,8 +167,8 @@ export const ConstraintsPage: React.FC = () => {
       value: inferValue(description, preferenceType),
     });
 
-    setDescription('');
-    setPreferenceType('REQUIRED');
+    setDescription("");
+    setPreferenceType("REQUIRED");
     setIsAdding(false);
   };
 
@@ -169,7 +179,7 @@ export const ConstraintsPage: React.FC = () => {
 
   const handleBack = () => {
     const targetId = eventId || event?.id;
-    navigate(targetId ? `/events/${targetId}/budget` : '/events/new');
+    navigate(targetId ? `/events/${targetId}/budget` : "/events/new");
   };
 
   return (
@@ -188,18 +198,24 @@ export const ConstraintsPage: React.FC = () => {
             Event Preferences
           </h1>
           <p className="text-slate-600 text-sm mt-1.5 max-w-2xl">
-            Tell us what matters most. We'll use your preferences to create suitable event plans.
+            Tell us what matters most. We'll use your preferences to create
+            suitable event plans.
           </p>
         </div>
 
         {/* Section 1: What's your main priority? */}
         <section aria-labelledby="priority-heading" className="mb-10">
           <div className="mb-4">
-            <h2 id="priority-heading" className="text-xs font-bold uppercase tracking-wider text-slate-700">
-              What's your main priority? <span className="text-rose-500">*</span>
+            <h2
+              id="priority-heading"
+              className="text-xs font-bold uppercase tracking-wider text-slate-700"
+            >
+              What's your main priority?{" "}
+              <span className="text-rose-500">*</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
-              Choose the primary focus for your event plans. You can select one priority.
+              Choose the primary focus for your event plans. You can select one
+              priority.
             </p>
           </div>
 
@@ -220,28 +236,38 @@ export const ConstraintsPage: React.FC = () => {
                   onClick={() => setPriority(opt.id)}
                   className={`text-left p-5 rounded-2xl border-2 transition-all relative focus:outline-none ${
                     isSelected
-                      ? 'border-emerald-600 bg-emerald-50/70 shadow-sm ring-2 ring-emerald-500/20'
-                      : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50'
+                      ? "border-emerald-600 bg-emerald-50/70 shadow-sm ring-2 ring-emerald-500/20"
+                      : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50"
                   }`}
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div
                       className={`p-2.5 rounded-xl ${
-                        isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-600'
+                        isSelected
+                          ? "bg-emerald-600 text-white"
+                          : "bg-slate-100 text-slate-600"
                       }`}
                     >
                       <Icon className="w-5 h-5" />
                     </div>
                     <div
                       className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
-                        isSelected ? 'border-emerald-600 bg-emerald-600' : 'border-slate-300 bg-white'
+                        isSelected
+                          ? "border-emerald-600 bg-emerald-600"
+                          : "border-slate-300 bg-white"
                       }`}
                     >
-                      {isSelected && <Check className="w-3 h-3 text-white stroke-[3]" />}
+                      {isSelected && (
+                        <Check className="w-3 h-3 text-white stroke-[3]" />
+                      )}
                     </div>
                   </div>
-                  <h3 className="font-extrabold text-base text-slate-900 mb-1">{opt.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">{opt.description}</p>
+                  <h3 className="font-extrabold text-base text-slate-900 mb-1">
+                    {opt.title}
+                  </h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    {opt.description}
+                  </p>
                 </button>
               );
             })}
@@ -257,10 +283,13 @@ export const ConstraintsPage: React.FC = () => {
                 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-2"
               >
                 <span>Any special requirements?</span>
-                <span className="text-slate-400 font-normal text-xs normal-case">(Optional)</span>
+                <span className="text-slate-400 font-normal text-xs normal-case">
+                  (Optional)
+                </span>
               </h2>
               <p className="text-xs text-slate-500 mt-0.5">
-                Add specific rules for your event, such as dietary needs or items to avoid.
+                Add specific rules for your event, such as dietary needs or
+                items to avoid.
               </p>
             </div>
 
@@ -298,7 +327,10 @@ export const ConstraintsPage: React.FC = () => {
               </div>
 
               {error && (
-                <div role="alert" className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold">
+                <div
+                  role="alert"
+                  className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold"
+                >
                   {error}
                 </div>
               )}
@@ -330,19 +362,19 @@ export const ConstraintsPage: React.FC = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                     {[
                       {
-                        type: 'REQUIRED' as ConstraintType,
-                        label: 'Must Have',
-                        sub: 'Non-negotiable requirement',
+                        type: "REQUIRED" as ConstraintType,
+                        label: "Must Have",
+                        sub: "Non-negotiable requirement",
                       },
                       {
-                        type: 'NOT_ALLOWED' as ConstraintType,
-                        label: 'Avoid',
-                        sub: 'Must never be included',
+                        type: "NOT_ALLOWED" as ConstraintType,
+                        label: "Avoid",
+                        sub: "Must never be included",
                       },
                       {
-                        type: 'PREFERRED' as ConstraintType,
-                        label: 'Would Be Nice',
-                        sub: 'Preferred when feasible',
+                        type: "PREFERRED" as ConstraintType,
+                        label: "Would Be Nice",
+                        sub: "Preferred when feasible",
                       },
                     ].map((opt) => {
                       const isOptionSelected = preferenceType === opt.type;
@@ -353,21 +385,29 @@ export const ConstraintsPage: React.FC = () => {
                           onClick={() => setPreferenceType(opt.type)}
                           className={`p-3 rounded-xl border text-left transition-all ${
                             isOptionSelected
-                              ? 'border-emerald-600 bg-emerald-50/80 ring-2 ring-emerald-500/20 text-emerald-950 font-bold'
-                              : 'border-slate-200 bg-white hover:bg-slate-50 text-slate-700'
+                              ? "border-emerald-600 bg-emerald-50/80 ring-2 ring-emerald-500/20 text-emerald-950 font-bold"
+                              : "border-slate-200 bg-white hover:bg-slate-50 text-slate-700"
                           }`}
                         >
                           <div className="flex items-center justify-between mb-0.5">
-                            <span className="text-xs font-bold">{opt.label}</span>
+                            <span className="text-xs font-bold">
+                              {opt.label}
+                            </span>
                             <span
                               className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                                isOptionSelected ? 'border-emerald-600 bg-emerald-600' : 'border-slate-300'
+                                isOptionSelected
+                                  ? "border-emerald-600 bg-emerald-600"
+                                  : "border-slate-300"
                               }`}
                             >
-                              {isOptionSelected && <Check className="w-2.5 h-2.5 text-white" />}
+                              {isOptionSelected && (
+                                <Check className="w-2.5 h-2.5 text-white" />
+                              )}
                             </span>
                           </div>
-                          <span className="text-[11px] text-slate-500 block">{opt.sub}</span>
+                          <span className="text-[11px] text-slate-500 block">
+                            {opt.sub}
+                          </span>
                         </button>
                       );
                     })}
@@ -400,7 +440,9 @@ export const ConstraintsPage: React.FC = () => {
           {/* Active Preferences List */}
           {constraints.length === 0 ? (
             <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 text-xs">
-              No special requirements added yet. Click &ldquo;Add Preference&rdquo; above if you have specific rules, or continue without any.
+              No special requirements added yet. Click &ldquo;Add
+              Preference&rdquo; above if you have specific rules, or continue
+              without any.
             </div>
           ) : (
             <div className="space-y-2.5">

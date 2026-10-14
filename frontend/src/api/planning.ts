@@ -1,6 +1,13 @@
-import { apiClient } from './client';
-import { PlanningRequest, PlanningResponse, PlanAlternative } from '../types/planning';
-import { CompletePlanRequest, CompletePlanResponse } from '../types/completePlan';
+import { apiClient } from "./client";
+import {
+  PlanningRequest,
+  PlanningResponse,
+  PlanAlternative,
+} from "../types/planning";
+import {
+  CompletePlanRequest,
+  CompletePlanResponse,
+} from "../types/completePlan";
 
 export interface PlanSelectionResult {
   success: boolean;
@@ -11,11 +18,16 @@ export interface PlanSelectionResult {
 
 export const planningApi = {
   generate: (request: PlanningRequest): Promise<PlanningResponse> => {
-    return apiClient.post<PlanningResponse>('/planning/generate', request);
+    return apiClient.post<PlanningResponse>("/planning/generate", request);
   },
 
-  getCompletePlan: (request: CompletePlanRequest): Promise<CompletePlanResponse> => {
-    return apiClient.post<CompletePlanResponse>('/planning/complete-plan', request);
+  getCompletePlan: (
+    request: CompletePlanRequest,
+  ): Promise<CompletePlanResponse> => {
+    return apiClient.post<CompletePlanResponse>(
+      "/planning/complete-plan",
+      request,
+    );
   },
 
   /**
@@ -23,7 +35,10 @@ export const planningApi = {
    * If backend persistence endpoint (/plans) is not yet implemented (Phase 4),
    * this reports the status honestly without faking database storage.
    */
-  selectPlan: async (eventId: number, plan: PlanAlternative): Promise<PlanSelectionResult> => {
+  selectPlan: async (
+    eventId: number,
+    plan: PlanAlternative,
+  ): Promise<PlanSelectionResult> => {
     try {
       // Attempt plan persistence against backend /plans if endpoint exists
       const response = await apiClient.post<{ id?: number }>(`/plans`, {
@@ -37,7 +52,7 @@ export const planningApi = {
       return {
         success: true,
         persisted: true,
-        message: `Plan "${plan.name}" successfully persisted to database (ID: ${response.id || 'saved'}).`,
+        message: `Plan "${plan.name}" successfully persisted to database (ID: ${response.id || "saved"}).`,
         selectedPlan: plan,
       };
     } catch {
@@ -52,4 +67,3 @@ export const planningApi = {
     }
   },
 };
-

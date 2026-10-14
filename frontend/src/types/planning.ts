@@ -1,42 +1,52 @@
-import { ConstraintBase, ConstraintResult } from './constraints';
-import { FoodPlanRequest } from './food';
-import { WastePlanRequest, WasteSourceType } from './waste';
-import { ResolvedAssumption } from './assumptions';
+import { ConstraintBase, ConstraintResult } from "./constraints";
+import { FoodPlanRequest } from "./food";
+import { WastePlanRequest, WasteSourceType } from "./waste";
+import { ResolvedAssumption } from "./assumptions";
 
-export type PlanningObjective = 'BUDGET_FOCUSED' | 'BALANCED' | 'SUSTAINABILITY_FOCUSED';
+export type PlanningObjective =
+  "BUDGET_FOCUSED" | "BALANCED" | "SUSTAINABILITY_FOCUSED";
 
-export type MainPriority = 'SAVE_MONEY' | 'BALANCED' | 'REDUCE_WASTE';
+export type MainPriority = "SAVE_MONEY" | "BALANCED" | "REDUCE_WASTE";
 
 export const PRIORITY_OBJECTIVE_MAP: Record<MainPriority, PlanningObjective> = {
-  SAVE_MONEY: 'BUDGET_FOCUSED',
-  BALANCED: 'BALANCED',
-  REDUCE_WASTE: 'SUSTAINABILITY_FOCUSED',
+  SAVE_MONEY: "BUDGET_FOCUSED",
+  BALANCED: "BALANCED",
+  REDUCE_WASTE: "SUSTAINABILITY_FOCUSED",
 };
 
 export const PLANNING_OBJECTIVE_CONFIG: Record<
   PlanningObjective,
-  { label: string; badge: string; icon: string; description: string; tagColor: string }
+  {
+    label: string;
+    badge: string;
+    icon: string;
+    description: string;
+    tagColor: string;
+  }
 > = {
   BUDGET_FOCUSED: {
-    label: 'Budget-Focused',
-    badge: '💰 Cost-Effective',
-    icon: 'Wallet',
-    description: 'Prioritizes lower expenditure while satisfying hard constraints.',
-    tagColor: 'bg-blue-100 text-blue-800 border-blue-200',
+    label: "Budget-Focused",
+    badge: "💰 Cost-Effective",
+    icon: "Wallet",
+    description:
+      "Prioritizes lower expenditure while satisfying hard constraints.",
+    tagColor: "bg-blue-100 text-blue-800 border-blue-200",
   },
   BALANCED: {
-    label: 'Balanced',
-    badge: '⚖️ Pragmatic Equilibrium',
-    icon: 'Scale',
-    description: 'Strikes an optimal balance between budget constraints and eco reduction.',
-    tagColor: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+    label: "Balanced",
+    badge: "⚖️ Pragmatic Equilibrium",
+    icon: "Scale",
+    description:
+      "Strikes an optimal balance between budget constraints and eco reduction.",
+    tagColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
   },
   SUSTAINABILITY_FOCUSED: {
-    label: 'Sustainability-Focused',
-    badge: '🌱 Maximum Eco Impact',
-    icon: 'Leaf',
-    description: 'Minimizes measurable waste, plastics, and disposable footprints.',
-    tagColor: 'bg-green-100 text-green-800 border-green-300',
+    label: "Sustainability-Focused",
+    badge: "🌱 Maximum Eco Impact",
+    icon: "Leaf",
+    description:
+      "Minimizes measurable waste, plastics, and disposable footprints.",
+    tagColor: "bg-green-100 text-green-800 border-green-300",
   },
 };
 
@@ -128,7 +138,7 @@ export interface PlanningResponse {
   event_name: string;
   expected_attendees: number;
   budget?: string | number | null;
-  status: 'COMPLETE' | 'PARTIAL' | 'INFEASIBLE_BUDGET' | string;
+  status: "COMPLETE" | "PARTIAL" | "INFEASIBLE_BUDGET" | string;
   min_feasible_budget?: string | number | null;
   budget_deficit?: string | number | null;
   plans: PlanAlternative[];

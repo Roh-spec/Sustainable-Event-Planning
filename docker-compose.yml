@@ -1,10 +1,11 @@
-version: '3.8'
-
 services:
+  # ==========================================
+  # 1. FastAPI Application Backend
+  # ==========================================
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: esc_backend
     restart: unless-stopped
     ports:
@@ -12,12 +13,15 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/sustainable_events
       - ENVIRONMENT=development
+      - PYTHONPATH=/workspace
     depends_on:
       - db
     volumes:
-      - ./backend:/app
-      - ./config:/app/config
+      - .:/workspace
 
+  # ==========================================
+  # 2. React + Vite Frontend Web App
+  # ==========================================
   frontend:
     build:
       context: ./frontend
@@ -32,6 +36,9 @@ services:
       - ./frontend:/app
       - /app/node_modules
 
+  # ==========================================
+  # 3. PostgreSQL Database
+  # ==========================================
   db:
     image: postgres:16-alpine
     container_name: esc_postgres
@@ -48,3 +55,4 @@ services:
 
 volumes:
   postgres_data:
+    name: esc_postgres_data

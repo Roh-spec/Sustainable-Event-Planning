@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, DollarSign } from 'lucide-react';
-import { usePlanningWizard } from '../context/PlanningWizardContext';
-import { WizardProgress } from '../components/wizard/WizardProgress';
-import { EventSummaryBanner } from '../components/wizard/EventSummaryBanner';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft, ArrowRight, DollarSign } from "lucide-react";
+import { usePlanningWizard } from "../context/PlanningWizardContext";
+import { WizardProgress } from "../components/wizard/WizardProgress";
+import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 
 export const BudgetPage: React.FC = () => {
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const { event, loadEvent, budget, setBudget } = usePlanningWizard();
 
-  const [totalBudget, setTotalBudget] = useState(budget.total_budget || '50000');
-  const [currency, setCurrency] = useState(budget.currency || 'INR');
+  const [totalBudget, setTotalBudget] = useState(
+    budget.total_budget || "50000",
+  );
+  const [currency, setCurrency] = useState(budget.currency || "INR");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (eventId && (!event || event.id !== Number(eventId))) {
-      loadEvent(Number(eventId)).catch((err) => setError(`Failed to load event: ${err.message}`));
+      loadEvent(Number(eventId)).catch((err) =>
+        setError(`Failed to load event: ${err.message}`),
+      );
     }
   }, [eventId]);
 
@@ -24,7 +28,7 @@ export const BudgetPage: React.FC = () => {
     e.preventDefault();
     const budgetNum = parseFloat(totalBudget);
     if (isNaN(budgetNum) || budgetNum < 0) {
-      setError('Please provide a valid non-negative budget limit.');
+      setError("Please provide a valid non-negative budget limit.");
       return;
     }
 
@@ -39,13 +43,16 @@ export const BudgetPage: React.FC = () => {
 
   const handleBack = () => {
     const targetId = eventId || event?.id;
-    navigate(targetId ? `/events/${targetId}/edit` : '/events/new');
+    navigate(targetId ? `/events/${targetId}/edit` : "/events/new");
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
       <WizardProgress currentStep={2} eventId={event?.id || Number(eventId)} />
-      <EventSummaryBanner event={event} budget={{ total_budget: totalBudget, currency }} />
+      <EventSummaryBanner
+        event={event}
+        budget={{ total_budget: totalBudget, currency }}
+      />
 
       <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10">
         <div className="border-b border-slate-100 pb-6 mb-8">
@@ -57,8 +64,9 @@ export const BudgetPage: React.FC = () => {
             Event Budget Specification
           </h1>
           <p className="text-slate-600 text-sm mt-1.5 max-w-2xl">
-            Set your event's maximum financial expenditure ceiling. The planning engine will evaluate candidate
-            configurations to ensure generated plans respect this threshold.
+            Set your event's maximum financial expenditure ceiling. The planning
+            engine will evaluate candidate configurations to ensure generated
+            plans respect this threshold.
           </p>
         </div>
 
@@ -83,13 +91,17 @@ export const BudgetPage: React.FC = () => {
                   Your Maximum Budget <span className="text-rose-500">*</span>
                 </label>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  The planner will try to keep generated plans within this budget.
+                  The planner will try to keep generated plans within this
+                  budget.
                 </p>
               </div>
 
               {/* Currency selector */}
               <div className="flex items-center space-x-2">
-                <label htmlFor="currency-select" className="text-xs text-slate-500 font-semibold">
+                <label
+                  htmlFor="currency-select"
+                  className="text-xs text-slate-500 font-semibold"
+                >
                   Currency:
                 </label>
                 <select
@@ -107,7 +119,7 @@ export const BudgetPage: React.FC = () => {
 
             <div className="relative rounded-2xl max-w-md">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400 font-bold text-lg">
-                {currency === 'INR' ? '₹' : currency === 'USD' ? '$' : '€'}
+                {currency === "INR" ? "₹" : currency === "USD" ? "$" : "€"}
               </div>
               <input
                 type="number"

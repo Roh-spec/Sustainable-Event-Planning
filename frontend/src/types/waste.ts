@@ -1,56 +1,57 @@
-import { FoodPlanRequest } from './food';
-import { ResolvedAssumption } from './assumptions';
+import { FoodPlanRequest } from "./food";
+import { ResolvedAssumption } from "./assumptions";
 
-export type CalculationBasis = 'PER_PERSON' | 'PER_MEAL' | 'PER_EVENT' | 'CUSTOM';
+export type CalculationBasis =
+  "PER_PERSON" | "PER_MEAL" | "PER_EVENT" | "CUSTOM";
 
-export type PackagingItemType = 'PLATE' | 'CUP' | 'SPOON' | 'FORK' | 'GLASS' | 'OTHER';
+export type PackagingItemType =
+  "PLATE" | "CUP" | "SPOON" | "FORK" | "GLASS" | "OTHER";
 
-export const PACKAGING_TYPE_OPTIONS: { value: PackagingItemType; label: string }[] = [
-  { value: 'PLATE', label: 'Plate' },
-  { value: 'CUP', label: 'Cup' },
-  { value: 'SPOON', label: 'Spoon' },
-  { value: 'FORK', label: 'Fork' },
-  { value: 'GLASS', label: 'Glass' },
-  { value: 'OTHER', label: 'Other Item' },
+export const PACKAGING_TYPE_OPTIONS: {
+  value: PackagingItemType;
+  label: string;
+}[] = [
+  { value: "PLATE", label: "Plate" },
+  { value: "CUP", label: "Cup" },
+  { value: "SPOON", label: "Spoon" },
+  { value: "FORK", label: "Fork" },
+  { value: "GLASS", label: "Glass" },
+  { value: "OTHER", label: "Other Item" },
 ];
 
 export type PlasticItemType =
-  | 'WATER_BOTTLE'
-  | 'PLASTIC_BAG'
-  | 'WRAPPER'
-  | 'PLASTIC_CUP'
-  | 'OTHER';
+  "WATER_BOTTLE" | "PLASTIC_BAG" | "WRAPPER" | "PLASTIC_CUP" | "OTHER";
 
-export const PLASTIC_TYPE_OPTIONS: { value: PlasticItemType; label: string }[] = [
-  { value: 'WATER_BOTTLE', label: 'Water Bottle' },
-  { value: 'PLASTIC_BAG', label: 'Plastic Bag' },
-  { value: 'WRAPPER', label: 'Wrapper' },
-  { value: 'PLASTIC_CUP', label: 'Plastic Cup' },
-  { value: 'OTHER', label: 'Other Plastic' },
-];
+export const PLASTIC_TYPE_OPTIONS: { value: PlasticItemType; label: string }[] =
+  [
+    { value: "WATER_BOTTLE", label: "Water Bottle" },
+    { value: "PLASTIC_BAG", label: "Plastic Bag" },
+    { value: "WRAPPER", label: "Wrapper" },
+    { value: "PLASTIC_CUP", label: "Plastic Cup" },
+    { value: "OTHER", label: "Other Plastic" },
+  ];
 
 export type OtherWasteCategory =
-  | 'DECORATIONS'
-  | 'BROKEN_ITEMS'
-  | 'MIXED_WASTE'
-  | 'FOOD_CONTAINERS'
-  | 'OTHER'
-  | 'CUSTOM';
+  | "DECORATIONS"
+  | "BROKEN_ITEMS"
+  | "MIXED_WASTE"
+  | "FOOD_CONTAINERS"
+  | "OTHER"
+  | "CUSTOM";
 
-export const OTHER_WASTE_OPTIONS: { value: OtherWasteCategory; label: string }[] = [
-  { value: 'DECORATIONS', label: 'Decorations' },
-  { value: 'BROKEN_ITEMS', label: 'Broken Items' },
-  { value: 'MIXED_WASTE', label: 'Mixed Waste' },
-  { value: 'FOOD_CONTAINERS', label: 'Food Containers' },
-  { value: 'OTHER', label: 'Other' },
+export const OTHER_WASTE_OPTIONS: {
+  value: OtherWasteCategory;
+  label: string;
+}[] = [
+  { value: "DECORATIONS", label: "Decorations" },
+  { value: "BROKEN_ITEMS", label: "Broken Items" },
+  { value: "MIXED_WASTE", label: "Mixed Waste" },
+  { value: "FOOD_CONTAINERS", label: "Food Containers" },
+  { value: "OTHER", label: "Other" },
 ];
 
 export type WasteSourceType =
-  | 'USER_PROVIDED'
-  | 'ESTIMATED'
-  | 'REFERENCE'
-  | 'ACTUAL'
-  | 'ML_PREDICTED';
+  "USER_PROVIDED" | "ESTIMATED" | "REFERENCE" | "ACTUAL" | "ML_PREDICTED";
 
 export interface FoodWasteInput {
   food_plan_request?: FoodPlanRequest | null;

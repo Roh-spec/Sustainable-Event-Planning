@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Wallet,
   AlertTriangle,
@@ -6,16 +6,18 @@ import {
   PieChart,
   Coins,
   Receipt,
-} from 'lucide-react';
-import { BudgetSummary as BudgetSummaryType } from '../../types/completePlan';
-import { formatCurrency } from '../../utils/metricFormatting';
+} from "lucide-react";
+import { BudgetSummary as BudgetSummaryType } from "../../types/completePlan";
+import { formatCurrency } from "../../utils/metricFormatting";
 
 interface PlanBudgetSummaryProps {
   budgetSummary: BudgetSummaryType;
 }
 
-export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({ budgetSummary }) => {
-  const currency = budgetSummary?.currency || 'INR';
+export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
+  budgetSummary,
+}) => {
+  const currency = budgetSummary?.currency || "INR";
   const isFeasible = budgetSummary?.is_budget_feasible ?? true;
   const deficit = budgetSummary?.budget_deficit;
   const contingency = budgetSummary?.remaining_contingency;
@@ -33,7 +35,8 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({ budgetSumm
             Plan Budget Summary
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Financial comparison between your allocated budget and calculated plan expenditures.
+            Financial comparison between your allocated budget and calculated
+            plan expenditures.
           </p>
         </div>
 
@@ -64,11 +67,12 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({ budgetSumm
             <span>Budget Ceiling Exceeded</span>
           </div>
           <p className="text-rose-800">
-            The estimated cost for this plan exceeds your allocated budget by{' '}
+            The estimated cost for this plan exceeds your allocated budget by{" "}
             <strong className="font-extrabold text-rose-950">
               {formatCurrency(deficit, currency)}
             </strong>
-            . You may need to request an approved budget adjustment or review your catering scope.
+            . You may need to request an approved budget adjustment or review
+            your catering scope.
           </p>
         </div>
       )}
@@ -84,7 +88,9 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({ budgetSumm
           <div className="text-xl font-extrabold text-slate-900">
             {formatCurrency(budgetSummary?.total_budget, currency)}
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">Budget limit configured in Step 2</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">
+            Budget limit configured in Step 2
+          </p>
         </div>
 
         {/* Estimated Plan Cost */}
@@ -96,19 +102,23 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({ budgetSumm
           <div className="text-xl font-extrabold text-slate-900">
             {formatCurrency(budgetSummary?.estimated_plan_cost, currency)}
           </div>
-          <p className="text-[11px] text-slate-400 mt-0.5">Calculated cost of selected plan</p>
+          <p className="text-[11px] text-slate-400 mt-0.5">
+            Calculated cost of selected plan
+          </p>
         </div>
 
         {/* Remaining Contingency or Deficit */}
         <div
           className={`p-4 rounded-2xl border ${
             isFeasible
-              ? 'bg-emerald-50/60 border-emerald-200 text-emerald-950'
-              : 'bg-rose-50/60 border-rose-200 text-rose-950'
+              ? "bg-emerald-50/60 border-emerald-200 text-emerald-950"
+              : "bg-rose-50/60 border-rose-200 text-rose-950"
           }`}
         >
           <div className="flex items-center justify-between text-xs mb-1">
-            <span className="font-bold">{isFeasible ? 'Remaining Contingency' : 'Budget Deficit'}</span>
+            <span className="font-bold">
+              {isFeasible ? "Remaining Contingency" : "Budget Deficit"}
+            </span>
             <PieChart className="w-4 h-4" />
           </div>
           <div className="text-xl font-extrabold">
@@ -117,7 +127,9 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({ budgetSumm
               : formatCurrency(deficit, currency)}
           </div>
           <p className="text-[11px] opacity-75 mt-0.5">
-            {isFeasible ? 'Surplus buffer available' : 'Shortfall requiring approval'}
+            {isFeasible
+              ? "Surplus buffer available"
+              : "Shortfall requiring approval"}
           </p>
         </div>
       </div>

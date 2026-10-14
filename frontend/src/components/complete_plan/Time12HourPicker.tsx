@@ -1,6 +1,10 @@
-import React from 'react';
-import { Clock } from 'lucide-react';
-import { split24Hour, parse12HourTo24Hour, format12Hour } from '../../utils/timeFormatting';
+import React from "react";
+import { Clock } from "lucide-react";
+import {
+  split24Hour,
+  parse12HourTo24Hour,
+  format12Hour,
+} from "../../utils/timeFormatting";
 
 interface Time12HourPickerProps {
   id: string;
@@ -11,8 +15,34 @@ interface Time12HourPickerProps {
   required?: boolean;
 }
 
-const HOURS = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-const BASE_MINUTES = ['00', '05', '10', '15', '20', '25', '30', '35', '40', '45', '50', '55'];
+const HOURS = [
+  "01",
+  "02",
+  "03",
+  "04",
+  "05",
+  "06",
+  "07",
+  "08",
+  "09",
+  "10",
+  "11",
+  "12",
+];
+const BASE_MINUTES = [
+  "00",
+  "05",
+  "10",
+  "15",
+  "20",
+  "25",
+  "30",
+  "35",
+  "40",
+  "45",
+  "50",
+  "55",
+];
 
 export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
   id,
@@ -27,7 +57,9 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
   // Ensure current minute is always present in dropdown options
   const minuteOptions = BASE_MINUTES.includes(minute)
     ? BASE_MINUTES
-    : [...BASE_MINUTES, minute].sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+    : [...BASE_MINUTES, minute].sort(
+        (a, b) => parseInt(a, 10) - parseInt(b, 10),
+      );
 
   const handleHourChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const new24 = parse12HourTo24Hour(e.target.value, minute, period);
@@ -39,7 +71,7 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
     onChange(new24);
   };
 
-  const handlePeriodChange = (newPeriod: 'AM' | 'PM') => {
+  const handlePeriodChange = (newPeriod: "AM" | "PM") => {
     const new24 = parse12HourTo24Hour(hour12, minute, newPeriod);
     onChange(new24);
   };
@@ -107,12 +139,12 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
             type="button"
             id={`${id}-am-btn`}
             aria-label={`${label} AM`}
-            aria-pressed={period === 'AM'}
-            onClick={() => handlePeriodChange('AM')}
+            aria-pressed={period === "AM"}
+            onClick={() => handlePeriodChange("AM")}
             className={`px-3 py-2 rounded-lg text-xs font-extrabold transition-all ${
-              period === 'AM'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+              period === "AM"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
             }`}
           >
             AM
@@ -121,12 +153,12 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
             type="button"
             id={`${id}-pm-btn`}
             aria-label={`${label} PM`}
-            aria-pressed={period === 'PM'}
-            onClick={() => handlePeriodChange('PM')}
+            aria-pressed={period === "PM"}
+            onClick={() => handlePeriodChange("PM")}
             className={`px-3 py-2 rounded-lg text-xs font-extrabold transition-all ${
-              period === 'PM'
-                ? 'bg-emerald-600 text-white shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+              period === "PM"
+                ? "bg-emerald-600 text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
             }`}
           >
             PM

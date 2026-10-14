@@ -1,4 +1,5 @@
-export type ConstraintType = 'REQUIRED' | 'PREFERRED' | 'NOT_ALLOWED' | 'FLEXIBLE';
+export type ConstraintType =
+  "REQUIRED" | "PREFERRED" | "NOT_ALLOWED" | "FLEXIBLE";
 
 export interface ConstraintBase {
   category: string;
@@ -47,27 +48,27 @@ export const CONSTRAINT_TYPE_CONFIG: Record<
   { label: string; explanation: string; badgeColor: string; pillColor: string }
 > = {
   REQUIRED: {
-    label: 'Required',
-    explanation: 'Must be strictly satisfied by the planner.',
-    badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
-    pillColor: 'bg-emerald-500',
+    label: "Required",
+    explanation: "Must be strictly satisfied by the planner.",
+    badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-300",
+    pillColor: "bg-emerald-500",
   },
   PREFERRED: {
-    label: 'Preferred',
-    explanation: 'Try to satisfy when possible; can be relaxed if needed.',
-    badgeColor: 'bg-blue-100 text-blue-800 border-blue-300',
-    pillColor: 'bg-blue-500',
+    label: "Preferred",
+    explanation: "Try to satisfy when possible; can be relaxed if needed.",
+    badgeColor: "bg-blue-100 text-blue-800 border-blue-300",
+    pillColor: "bg-blue-500",
   },
   NOT_ALLOWED: {
-    label: 'Not Allowed',
-    explanation: 'Must never be violated under any circumstances.',
-    badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
-    pillColor: 'bg-rose-500',
+    label: "Not Allowed",
+    explanation: "Must never be violated under any circumstances.",
+    badgeColor: "bg-rose-100 text-rose-800 border-rose-300",
+    pillColor: "bg-rose-500",
   },
   FLEXIBLE: {
-    label: 'Flexible',
-    explanation: 'Can be freely calibrated and adjusted by the planner.',
-    badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
-    pillColor: 'bg-amber-500',
+    label: "Flexible",
+    explanation: "Can be freely calibrated and adjusted by the planner.",
+    badgeColor: "bg-amber-100 text-amber-800 border-amber-300",
+    pillColor: "bg-amber-500",
   },
 };

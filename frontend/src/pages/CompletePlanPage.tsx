@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   Printer,
@@ -10,20 +10,20 @@ import {
   Clock,
   Layers,
   Leaf,
-} from 'lucide-react';
-import { usePlanningWizard } from '../context/PlanningWizardContext';
-import { WizardProgress } from '../components/wizard/WizardProgress';
-import { EventSummaryBanner } from '../components/wizard/EventSummaryBanner';
-import { TimingWindowBar } from '../components/complete_plan/TimingWindowBar';
-import { EventTimetable } from '../components/complete_plan/EventTimetable';
-import { ExecutionChecklist } from '../components/complete_plan/ExecutionChecklist';
-import { ResourceManifest } from '../components/complete_plan/ResourceManifest';
-import { PlanBudgetSummary } from '../components/complete_plan/PlanBudgetSummary';
-import { SustainabilityActionsList } from '../components/complete_plan/SustainabilityActionsList';
-import { AssumptionsDisclosure } from '../components/complete_plan/AssumptionsDisclosure';
-import { planningApi } from '../api/planning';
-import { CompletePlanRequest } from '../types/completePlan';
-import { formatTimeWindow12Hour } from '../utils/timeFormatting';
+} from "lucide-react";
+import { usePlanningWizard } from "../context/PlanningWizardContext";
+import { WizardProgress } from "../components/wizard/WizardProgress";
+import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
+import { TimingWindowBar } from "../components/complete_plan/TimingWindowBar";
+import { EventTimetable } from "../components/complete_plan/EventTimetable";
+import { ExecutionChecklist } from "../components/complete_plan/ExecutionChecklist";
+import { ResourceManifest } from "../components/complete_plan/ResourceManifest";
+import { PlanBudgetSummary } from "../components/complete_plan/PlanBudgetSummary";
+import { SustainabilityActionsList } from "../components/complete_plan/SustainabilityActionsList";
+import { AssumptionsDisclosure } from "../components/complete_plan/AssumptionsDisclosure";
+import { planningApi } from "../api/planning";
+import { CompletePlanRequest } from "../types/completePlan";
+import { formatTimeWindow12Hour } from "../utils/timeFormatting";
 
 export const CompletePlanPage: React.FC = () => {
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ export const CompletePlanPage: React.FC = () => {
   useEffect(() => {
     if (eventId && (!event || event.id !== Number(eventId))) {
       loadEvent(Number(eventId)).catch((err) =>
-        setError(`Failed to load event details: ${err.message}`)
+        setError(`Failed to load event details: ${err.message}`),
       );
     }
   }, [eventId]);
@@ -58,7 +58,7 @@ export const CompletePlanPage: React.FC = () => {
     if (!timingConfig.eventDate) {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 14); // 2 weeks out default
-      const defaultDateStr = tomorrow.toISOString().split('T')[0];
+      const defaultDateStr = tomorrow.toISOString().split("T")[0];
       setTimingConfig((prev) => ({
         ...prev,
         eventDate: defaultDateStr,
@@ -66,7 +66,11 @@ export const CompletePlanPage: React.FC = () => {
     }
   }, [timingConfig.eventDate]);
 
-  const handleTimingChange = (eventDate: string, startTime: string, endTime: string) => {
+  const handleTimingChange = (
+    eventDate: string,
+    startTime: string,
+    endTime: string,
+  ) => {
     setTimingConfig({ eventDate, startTime, endTime });
   };
 
@@ -76,12 +80,14 @@ export const CompletePlanPage: React.FC = () => {
     endTime: string;
   }) => {
     if (!event) {
-      setError('Active event not found. Please reload the page.');
+      setError("Active event not found. Please reload the page.");
       return;
     }
 
     if (!selectedPlan) {
-      setError('No sustainable plan selected. Please go to Step 6 to confirm your plan first.');
+      setError(
+        "No sustainable plan selected. Please go to Step 6 to confirm your plan first.",
+      );
       return;
     }
 
@@ -109,19 +115,21 @@ export const CompletePlanPage: React.FC = () => {
               ? Number(foodConfig.vegetarian_ratio)
               : undefined,
             food_budget:
-              foodConfig.budgetMode === 'ENTER' && foodConfig.food_budget
+              foodConfig.budgetMode === "ENTER" && foodConfig.food_budget
                 ? Number(foodConfig.food_budget)
                 : undefined,
             known_unit_cost:
-              foodConfig.costApproach === 'UNIT' && foodConfig.known_unit_cost
+              foodConfig.costApproach === "UNIT" && foodConfig.known_unit_cost
                 ? Number(foodConfig.known_unit_cost)
                 : undefined,
             known_total_cost:
-              foodConfig.costApproach === 'TOTAL' && foodConfig.known_total_cost
+              foodConfig.costApproach === "TOTAL" && foodConfig.known_total_cost
                 ? Number(foodConfig.known_total_cost)
                 : undefined,
             cost_pricing_unit:
-              foodConfig.costApproach === 'UNIT' ? foodConfig.cost_pricing_unit : undefined,
+              foodConfig.costApproach === "UNIT"
+                ? foodConfig.cost_pricing_unit
+                : undefined,
           },
           waste: {
             event_id: event.id,
@@ -138,7 +146,7 @@ export const CompletePlanPage: React.FC = () => {
     } catch (err: any) {
       const message =
         err.message ||
-        'Failed to generate complete plan. Please check your time window and try again.';
+        "Failed to generate complete plan. Please check your time window and try again.";
       setError(message);
     } finally {
       setIsGenerating(false);
@@ -155,7 +163,10 @@ export const CompletePlanPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       {/* Wizard Progress (Step 7) */}
       <div className="print:hidden">
-        <WizardProgress currentStep={7} eventId={event?.id || Number(eventId)} />
+        <WizardProgress
+          currentStep={7}
+          eventId={event?.id || Number(eventId)}
+        />
         <EventSummaryBanner event={event} budget={budget} />
       </div>
 
@@ -170,7 +181,8 @@ export const CompletePlanPage: React.FC = () => {
             Complete Event Plan
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Deterministic timetable, operational execution checklist, resource requirements, and sustainability verification.
+            Deterministic timetable, operational execution checklist, resource
+            requirements, and sustainability verification.
           </p>
         </div>
 
@@ -207,7 +219,9 @@ export const CompletePlanPage: React.FC = () => {
             No Sustainable Plan Selected Yet
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
-            A complete event plan requires an organizer-confirmed sustainable plan alternative from Step 6. Please review and select a plan alternative first.
+            A complete event plan requires an organizer-confirmed sustainable
+            plan alternative from Step 6. Please review and select a plan
+            alternative first.
           </p>
           <button
             type="button"
@@ -260,13 +274,17 @@ export const CompletePlanPage: React.FC = () => {
                       {overview?.name || event?.name}
                     </h2>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Type:{' '}
+                      Type:{" "}
                       <strong className="text-slate-700">
-                        {String(overview?.event_type || event?.event_type || '').replace(/_/g, ' ')}
-                      </strong>{' '}
-                      • Venue:{' '}
+                        {String(
+                          overview?.event_type || event?.event_type || "",
+                        ).replace(/_/g, " ")}
+                      </strong>{" "}
+                      • Venue:{" "}
                       <strong className="text-slate-700">
-                        {overview?.location || event?.location || 'Campus Venue'}
+                        {overview?.location ||
+                          event?.location ||
+                          "Campus Venue"}
                       </strong>
                     </p>
                   </div>
@@ -274,7 +292,9 @@ export const CompletePlanPage: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-bold">
                       <Leaf className="w-3.5 h-3.5 text-emerald-600" />
-                      <span>{overview?.selected_plan_name || selectedPlan.name}</span>
+                      <span>
+                        {overview?.selected_plan_name || selectedPlan.name}
+                      </span>
                     </span>
                     {overview?.is_feasible ? (
                       <span className="px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 text-xs font-extrabold">
@@ -295,7 +315,9 @@ export const CompletePlanPage: React.FC = () => {
                       <span>Attendees</span>
                     </div>
                     <div className="font-extrabold text-sm text-slate-900">
-                      {overview?.expected_attendees || event?.expected_attendees} participants
+                      {overview?.expected_attendees ||
+                        event?.expected_attendees}{" "}
+                      participants
                     </div>
                   </div>
 
@@ -317,7 +339,7 @@ export const CompletePlanPage: React.FC = () => {
                     <div className="font-extrabold text-sm text-slate-900">
                       {formatTimeWindow12Hour(
                         overview?.start_time || timingConfig.startTime,
-                        overview?.end_time || timingConfig.endTime
+                        overview?.end_time || timingConfig.endTime,
                       )}
                     </div>
                   </div>
@@ -328,7 +350,8 @@ export const CompletePlanPage: React.FC = () => {
                       <span>Duration</span>
                     </div>
                     <div className="font-extrabold text-sm text-slate-900">
-                      {overview?.duration_days || event?.duration_days || 1} day(s)
+                      {overview?.duration_days || event?.duration_days || 1}{" "}
+                      day(s)
                     </div>
                   </div>
                 </div>
@@ -351,7 +374,9 @@ export const CompletePlanPage: React.FC = () => {
               <PlanBudgetSummary budgetSummary={completePlan.budget_summary} />
 
               {/* 5. Sustainability Commitments */}
-              <SustainabilityActionsList actions={completePlan.sustainability_actions} />
+              <SustainabilityActionsList
+                actions={completePlan.sustainability_actions}
+              />
 
               {/* 6. Transparency & Assumptions */}
               <AssumptionsDisclosure
@@ -368,8 +393,10 @@ export const CompletePlanPage: React.FC = () => {
                 Ready to Generate Your Complete Event Plan
               </h3>
               <p className="text-xs sm:text-sm text-slate-600 mb-6 leading-relaxed">
-                You have confirmed <strong>{selectedPlan.name}</strong> as your sustainable plan.
-                Click <em>Generate Complete Event Plan</em> above to create your timetable, operational checklist, resource requirements, and sustainability verification report.
+                You have confirmed <strong>{selectedPlan.name}</strong> as your
+                sustainable plan. Click <em>Generate Complete Event Plan</em>{" "}
+                above to create your timetable, operational checklist, resource
+                requirements, and sustainability verification report.
               </p>
             </div>
           ) : null}

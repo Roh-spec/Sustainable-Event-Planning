@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   FileText,
   CheckCircle,
@@ -6,13 +6,13 @@ import {
   ChevronUp,
   Info,
   ShieldAlert,
-} from 'lucide-react';
-import { AssumptionsAndConfirmations } from '../../types/completePlan';
+} from "lucide-react";
+import { AssumptionsAndConfirmations } from "../../types/completePlan";
 import {
   formatAssumptionKey,
   formatAssumptionValue,
   formatProvenanceLabel,
-} from '../../utils/metricFormatting';
+} from "../../utils/metricFormatting";
 
 interface AssumptionsDisclosureProps {
   assumptions: AssumptionsAndConfirmations;
@@ -38,7 +38,8 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
           Assumptions & Organizer Confirmations
         </h2>
         <p className="text-xs text-slate-500 mt-1">
-          Review the planning assumptions used to calculate estimates and items requiring confirmation with your venue or vendors.
+          Review the planning assumptions used to calculate estimates and items
+          requiring confirmation with your venue or vendors.
         </p>
       </div>
 
@@ -50,7 +51,8 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
             <span>Items Requiring Organizer Confirmation</span>
           </div>
           <p className="text-xs text-amber-800 mb-3">
-            Please confirm the following operational requirements directly with your venue, caterer, or campus facilities team:
+            Please confirm the following operational requirements directly with
+            your venue, caterer, or campus facilities team:
           </p>
           <ul className="space-y-2">
             {confirmations.map((item, idx) => (
@@ -76,30 +78,43 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
           <div className="flex items-center space-x-2">
             <FileText className="w-4 h-4 text-emerald-600" />
             <span className="font-bold text-xs sm:text-sm text-slate-900">
-              Planning Assumptions & Calculation Factors ({planningAssumptions.length} reference parameters)
+              Planning Assumptions & Calculation Factors (
+              {planningAssumptions.length} reference parameters)
             </span>
           </div>
           <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold">
-            <span>{isExpanded ? 'Hide Details' : 'View Assumptions'}</span>
-            {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            <span>{isExpanded ? "Hide Details" : "View Assumptions"}</span>
+            {isExpanded ? (
+              <ChevronUp className="w-4 h-4" />
+            ) : (
+              <ChevronDown className="w-4 h-4" />
+            )}
           </div>
         </button>
 
         {isExpanded && (
           <div className="p-5 space-y-4 bg-white">
             <p className="text-xs text-slate-500">
-              Estimates are computed using campus sustainability benchmarks and standard service ratios. All technical terms are translated into plain language below:
+              Estimates are computed using campus sustainability benchmarks and
+              standard service ratios. All technical terms are translated into
+              plain language below:
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {planningAssumptions.map((assump, idx) => {
-                const param = assump.parameter || (assump as any).parameter_key || '';
-                const val = assump.value !== undefined ? assump.value : (assump as any).resolved_value;
-                const friendlyTitle = assump.explanation || (param ? formatAssumptionKey(param) : 'Planning Parameter');
+                const param =
+                  assump.parameter || (assump as any).parameter_key || "";
+                const val =
+                  assump.value !== undefined
+                    ? assump.value
+                    : (assump as any).resolved_value;
+                const friendlyTitle =
+                  assump.explanation ||
+                  (param ? formatAssumptionKey(param) : "Planning Parameter");
                 const friendlyValue = formatAssumptionValue(
                   val,
                   assump.unit,
-                  param
+                  param,
                 );
                 const provenance = formatProvenanceLabel(assump.source_type);
 
@@ -109,7 +124,9 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
                     className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-1 text-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="font-bold text-slate-800">{friendlyTitle}</span>
+                      <span className="font-bold text-slate-800">
+                        {friendlyTitle}
+                      </span>
                       <span className="font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex-shrink-0">
                         {friendlyValue}
                       </span>
@@ -121,7 +138,9 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
             </div>
 
             <div className="pt-2 text-[11px] text-slate-400 italic">
-              Note: Assumptions are verified across institutional catering baselines. Actual values will depend on final attendee turnout and local service conditions.
+              Note: Assumptions are verified across institutional catering
+              baselines. Actual values will depend on final attendee turnout and
+              local service conditions.
             </div>
           </div>
         )}

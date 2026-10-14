@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Plus, Users, Clock, MapPin, ArrowRight, Search } from 'lucide-react';
-import { eventsApi } from '../api/events';
-import { EventResponse } from '../types/events';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Plus, Users, Clock, MapPin, ArrowRight, Search } from "lucide-react";
+import { eventsApi } from "../api/events";
+import { EventResponse } from "../types/events";
 
 export const EventsListPage: React.FC = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,7 +15,9 @@ export const EventsListPage: React.FC = () => {
     eventsApi
       .list(0, 100)
       .then((data) => setEvents(data))
-      .catch((err) => setError(err.message || 'Failed to fetch events from backend.'))
+      .catch((err) =>
+        setError(err.message || "Failed to fetch events from backend."),
+      )
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -23,7 +25,8 @@ export const EventsListPage: React.FC = () => {
     (e) =>
       e.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       e.event_type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (e.location && e.location.toLowerCase().includes(searchTerm.toLowerCase()))
+      (e.location &&
+        e.location.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
   return (
@@ -48,7 +51,10 @@ export const EventsListPage: React.FC = () => {
       </div>
 
       {error && (
-        <div role="alert" className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm">
+        <div
+          role="alert"
+          className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm"
+        >
           {error}
         </div>
       )}
@@ -69,10 +75,13 @@ export const EventsListPage: React.FC = () => {
 
       {/* Events Table / Grid */}
       {isLoading ? (
-        <div className="p-16 text-center text-xs text-slate-400">Loading events...</div>
+        <div className="p-16 text-center text-xs text-slate-400">
+          Loading events...
+        </div>
       ) : filteredEvents.length === 0 ? (
         <div className="p-16 text-center border-2 border-dashed border-slate-200 rounded-3xl text-slate-400 text-xs">
-          No events matching search. Click "New Sustainable Event" above to create one.
+          No events matching search. Click "New Sustainable Event" above to
+          create one.
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -84,11 +93,15 @@ export const EventsListPage: React.FC = () => {
               <div>
                 <div className="flex justify-between items-start mb-2">
                   <span className="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    {ev.event_type.replace('_', ' ')}
+                    {ev.event_type.replace("_", " ")}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">#{ev.id}</span>
+                  <span className="text-xs text-slate-400 font-mono">
+                    #{ev.id}
+                  </span>
                 </div>
-                <h3 className="text-base font-bold text-slate-900 tracking-tight">{ev.name}</h3>
+                <h3 className="text-base font-bold text-slate-900 tracking-tight">
+                  {ev.name}
+                </h3>
 
                 <div className="mt-3 space-y-1.5 text-xs text-slate-600">
                   <div className="flex items-center space-x-2">
@@ -97,7 +110,10 @@ export const EventsListPage: React.FC = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock className="w-3.5 h-3.5 text-slate-400" />
-                    <span>{ev.duration_days} {ev.duration_days === 1 ? 'Day' : 'Days'} Duration</span>
+                    <span>
+                      {ev.duration_days}{" "}
+                      {ev.duration_days === 1 ? "Day" : "Days"} Duration
+                    </span>
                   </div>
                   {ev.location && (
                     <div className="flex items-center space-x-2">

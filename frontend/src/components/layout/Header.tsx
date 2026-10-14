@@ -1,12 +1,21 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Leaf, Calendar, Sparkles } from 'lucide-react';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import { Leaf, Calendar, Sparkles } from "lucide-react";
+import { useSmoothScroll } from "../common/SmoothScrollProvider";
 
 export const Header: React.FC = () => {
   const location = useLocation();
+  const { scrollY } = useSmoothScroll();
+  const isScrolled = scrollY > 20;
 
   return (
-    <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <header
+      className={`sticky top-0 z-40 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/80 backdrop-blur-md border-b border-emerald-100/60 shadow-md shadow-emerald-950/5"
+          : "bg-white border-b border-slate-200 shadow-xs"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo & Brand */}
@@ -16,12 +25,16 @@ export const Header: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-slate-900 tracking-tight text-lg">EcoPlan</span>
+                <span className="font-extrabold text-slate-900 tracking-tight text-lg">
+                  EcoPlan
+                </span>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                   SUSTAINABLE
                 </span>
               </div>
-              <p className="text-xs text-slate-500 hidden sm:block">AI-Based Sustainable Event Planning Assistant</p>
+              <p className="text-xs text-slate-500 hidden sm:block">
+                AI-Based Sustainable Event Planning Assistant
+              </p>
             </div>
           </Link>
 
@@ -30,9 +43,9 @@ export const Header: React.FC = () => {
             <Link
               to="/events/new"
               className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
-                location.pathname.startsWith('/events/new')
-                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                location.pathname.startsWith("/events/new")
+                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               <Sparkles className="w-4 h-4 text-emerald-600" />
@@ -42,9 +55,9 @@ export const Header: React.FC = () => {
             <Link
               to="/events"
               className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                location.pathname === '/events'
-                  ? 'bg-slate-100 text-slate-900'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                location.pathname === "/events"
+                  ? "bg-slate-100 text-slate-900"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
               }`}
             >
               <Calendar className="w-4 h-4" />

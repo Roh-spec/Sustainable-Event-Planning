@@ -1,11 +1,7 @@
 export type AssumptionSourceType =
-  | 'USER_PROVIDED'
-  | 'REFERENCE'
-  | 'ASSUMED'
-  | 'ACTUAL'
-  | 'ML_PREDICTED';
+  "USER_PROVIDED" | "REFERENCE" | "ASSUMED" | "ACTUAL" | "ML_PREDICTED";
 
-export type AssumptionScope = 'GLOBAL' | 'EVENT';
+export type AssumptionScope = "GLOBAL" | "EVENT";
 
 export interface ResolvedAssumption {
   parameter: string;

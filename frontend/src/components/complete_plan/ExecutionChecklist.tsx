@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   CheckSquare,
   Square,
@@ -6,9 +6,9 @@ import {
   Leaf,
   Info,
   CheckCircle2,
-} from 'lucide-react';
-import { ChecklistItem, ChecklistPhase } from '../../types/completePlan';
-import { convertTextTimesTo12Hour } from '../../utils/timeFormatting';
+} from "lucide-react";
+import { ChecklistItem, ChecklistPhase } from "../../types/completePlan";
+import { convertTextTimesTo12Hour } from "../../utils/timeFormatting";
 
 interface ExecutionChecklistProps {
   checklist: ChecklistItem[];
@@ -19,37 +19,45 @@ const PHASE_CONFIG: Record<
   { label: string; description: string; badgeColor: string }
 > = {
   BEFORE_EVENT: {
-    label: 'Before the Event',
-    description: 'Procurement, vendor confirmations, menu orders, and communications',
-    badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
+    label: "Before the Event",
+    description:
+      "Procurement, vendor confirmations, menu orders, and communications",
+    badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
   },
   EVENT_DAY_MORNING: {
-    label: 'Event-Day Preparation',
-    description: 'Morning venue setup, signage, waste sorting stations, and vendor arrivals',
-    badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+    label: "Event-Day Preparation",
+    description:
+      "Morning venue setup, signage, waste sorting stations, and vendor arrivals",
+    badgeColor: "bg-amber-50 text-amber-800 border-amber-200",
   },
   DURING_EVENT: {
-    label: 'During the Event',
-    description: 'Live catering monitoring, waste station guidance, and schedule adherence',
-    badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+    label: "During the Event",
+    description:
+      "Live catering monitoring, waste station guidance, and schedule adherence",
+    badgeColor: "bg-emerald-50 text-emerald-800 border-emerald-200",
   },
   AFTER_EVENT: {
-    label: 'After the Event',
-    description: 'Surplus food donation, dish collection, compost handover, and post-event wrapup',
-    badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+    label: "After the Event",
+    description:
+      "Surplus food donation, dish collection, compost handover, and post-event wrapup",
+    badgeColor: "bg-purple-50 text-purple-700 border-purple-200",
   },
 };
 
 const formatCategory = (cat: string) => {
   return cat
-    .replace(/_/g, ' ')
+    .replace(/_/g, " ")
     .toLowerCase()
     .replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
-export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklist }) => {
-  const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(new Set());
-  const [selectedPhaseFilter, setSelectedPhaseFilter] = useState<string>('ALL');
+export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
+  checklist,
+}) => {
+  const [completedTaskIds, setCompletedTaskIds] = useState<Set<string>>(
+    new Set(),
+  );
+  const [selectedPhaseFilter, setSelectedPhaseFilter] = useState<string>("ALL");
 
   const toggleTask = (taskId: string) => {
     setCompletedTaskIds((prev) => {
@@ -65,17 +73,18 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
 
   const totalTasks = checklist?.length || 0;
   const completedCount = completedTaskIds.size;
-  const progressPercent = totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
+  const progressPercent =
+    totalTasks > 0 ? Math.round((completedCount / totalTasks) * 100) : 0;
 
   const phases: ChecklistPhase[] = [
-    'BEFORE_EVENT',
-    'EVENT_DAY_MORNING',
-    'DURING_EVENT',
-    'AFTER_EVENT',
+    "BEFORE_EVENT",
+    "EVENT_DAY_MORNING",
+    "DURING_EVENT",
+    "AFTER_EVENT",
   ];
 
   const displayedPhases =
-    selectedPhaseFilter === 'ALL'
+    selectedPhaseFilter === "ALL"
       ? phases
       : phases.filter((p) => p === selectedPhaseFilter);
 
@@ -92,7 +101,8 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
             Preparation & Delivery Checklist
           </h2>
           <p className="text-xs text-slate-500 mt-1">
-            Actionable tasks grouped chronologically to ensure sustainable delivery before, during, and after your event.
+            Actionable tasks grouped chronologically to ensure sustainable
+            delivery before, during, and after your event.
           </p>
         </div>
 
@@ -117,7 +127,11 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
       <div className="mb-6 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 flex items-start space-x-2.5">
         <Info className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
         <div>
-          <strong className="font-semibold text-slate-800">Session-only Tracker:</strong> Checkbox completion is saved temporarily in your current browser session. Progress will reset if the page session is cleared.
+          <strong className="font-semibold text-slate-800">
+            Session-only Tracker:
+          </strong>{" "}
+          Checkbox completion is saved temporarily in your current browser
+          session. Progress will reset if the page session is cleared.
         </div>
       </div>
 
@@ -125,11 +139,11 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
       <div className="flex flex-wrap items-center gap-1.5 mb-6 pb-2 border-b border-slate-100">
         <button
           type="button"
-          onClick={() => setSelectedPhaseFilter('ALL')}
+          onClick={() => setSelectedPhaseFilter("ALL")}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-            selectedPhaseFilter === 'ALL'
-              ? 'bg-slate-900 text-white shadow-sm'
-              : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+            selectedPhaseFilter === "ALL"
+              ? "bg-slate-900 text-white shadow-sm"
+              : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
           }`}
         >
           All Phases ({totalTasks})
@@ -143,8 +157,8 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
               onClick={() => setSelectedPhaseFilter(p)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 selectedPhaseFilter === p
-                  ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+                  ? "bg-emerald-600 text-white shadow-sm"
+                  : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
               }`}
             >
               {PHASE_CONFIG[p].label} ({count})
@@ -170,7 +184,9 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
                   </h3>
                   <p className="text-xs text-slate-500">{config.description}</p>
                 </div>
-                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border self-start sm:self-auto ${config.badgeColor}`}>
+                <span
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border self-start sm:self-auto ${config.badgeColor}`}
+                >
                   {phaseItems.length} tasks
                 </span>
               </div>
@@ -184,13 +200,13 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
                       onClick={() => toggleTask(item.task_id)}
                       className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start space-x-3.5 ${
                         isChecked
-                          ? 'bg-slate-50/80 border-slate-200 text-slate-400'
-                          : 'bg-white border-slate-200/90 hover:border-emerald-300 hover:bg-emerald-50/10 text-slate-900 shadow-sm'
+                          ? "bg-slate-50/80 border-slate-200 text-slate-400"
+                          : "bg-white border-slate-200/90 hover:border-emerald-300 hover:bg-emerald-50/10 text-slate-900 shadow-sm"
                       }`}
                     >
                       <button
                         type="button"
-                        aria-label={`Mark task ${item.title} as ${isChecked ? 'incomplete' : 'complete'}`}
+                        aria-label={`Mark task ${item.title} as ${isChecked ? "incomplete" : "complete"}`}
                         className="mt-0.5 text-emerald-600 focus:outline-none flex-shrink-0"
                       >
                         {isChecked ? (
@@ -204,7 +220,9 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
                         <div className="flex flex-wrap items-center gap-2 mb-1">
                           <span
                             className={`font-bold text-sm ${
-                              isChecked ? 'line-through text-slate-400' : 'text-slate-900'
+                              isChecked
+                                ? "line-through text-slate-400"
+                                : "text-slate-900"
                             }`}
                           >
                             {item.title}
@@ -215,7 +233,11 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
                           {item.deadline_relative && (
                             <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-200 text-[10px] text-slate-500 font-medium">
                               <Clock className="w-3 h-3 text-slate-400" />
-                              <span>{convertTextTimesTo12Hour(item.deadline_relative)}</span>
+                              <span>
+                                {convertTextTimesTo12Hour(
+                                  item.deadline_relative,
+                                )}
+                              </span>
                             </span>
                           )}
                           {item.is_sustainability_action && (
@@ -229,7 +251,7 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({ checklis
                         {item.description && (
                           <p
                             className={`text-xs ${
-                              isChecked ? 'text-slate-400' : 'text-slate-600'
+                              isChecked ? "text-slate-400" : "text-slate-600"
                             }`}
                           >
                             {item.description}

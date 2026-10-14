@@ -1,20 +1,23 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Users, Clock, MapPin, Wallet, Edit2 } from 'lucide-react';
-import { EventResponse } from '../../types';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Users, Clock, MapPin, Wallet, Edit2 } from "lucide-react";
+import { EventResponse } from "../../types";
 
 interface EventSummaryBannerProps {
   event: EventResponse | null;
   budget?: { total_budget: string; currency: string };
 }
 
-export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({ event, budget }) => {
+export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
+  event,
+  budget,
+}) => {
   if (!event) return null;
 
   const formattedBudget = budget?.total_budget
-    ? new Intl.NumberFormat('en-IN', {
-        style: 'currency',
-        currency: budget.currency || 'INR',
+    ? new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: budget.currency || "INR",
         maximumFractionDigits: 0,
       }).format(Number(budget.total_budget))
     : null;
@@ -25,25 +28,29 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({ event, b
         <div>
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
             <span className="text-xs uppercase font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-              {event.event_type?.replace('_', ' ') || 'EVENT'}
+              {event.event_type?.replace("_", " ") || "EVENT"}
             </span>
             <span className="text-xs text-slate-400">Event ID #{event.id}</span>
           </div>
-          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white mt-1">{event.name}</h2>
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white mt-1">
+            {event.name}
+          </h2>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-6 flex-wrap text-xs sm:text-sm text-slate-200">
           <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
             <Users className="w-4 h-4 text-emerald-400" />
             <span>
-              <strong className="text-white">{event.expected_attendees}</strong> Attendees
+              <strong className="text-white">{event.expected_attendees}</strong>{" "}
+              Attendees
             </span>
           </div>
 
           <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
             <Clock className="w-4 h-4 text-emerald-400" />
             <span>
-              <strong className="text-white">{event.duration_days}</strong> {event.duration_days === 1 ? 'Day' : 'Days'}
+              <strong className="text-white">{event.duration_days}</strong>{" "}
+              {event.duration_days === 1 ? "Day" : "Days"}
             </span>
           </div>
 

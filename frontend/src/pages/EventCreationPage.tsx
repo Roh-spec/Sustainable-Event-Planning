@@ -1,26 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Sparkles, Calendar, Users, Clock, MapPin, ArrowRight, AlertCircle } from 'lucide-react';
-import { usePlanningWizard } from '../context/PlanningWizardContext';
-import { WizardProgress } from '../components/wizard/WizardProgress';
-import { eventsApi } from '../api/events';
-import { EVENT_TYPE_OPTIONS, EventType } from '../types/events';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  Sparkles,
+  Calendar,
+  Users,
+  Clock,
+  MapPin,
+  ArrowRight,
+  AlertCircle,
+} from "lucide-react";
+import { usePlanningWizard } from "../context/PlanningWizardContext";
+import { WizardProgress } from "../components/wizard/WizardProgress";
+import { eventsApi } from "../api/events";
+import { EVENT_TYPE_OPTIONS, EventType } from "../types/events";
 
 export const EventCreationPage: React.FC = () => {
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId?: string }>();
   const { event, setEvent, loadEvent, budget, setBudget } = usePlanningWizard();
 
-  const [name, setName] = useState(event?.name || '');
-  const [eventType, setEventType] = useState<EventType | string>(event?.event_type || 'TECH_FEST');
+  const [name, setName] = useState(event?.name || "");
+  const [eventType, setEventType] = useState<EventType | string>(
+    event?.event_type || "TECH_FEST",
+  );
   const [expectedAttendees, setExpectedAttendees] = useState<string>(
-    event?.expected_attendees ? String(event.expected_attendees) : '150'
+    event?.expected_attendees ? String(event.expected_attendees) : "150",
   );
   const [durationDays, setDurationDays] = useState<string>(
-    event?.duration_days ? String(event.duration_days) : '1'
+    event?.duration_days ? String(event.duration_days) : "1",
   );
-  const [location, setLocation] = useState(event?.location || 'College Campus Auditorium');
-  const [eventDate, setEventDate] = useState('');
+  const [location, setLocation] = useState(
+    event?.location || "College Campus Auditorium",
+  );
+  const [eventDate, setEventDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,7 +45,7 @@ export const EventCreationPage: React.FC = () => {
           setEventType(ev.event_type);
           setExpectedAttendees(String(ev.expected_attendees));
           setDurationDays(String(ev.duration_days));
-          setLocation(ev.location || '');
+          setLocation(ev.location || "");
         })
         .catch((err) => {
           setError(`Failed to load event: ${err.message}`);
@@ -47,17 +59,17 @@ export const EventCreationPage: React.FC = () => {
 
     // Frontend validation
     if (!name.trim()) {
-      setError('Event Name is required.');
+      setError("Event Name is required.");
       return;
     }
     const attendeesNum = parseInt(expectedAttendees, 10);
     if (isNaN(attendeesNum) || attendeesNum <= 0) {
-      setError('Expected Attendees must be a positive integer greater than 0.');
+      setError("Expected Attendees must be a positive integer greater than 0.");
       return;
     }
     const durationNum = parseInt(durationDays, 10);
     if (isNaN(durationNum) || durationNum <= 0) {
-      setError('Duration in days must be a positive integer greater than 0.');
+      setError("Duration in days must be a positive integer greater than 0.");
       return;
     }
 
@@ -86,7 +98,7 @@ export const EventCreationPage: React.FC = () => {
           budget: budget.total_budget
             ? {
                 total_budget: budget.total_budget,
-                currency: budget.currency || 'INR',
+                currency: budget.currency || "INR",
               }
             : undefined,
         });
@@ -95,13 +107,16 @@ export const EventCreationPage: React.FC = () => {
         if (createdEvent.budget?.total_budget) {
           setBudget({
             total_budget: String(createdEvent.budget.total_budget),
-            currency: createdEvent.budget.currency || 'INR',
+            currency: createdEvent.budget.currency || "INR",
           });
         }
         navigate(`/events/${createdEvent.id}/budget`);
       }
     } catch (err: any) {
-      setError(err.message || 'Failed to create event. Please verify backend connection.');
+      setError(
+        err.message ||
+          "Failed to create event. Please verify backend connection.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -118,11 +133,12 @@ export const EventCreationPage: React.FC = () => {
             <span>Step 1 of 6 • Event Details</span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-            {eventId ? 'Edit Event Details' : 'Create Your Sustainable Event'}
+            {eventId ? "Edit Event Details" : "Create Your Sustainable Event"}
           </h1>
           <p className="text-slate-600 text-sm mt-1.5 max-w-2xl">
-            Provide the basic event footprint parameters. These will form the foundation for domain food calculations,
-            waste stream evaluations, and multi-objective planning alternatives.
+            Provide the basic event footprint parameters. These will form the
+            foundation for domain food calculations, waste stream evaluations,
+            and multi-objective planning alternatives.
           </p>
         </div>
 
@@ -142,7 +158,10 @@ export const EventCreationPage: React.FC = () => {
         <form onSubmit={handleSubmit} noValidate className="space-y-6">
           {/* Event Name */}
           <div>
-            <label htmlFor="event-name" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+            <label
+              htmlFor="event-name"
+              className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+            >
               Event Name <span className="text-rose-500">*</span>
             </label>
             <input
@@ -159,7 +178,10 @@ export const EventCreationPage: React.FC = () => {
           {/* Event Type & Expected Attendees */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="event-type" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              <label
+                htmlFor="event-type"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+              >
                 Event Type <span className="text-rose-500">*</span>
               </label>
               <select
@@ -175,12 +197,18 @@ export const EventCreationPage: React.FC = () => {
                 ))}
               </select>
               <p className="text-xs text-slate-500 mt-1">
-                {EVENT_TYPE_OPTIONS.find((o) => o.value === eventType)?.description}
+                {
+                  EVENT_TYPE_OPTIONS.find((o) => o.value === eventType)
+                    ?.description
+                }
               </p>
             </div>
 
             <div>
-              <label htmlFor="expected-attendees" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              <label
+                htmlFor="expected-attendees"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+              >
                 Expected Attendees <span className="text-rose-500">*</span>
               </label>
               <div className="relative rounded-xl">
@@ -199,14 +227,19 @@ export const EventCreationPage: React.FC = () => {
                   required
                 />
               </div>
-              <p className="text-xs text-slate-500 mt-1">Directly drives meal servings and packaging estimations.</p>
+              <p className="text-xs text-slate-500 mt-1">
+                Directly drives meal servings and packaging estimations.
+              </p>
             </div>
           </div>
 
           {/* Duration & Location */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="duration-days" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              <label
+                htmlFor="duration-days"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+              >
                 Duration (Days) <span className="text-rose-500">*</span>
               </label>
               <div className="relative rounded-xl">
@@ -227,7 +260,10 @@ export const EventCreationPage: React.FC = () => {
             </div>
 
             <div>
-              <label htmlFor="event-location" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              <label
+                htmlFor="event-location"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+              >
                 Location / Venue
               </label>
               <div className="relative rounded-xl">
@@ -248,8 +284,14 @@ export const EventCreationPage: React.FC = () => {
 
           {/* Event Date (Optional) */}
           <div>
-            <label htmlFor="event-date" className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
-              Event Date <span className="text-xs font-normal text-slate-400 lowercase">(optional)</span>
+            <label
+              htmlFor="event-date"
+              className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+            >
+              Event Date{" "}
+              <span className="text-xs font-normal text-slate-400 lowercase">
+                (optional)
+              </span>
             </label>
             <div className="relative rounded-xl max-w-sm">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -272,7 +314,9 @@ export const EventCreationPage: React.FC = () => {
               disabled={isSubmitting}
               className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
             >
-              <span>{isSubmitting ? 'Saving Event...' : 'Continue to Budget Step'}</span>
+              <span>
+                {isSubmitting ? "Saving Event..." : "Continue to Budget Step"}
+              </span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
-import { HelpCircle, ChevronDown, ChevronUp, Info, CheckCircle2 } from 'lucide-react';
-import { formatProvenanceLabel } from '../../utils/metricFormatting';
+import React, { useState } from "react";
+import {
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  Info,
+  CheckCircle2,
+} from "lucide-react";
+import { formatProvenanceLabel } from "../../utils/metricFormatting";
 
 interface ExplainableMetricProps {
   label: string;
@@ -28,18 +34,18 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   // CRITICAL REQUIREMENT: Never convert null/undefined into 0!
-  const isAvailable = value !== null && value !== undefined && value !== '';
+  const isAvailable = value !== null && value !== undefined && value !== "";
 
   const formattedValue = isAvailable
-    ? typeof value === 'number'
+    ? typeof value === "number"
       ? Number.isInteger(value)
         ? value.toLocaleString()
         : Number(value).toFixed(1)
       : !isNaN(Number(value))
-      ? Number.isInteger(Number(value))
-        ? Number(value).toLocaleString()
-        : Number(value).toFixed(1)
-      : value
+        ? Number.isInteger(Number(value))
+          ? Number(value).toLocaleString()
+          : Number(value).toFixed(1)
+        : value
     : null;
 
   const provenance = formatProvenanceLabel(sourceType);
@@ -49,7 +55,9 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
       <div>
         <div className="flex items-center justify-between gap-1.5">
           <div className="flex items-center space-x-1.5 min-w-0">
-            {icon && <div className="text-emerald-600 flex-shrink-0">{icon}</div>}
+            {icon && (
+              <div className="text-emerald-600 flex-shrink-0">{icon}</div>
+            )}
             <span className="text-xs font-bold text-slate-600 uppercase tracking-wide truncate">
               {label}
             </span>
@@ -66,7 +74,11 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
             >
               <HelpCircle className="w-3.5 h-3.5 text-slate-400 hover:text-emerald-600" />
               <span className="hidden sm:inline">Why?</span>
-              {isOpen ? <ChevronUp className="w-3 h-3 ml-0.5" /> : <ChevronDown className="w-3 h-3 ml-0.5" />}
+              {isOpen ? (
+                <ChevronUp className="w-3 h-3 ml-0.5" />
+              ) : (
+                <ChevronDown className="w-3 h-3 ml-0.5" />
+              )}
             </button>
           )}
         </div>
@@ -78,10 +90,16 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
                 <span className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                   {formattedValue}
                 </span>
-                {unit && <span className="text-xs font-semibold text-slate-500">{unit}</span>}
+                {unit && (
+                  <span className="text-xs font-semibold text-slate-500">
+                    {unit}
+                  </span>
+                )}
               </>
             ) : (
-              <span className="text-sm font-medium text-slate-400 italic">Not available</span>
+              <span className="text-sm font-medium text-slate-400 italic">
+                Not available
+              </span>
             )}
           </div>
 
@@ -94,7 +112,9 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
       </div>
 
       {description && !isOpen && (
-        <p className="mt-1.5 text-xs text-slate-500 line-clamp-1">{description}</p>
+        <p className="mt-1.5 text-xs text-slate-500 line-clamp-1">
+          {description}
+        </p>
       )}
 
       {/* Collapsible Explainability Drawer */}
@@ -103,7 +123,9 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
           <div className="flex items-start space-x-1.5 text-slate-800 leading-relaxed">
             <Info className="w-3.5 h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" />
             <span className="font-medium">
-              {explanation || description || 'Estimated using event details and reference assumptions.'}
+              {explanation ||
+                description ||
+                "Estimated using event details and reference assumptions."}
             </span>
           </div>
 

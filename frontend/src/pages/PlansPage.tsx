@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   Sparkles,
   ArrowLeft,
@@ -10,15 +10,15 @@ import {
   Check,
   RotateCcw,
   X,
-} from 'lucide-react';
-import { usePlanningWizard } from '../context/PlanningWizardContext';
-import { WizardProgress } from '../components/wizard/WizardProgress';
-import { EventSummaryBanner } from '../components/wizard/EventSummaryBanner';
-import { PlanCard } from '../components/planning/PlanCard';
-import { InfeasibleBudgetAlert } from '../components/planning/InfeasibleBudgetAlert';
-import { PlanAlternative } from '../types/planning';
-import { PlanSelectionResult } from '../api/planning';
-import { formatCurrency } from '../utils/metricFormatting';
+} from "lucide-react";
+import { usePlanningWizard } from "../context/PlanningWizardContext";
+import { WizardProgress } from "../components/wizard/WizardProgress";
+import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
+import { PlanCard } from "../components/planning/PlanCard";
+import { InfeasibleBudgetAlert } from "../components/planning/InfeasibleBudgetAlert";
+import { PlanAlternative } from "../types/planning";
+import { PlanSelectionResult } from "../api/planning";
+import { formatCurrency } from "../utils/metricFormatting";
 
 export const PlansPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,15 +34,19 @@ export const PlansPage: React.FC = () => {
     selectPlan,
   } = usePlanningWizard();
 
-  const [selectionModalPlan, setSelectionModalPlan] = useState<PlanAlternative | null>(null);
-  const [selectionResult, setSelectionResult] = useState<PlanSelectionResult | null>(null);
+  const [selectionModalPlan, setSelectionModalPlan] =
+    useState<PlanAlternative | null>(null);
+  const [selectionResult, setSelectionResult] =
+    useState<PlanSelectionResult | null>(null);
   const [isSelecting, setIsSelecting] = useState(false);
   const [retryingBudget, setRetryingBudget] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (eventId && (!event || event.id !== Number(eventId))) {
-      loadEvent(Number(eventId)).catch((err) => setError(`Failed to load event: ${err.message}`));
+      loadEvent(Number(eventId)).catch((err) =>
+        setError(`Failed to load event: ${err.message}`),
+      );
     }
   }, [eventId]);
 
@@ -50,7 +54,7 @@ export const PlansPage: React.FC = () => {
   useEffect(() => {
     if (event && !planningResponse && !isGenerating) {
       generatePlans().catch((err) => {
-        setError(err.message || 'Could not generate plans automatically.');
+        setError(err.message || "Could not generate plans automatically.");
       });
     }
   }, [event, planningResponse]);
@@ -61,7 +65,10 @@ export const PlansPage: React.FC = () => {
     try {
       await generatePlans(true, approvedAmount);
     } catch (err: any) {
-      setError(err.message || 'Failed to generate plans with approved budget increase.');
+      setError(
+        err.message ||
+          "Failed to generate plans with approved budget increase.",
+      );
     } finally {
       setRetryingBudget(false);
     }
@@ -79,20 +86,21 @@ export const PlansPage: React.FC = () => {
       const result = await selectPlan(selectionModalPlan);
       setSelectionResult(result);
     } catch (err: any) {
-      setError(err.message || 'Failed to select plan.');
+      setError(err.message || "Failed to select plan.");
     } finally {
       setIsSelecting(false);
     }
   };
 
   const plans = planningResponse?.plans || [];
-  const isInfeasible = planningResponse?.status === 'INFEASIBLE_BUDGET';
+  const isInfeasible = planningResponse?.status === "INFEASIBLE_BUDGET";
 
   // Dynamic grid configuration based on plan count to prevent narrow cards & excessive empty space
   const getGridContainerClass = (count: number) => {
-    if (count === 1) return 'max-w-3xl mx-auto';
-    if (count === 2) return 'grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6';
-    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+    if (count === 1) return "max-w-3xl mx-auto";
+    if (count === 2)
+      return "grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto gap-6";
+    return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6";
   };
 
   return (
@@ -128,7 +136,10 @@ export const PlansPage: React.FC = () => {
         </div>
 
         {error && (
-          <div role="alert" className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm">
+          <div
+            role="alert"
+            className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm"
+          >
             {error}
           </div>
         )}
@@ -139,7 +150,7 @@ export const PlansPage: React.FC = () => {
             currentBudget={planningResponse?.budget || budget.total_budget}
             minFeasibleBudget={planningResponse?.min_feasible_budget}
             budgetDeficit={planningResponse?.budget_deficit}
-            currency={budget.currency || 'INR'}
+            currency={budget.currency || "INR"}
             onApproveBudgetIncrease={handleApproveBudgetIncrease}
             isRetrying={retryingBudget}
           />
@@ -153,7 +164,10 @@ export const PlansPage: React.FC = () => {
                 <Check className="w-3.5 h-3.5" />
               </div>
               <span>
-                Active Selection: <strong className="font-bold text-emerald-950">{selectedPlan.name}</strong>
+                Active Selection:{" "}
+                <strong className="font-bold text-emerald-950">
+                  {selectedPlan.name}
+                </strong>
               </span>
             </div>
             <div className="flex items-center gap-3">
@@ -180,15 +194,22 @@ export const PlansPage: React.FC = () => {
         {isGenerating ? (
           <div className="p-16 text-center">
             <div className="inline-block w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin mb-4" />
-            <p className="text-sm font-bold text-slate-700">Evaluating multi-objective alternatives...</p>
-            <p className="text-xs text-slate-400 mt-1">Calculating measurable food waste, single-use items, and costs.</p>
+            <p className="text-sm font-bold text-slate-700">
+              Evaluating multi-objective alternatives...
+            </p>
+            <p className="text-xs text-slate-400 mt-1">
+              Calculating measurable food waste, single-use items, and costs.
+            </p>
           </div>
         ) : plans.length === 0 && !isInfeasible ? (
           <div className="p-16 text-center border-2 border-dashed border-slate-200 rounded-3xl">
             <AlertCircle className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-            <h4 className="text-sm font-bold text-slate-700">No Feasible Plans Generated</h4>
+            <h4 className="text-sm font-bold text-slate-700">
+              No Feasible Plans Generated
+            </h4>
             <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
-              Please check your constraint parameters and food configuration, or try regenerating.
+              Please check your constraint parameters and food configuration, or
+              try regenerating.
             </p>
             <button
               type="button"
@@ -208,7 +229,7 @@ export const PlansPage: React.FC = () => {
                 eventBudget={event?.budget?.total_budget || budget.total_budget}
                 isSelected={selectedPlan?.plan_id === plan.plan_id}
                 onSelect={handleOpenSelectModal}
-                currency={budget.currency || 'INR'}
+                currency={budget.currency || "INR"}
               />
             ))}
           </div>
@@ -238,7 +259,9 @@ export const PlansPage: React.FC = () => {
             {selectedPlan && (
               <button
                 type="button"
-                onClick={() => navigate(`/events/${event?.id || eventId}/complete-plan`)}
+                onClick={() =>
+                  navigate(`/events/${event?.id || eventId}/complete-plan`)
+                }
                 className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
               >
                 <span>Continue to Complete Event Plan</span>
@@ -263,7 +286,10 @@ export const PlansPage: React.FC = () => {
                 <span className="text-xs uppercase font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
                   Plan Selection Confirmation
                 </span>
-                <h3 id="selection-modal-title" className="text-xl font-extrabold text-slate-900 mt-2">
+                <h3
+                  id="selection-modal-title"
+                  className="text-xl font-extrabold text-slate-900 mt-2"
+                >
                   Select {selectionModalPlan.name}?
                 </h3>
               </div>
@@ -278,7 +304,8 @@ export const PlansPage: React.FC = () => {
             </div>
 
             <p className="text-xs text-slate-600">
-              You are explicitly selecting the <strong>{selectionModalPlan.name}</strong> for this event (
+              You are explicitly selecting the{" "}
+              <strong>{selectionModalPlan.name}</strong> for this event (
               <em>{event?.name}</em>).
             </p>
 
@@ -286,7 +313,10 @@ export const PlansPage: React.FC = () => {
               <div className="flex justify-between">
                 <span className="text-slate-500">Estimated Total Cost:</span>
                 <span className="font-bold text-slate-900">
-                  {formatCurrency(selectionModalPlan.estimated_cost, budget.currency || 'INR')}
+                  {formatCurrency(
+                    selectionModalPlan.estimated_cost,
+                    budget.currency || "INR",
+                  )}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -295,20 +325,22 @@ export const PlansPage: React.FC = () => {
                   {selectionModalPlan.food_metrics?.estimated_waste_kg
                     ? `${selectionModalPlan.food_metrics.estimated_waste_kg} kg`
                     : selectionModalPlan.food_metrics?.estimated_waste_servings
-                    ? `${selectionModalPlan.food_metrics.estimated_waste_servings} servings`
-                    : 'Not estimated'}
+                      ? `${selectionModalPlan.food_metrics.estimated_waste_servings} servings`
+                      : "Not estimated"}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Single-use Items:</span>
                 <span className="font-bold text-slate-900">
-                  {selectionModalPlan.waste_metrics?.single_use_packaging_items ?? 'Not estimated'}
+                  {selectionModalPlan.waste_metrics
+                    ?.single_use_packaging_items ?? "Not estimated"}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Reusable Items:</span>
                 <span className="font-bold text-slate-900">
-                  {selectionModalPlan.waste_metrics?.reusable_packaging_items ?? 'Not estimated'}
+                  {selectionModalPlan.waste_metrics?.reusable_packaging_items ??
+                    "Not estimated"}
                 </span>
               </div>
             </div>
@@ -356,7 +388,7 @@ export const PlansPage: React.FC = () => {
                   disabled={isSelecting}
                   className="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20"
                 >
-                  {isSelecting ? 'Confirming...' : 'Confirm Plan Selection'}
+                  {isSelecting ? "Confirming..." : "Confirm Plan Selection"}
                 </button>
               </div>
             )}

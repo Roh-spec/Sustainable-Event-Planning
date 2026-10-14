@@ -83,19 +83,98 @@ ESC PROJECT/
 - Covers 4 waste streams: Food Waste (reused directly from Food Module or user-overridden), Packaging Waste (Plate, Cup, Spoon, Fork, Glass, Other), Plastic Waste (Water Bottle, Plastic Bag, Wrapper, Plastic Cup, Other), and Other Waste (predefined categories and custom items)
 - Primary metrics are count/item-based (servings, items); no forced conversion to kilograms
 - Supports 4 calculation bases: `PER_PERSON`, `PER_MEAL`, `PER_EVENT`, `CUSTOM`
+- Baseline reference assumptions calibrated (including `Decorations Per Event` and `Containers Per Event`)
 - Reusable vs single-use split resolution with assumption fallback (`reusable_ratio_<item>`, `single_use_ratio_<item>`)
 - Pure calculation engine (`WasteCalculator`), rule-based recommendations (`WasteRulesEngine`), orchestrator (`WastePlanningService`), and `POST /api/v1/planning/waste` API endpoint
-- **Paper Waste explicitly WAITLISTED** for future phases
-- Complete automated test suite passing (73 total tests passing)
-- Future domain modules (Water, Energy, Transport, Venue, Vendors, Carbon, Orchestrator) reserved for subsequent phases
+- Complete automated test suite passing (123 total backend tests passing)
+
+### PHASE 3 STATUS (Frontend & Motion Experience):
+- **Full 7-Step Planning Wizard** (`frontend/src/pages/`):
+  1. **Event Setup**: Type, name, attendee headcount, duration, and venue context.
+  2. **Budget Calibration**: Currency and budget limits with real-time variance monitoring.
+  3. **Preferences & Constraints**: User-prioritized rules (Must Have, Avoid, Would Be Nice).
+  4. **Food Planning**: Meal selection, dietary split (veg/non-veg), caterer cost approaches, and waste projections.
+  5. **Waste Planning**: Streamlined MVP UX across food, packaging, plastic, and general waste with actionable reduction recommendations.
+  6. **Plan Alternatives**: Side-by-side comparison of Balanced, Budget-Optimized, and Eco-Focused options.
+  7. **Complete Event Plan**: Chronological day-of-event timetable, vendor checklists, and exportable operational guides.
+- **Cinematic Eco-Modern Motion System**:
+  - **Lenis Smooth Inertial Scrolling**: Momentum scrolling across the application with an ambient `2.5px` emerald reading progress beam and elevated glassmorphic navbar.
+  - **Ambient Eco-Particle Canvas**: Interactive HTML5 2D canvas with organic constellation links, mouse proximity aura, and Retina DPI scaling.
+  - **Anime.js Kinetic Micro-Interactions**: Real-time numerical tweening (`<AnimatedCounter />`) with spring physics for portions, expenditures, and waste mass, plus staggered entrance choreography.
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-- Python 3.11+
-- Node.js 18+
-- PostgreSQL 15+ (or Docker)
+### Method 1: Running with Docker (Recommended)
 
-Refer to [docs/architecture/README.md](docs/architecture/README.md) and [docs/database/README.md](docs/database/README.md) for detailed documentation.
+1. Make sure **Docker Desktop** is running.
+2. Clone the repository and configure your environment:
+   ```bash
+   cp .env.example .env
+   ```
+3. Build and launch all services:
+   ```bash
+   docker compose up --build
+   ```
+4. Access the applications:
+   - **Frontend Web UI**: [http://localhost:5173](http://localhost:5173) (or [http://localhost:3000](http://localhost:3000))
+   - **FastAPI Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **PostgreSQL Database**: `localhost:5432` (`db: event_planner`)
+
+To stop all services:
+```bash
+docker compose down
+```
+
+---
+
+### Method 2: Running Locally
+
+#### 1. Backend Setup
+```bash
+# Create and activate virtual environment
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+# source venv/bin/activate
+
+# Install dependencies
+pip install -r backend/requirements.txt
+
+# Run migrations and seed data
+alembic upgrade head
+python scripts/database/seed_assumptions.py
+
+# Start the development server
+uvicorn backend.app.main:app --reload --port 8000
+```
+
+#### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 🧪 Running Tests
+
+- **Backend Pytest Suite** (123 tests):
+  ```bash
+  pytest tests -q
+  ```
+- **Frontend Vitest Suite** (104 tests):
+  ```bash
+  cd frontend
+  npm test -- --run
+  ```
+- **Frontend Production Build**:
+  ```bash
+  cd frontend
+  npm run build
+  ```
+
+Refer to [docs/architecture/README.md](docs/architecture/README.md) and [docs/database/README.md](docs/database/README.md) for detailed architecture documentation.

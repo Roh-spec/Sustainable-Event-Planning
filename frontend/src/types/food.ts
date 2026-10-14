@@ -1,31 +1,29 @@
-import { ResolvedAssumption } from './assumptions';
+import { ResolvedAssumption } from "./assumptions";
 
 export type MealType =
-  | 'BREAKFAST'
-  | 'LUNCH'
-  | 'DINNER'
-  | 'SNACKS'
-  | 'HIGH_TEA'
-  | 'REFRESHMENTS';
+  "BREAKFAST" | "LUNCH" | "DINNER" | "SNACKS" | "HIGH_TEA" | "REFRESHMENTS";
 
 export const MEAL_TYPE_OPTIONS: { value: MealType; label: string }[] = [
-  { value: 'BREAKFAST', label: 'Breakfast' },
-  { value: 'LUNCH', label: 'Lunch' },
-  { value: 'DINNER', label: 'Dinner' },
-  { value: 'SNACKS', label: 'Snacks' },
-  { value: 'HIGH_TEA', label: 'High Tea' },
-  { value: 'REFRESHMENTS', label: 'Refreshments' },
+  { value: "BREAKFAST", label: "Breakfast" },
+  { value: "LUNCH", label: "Lunch" },
+  { value: "DINNER", label: "Dinner" },
+  { value: "SNACKS", label: "Snacks" },
+  { value: "HIGH_TEA", label: "High Tea" },
+  { value: "REFRESHMENTS", label: "Refreshments" },
 ];
 
-export type DietaryPreference = 'VEGETARIAN' | 'NON_VEGETARIAN' | 'MIXED';
+export type DietaryPreference = "VEGETARIAN" | "NON_VEGETARIAN" | "MIXED";
 
-export const DIETARY_PREFERENCE_OPTIONS: { value: DietaryPreference; label: string }[] = [
-  { value: 'MIXED', label: 'Mixed (Vegetarian + Non-Vegetarian)' },
-  { value: 'VEGETARIAN', label: 'Vegetarian Only' },
-  { value: 'NON_VEGETARIAN', label: 'Non-Vegetarian' },
+export const DIETARY_PREFERENCE_OPTIONS: {
+  value: DietaryPreference;
+  label: string;
+}[] = [
+  { value: "MIXED", label: "Mixed (Vegetarian + Non-Vegetarian)" },
+  { value: "VEGETARIAN", label: "Vegetarian Only" },
+  { value: "NON_VEGETARIAN", label: "Non-Vegetarian" },
 ];
 
-export type FoodPricingUnit = 'PER_PERSON' | 'PER_SERVING' | 'TOTAL';
+export type FoodPricingUnit = "PER_PERSON" | "PER_SERVING" | "TOTAL";
 
 export interface MealInput {
   meal_type: MealType;
@@ -81,7 +79,7 @@ export interface FoodCostSummary {
 }
 
 export interface FoodWasteSummary {
-  waste_status: 'COMPLETE' | 'SERVINGS_ONLY' | 'UNAVAILABLE' | string;
+  waste_status: "COMPLETE" | "SERVINGS_ONLY" | "UNAVAILABLE" | string;
   estimated_waste_servings?: string | number | null;
   estimated_waste_kg?: string | number | null;
   waste_percentage_used?: string | number | null;

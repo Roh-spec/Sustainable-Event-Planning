@@ -8,7 +8,7 @@
 export interface SplitTime12Hour {
   hour12: string;
   minute: string;
-  period: 'AM' | 'PM';
+  period: "AM" | "PM";
 }
 
 /**
@@ -22,21 +22,21 @@ export interface SplitTime12Hour {
  * - "17:45" -> "05:45 PM"
  */
 export const format12Hour = (timeStr?: string | null): string => {
-  if (!timeStr || typeof timeStr !== 'string') {
-    return '';
+  if (!timeStr || typeof timeStr !== "string") {
+    return "";
   }
 
   const trimmed = timeStr.trim();
   if (!trimmed) {
-    return '';
+    return "";
   }
 
   // If already in 12-hour format with AM/PM, return as is (normalized)
   if (/^(0?[1-9]|1[0-2]):[0-5]\d\s*(AM|PM)$/i.test(trimmed)) {
     const parts = trimmed.split(/\s+/);
-    const [h, m] = parts[0].split(':');
+    const [h, m] = parts[0].split(":");
     const period = parts[1].toUpperCase();
-    return `${h.padStart(2, '0')}:${m} ${period}`;
+    return `${h.padStart(2, "0")}:${m} ${period}`;
   }
 
   // Expect HH:MM or HH:MM:SS
@@ -48,18 +48,25 @@ export const format12Hour = (timeStr?: string | null): string => {
   const hours24 = parseInt(match[1], 10);
   const minutes = parseInt(match[2], 10);
 
-  if (isNaN(hours24) || isNaN(minutes) || hours24 < 0 || hours24 > 23 || minutes < 0 || minutes > 59) {
+  if (
+    isNaN(hours24) ||
+    isNaN(minutes) ||
+    hours24 < 0 ||
+    hours24 > 23 ||
+    minutes < 0 ||
+    minutes > 59
+  ) {
     return timeStr;
   }
 
-  const period: 'AM' | 'PM' = hours24 >= 12 ? 'PM' : 'AM';
+  const period: "AM" | "PM" = hours24 >= 12 ? "PM" : "AM";
   let hours12 = hours24 % 12;
   if (hours12 === 0) {
     hours12 = 12;
   }
 
-  const paddedHours = String(hours12).padStart(2, '0');
-  const paddedMinutes = String(minutes).padStart(2, '0');
+  const paddedHours = String(hours12).padStart(2, "0");
+  const paddedMinutes = String(minutes).padStart(2, "0");
 
   return `${paddedHours}:${paddedMinutes} ${period}`;
 };
@@ -76,10 +83,10 @@ export const format12Hour = (timeStr?: string | null): string => {
 export const parse12HourTo24Hour = (
   hour: string | number,
   minute: string | number,
-  period: 'AM' | 'PM' | string
+  period: "AM" | "PM" | string,
 ): string => {
-  let h = typeof hour === 'number' ? hour : parseInt(String(hour), 10);
-  let m = typeof minute === 'number' ? minute : parseInt(String(minute), 10);
+  let h = typeof hour === "number" ? hour : parseInt(String(hour), 10);
+  let m = typeof minute === "number" ? minute : parseInt(String(minute), 10);
 
   if (isNaN(h)) h = 9;
   if (isNaN(m)) m = 0;
@@ -90,7 +97,7 @@ export const parse12HourTo24Hour = (
   if (m < 0) m = 0;
   if (m > 59) m = 59;
 
-  const isPM = String(period).toUpperCase() === 'PM';
+  const isPM = String(period).toUpperCase() === "PM";
   let hours24 = h;
 
   if (isPM) {
@@ -103,8 +110,8 @@ export const parse12HourTo24Hour = (
     }
   }
 
-  const paddedH = String(hours24).padStart(2, '0');
-  const paddedM = String(m).padStart(2, '0');
+  const paddedH = String(hours24).padStart(2, "0");
+  const paddedM = String(m).padStart(2, "0");
 
   return `${paddedH}:${paddedM}`;
 };
@@ -119,31 +126,31 @@ export const parse12HourTo24Hour = (
  * - "17:45" -> { hour12: "05", minute: "45", period: "PM" }
  */
 export const split24Hour = (time24?: string | null): SplitTime12Hour => {
-  if (!time24 || typeof time24 !== 'string') {
-    return { hour12: '09', minute: '00', period: 'AM' };
+  if (!time24 || typeof time24 !== "string") {
+    return { hour12: "09", minute: "00", period: "AM" };
   }
 
   const match = time24.trim().match(/^(\d{1,2}):(\d{2})(?::\d{2})?$/);
   if (!match) {
-    return { hour12: '09', minute: '00', period: 'AM' };
+    return { hour12: "09", minute: "00", period: "AM" };
   }
 
   const hours24 = parseInt(match[1], 10);
   const minutes = parseInt(match[2], 10);
 
   if (isNaN(hours24) || isNaN(minutes)) {
-    return { hour12: '09', minute: '00', period: 'AM' };
+    return { hour12: "09", minute: "00", period: "AM" };
   }
 
-  const period: 'AM' | 'PM' = hours24 >= 12 ? 'PM' : 'AM';
+  const period: "AM" | "PM" = hours24 >= 12 ? "PM" : "AM";
   let hours12 = hours24 % 12;
   if (hours12 === 0) {
     hours12 = 12;
   }
 
   return {
-    hour12: String(hours12).padStart(2, '0'),
-    minute: String(minutes).padStart(2, '0'),
+    hour12: String(hours12).padStart(2, "0"),
+    minute: String(minutes).padStart(2, "0"),
     period,
   };
 };
@@ -154,14 +161,14 @@ export const split24Hour = (time24?: string | null): SplitTime12Hour => {
  */
 export const formatTimeWindow12Hour = (
   startTime?: string | null,
-  endTime?: string | null
+  endTime?: string | null,
 ): string => {
   const start = format12Hour(startTime);
   const end = format12Hour(endTime);
   if (start && end) {
     return `${start} – ${end}`;
   }
-  return start || end || '';
+  return start || end || "";
 };
 
 /**
@@ -169,9 +176,12 @@ export const formatTimeWindow12Hour = (
  * E.g. "between 09:00 and 17:00" -> "between 09:00 AM and 05:00 PM"
  */
 export const convertTextTimesTo12Hour = (text?: string | null): string => {
-  if (!text) return '';
+  if (!text) return "";
   // Match isolated HH:MM patterns not followed by AM/PM
-  return text.replace(/\b([01]?\d|2[0-3]):([0-5]\d)\b(?!\s*[AaPp][Mm])/g, (match) => {
-    return format12Hour(match);
-  });
+  return text.replace(
+    /\b([01]?\d|2[0-3]):([0-5]\d)\b(?!\s*[AaPp][Mm])/g,
+    (match) => {
+      return format12Hour(match);
+    },
+  );
 };

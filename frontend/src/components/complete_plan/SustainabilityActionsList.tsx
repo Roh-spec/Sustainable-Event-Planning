@@ -1,6 +1,6 @@
-import React from 'react';
-import { Leaf, Target, ShieldCheck } from 'lucide-react';
-import { SustainabilityActionItem } from '../../types/completePlan';
+import React from "react";
+import { Leaf, Target, ShieldCheck } from "lucide-react";
+import { SustainabilityActionItem } from "../../types/completePlan";
 
 interface SustainabilityActionsListProps {
   actions: SustainabilityActionItem[];
@@ -8,28 +8,28 @@ interface SustainabilityActionsListProps {
 
 const formatActionType = (type: string) => {
   return type
-    .replace(/_/g, ' ')
+    .replace(/_/g, " ")
     .toLowerCase()
     .replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
 const getActionTypeBadge = (type: string) => {
   const upper = type.toUpperCase();
-  if (upper.includes('FOOD')) {
-    return 'bg-amber-50 text-amber-800 border-amber-200';
+  if (upper.includes("FOOD")) {
+    return "bg-amber-50 text-amber-800 border-amber-200";
   }
-  if (upper.includes('REUSABLE') || upper.includes('PACKAGING')) {
-    return 'bg-emerald-50 text-emerald-800 border-emerald-200';
+  if (upper.includes("REUSABLE") || upper.includes("PACKAGING")) {
+    return "bg-emerald-50 text-emerald-800 border-emerald-200";
   }
-  if (upper.includes('PLASTIC')) {
-    return 'bg-teal-50 text-teal-800 border-teal-200';
+  if (upper.includes("PLASTIC")) {
+    return "bg-teal-50 text-teal-800 border-teal-200";
   }
-  return 'bg-slate-100 text-slate-700 border-slate-200';
+  return "bg-slate-100 text-slate-700 border-slate-200";
 };
 
-export const SustainabilityActionsList: React.FC<SustainabilityActionsListProps> = ({
-  actions,
-}) => {
+export const SustainabilityActionsList: React.FC<
+  SustainabilityActionsListProps
+> = ({ actions }) => {
   if (!actions || actions.length === 0) {
     return null;
   }
@@ -46,7 +46,8 @@ export const SustainabilityActionsList: React.FC<SustainabilityActionsListProps>
           Sustainability Commitments & Verification
         </h2>
         <p className="text-xs text-slate-500 mt-1">
-          Concrete operational interventions derived from your selected plan, with verification criteria for your team.
+          Concrete operational interventions derived from your selected plan,
+          with verification criteria for your team.
         </p>
       </div>
 
@@ -60,7 +61,7 @@ export const SustainabilityActionsList: React.FC<SustainabilityActionsListProps>
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <span
                   className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getActionTypeBadge(
-                    act.action_type
+                    act.action_type,
                   )}`}
                 >
                   {formatActionType(act.action_type)}
@@ -70,8 +71,12 @@ export const SustainabilityActionsList: React.FC<SustainabilityActionsListProps>
                 </span>
               </div>
 
-              <h3 className="font-extrabold text-slate-900 text-sm mb-1.5">{act.title}</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">{act.description}</p>
+              <h3 className="font-extrabold text-slate-900 text-sm mb-1.5">
+                {act.title}
+              </h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                {act.description}
+              </p>
 
               {act.target_metric && (
                 <div className="mt-2.5 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-900 text-xs font-bold border border-emerald-200/80">
@@ -86,7 +91,9 @@ export const SustainabilityActionsList: React.FC<SustainabilityActionsListProps>
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Verification Step:</span>
               </div>
-              <p className="text-[11px] text-slate-600">{act.verification_step}</p>
+              <p className="text-[11px] text-slate-600">
+                {act.verification_step}
+              </p>
             </div>
           </div>
         ))}

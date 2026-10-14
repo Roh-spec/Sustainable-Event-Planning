@@ -1,39 +1,36 @@
-import { EventType } from './events';
-import { MealType } from './food';
-import { PlanAlternative, PlanningModuleContext } from './planning';
-import { ResolvedAssumption } from './assumptions';
+import { EventType } from "./events";
+import { MealType } from "./food";
+import { PlanAlternative, PlanningModuleContext } from "./planning";
+import { ResolvedAssumption } from "./assumptions";
 
 export type ActivityType =
-  | 'SETUP'
-  | 'REGISTRATION'
-  | 'OPENING'
-  | 'KEYNOTE'
-  | 'SESSION'
-  | 'WORKSHOP'
-  | 'COMPETITION'
-  | 'ACTIVITY'
-  | 'MEAL'
-  | 'BREAK'
-  | 'NETWORKING'
-  | 'AWARDS'
-  | 'CLOSING'
-  | 'CLEANUP'
-  | 'TEARDOWN'
-  | 'OTHER';
+  | "SETUP"
+  | "REGISTRATION"
+  | "OPENING"
+  | "KEYNOTE"
+  | "SESSION"
+  | "WORKSHOP"
+  | "COMPETITION"
+  | "ACTIVITY"
+  | "MEAL"
+  | "BREAK"
+  | "NETWORKING"
+  | "AWARDS"
+  | "CLOSING"
+  | "CLEANUP"
+  | "TEARDOWN"
+  | "OTHER";
 
 export type ChecklistPhase =
-  | 'BEFORE_EVENT'
-  | 'EVENT_DAY_MORNING'
-  | 'DURING_EVENT'
-  | 'AFTER_EVENT';
+  "BEFORE_EVENT" | "EVENT_DAY_MORNING" | "DURING_EVENT" | "AFTER_EVENT";
 
 export type ChecklistCategory =
-  | 'LOGISTICS'
-  | 'CATERING'
-  | 'WASTE_MANAGEMENT'
-  | 'AV_EQUIPMENT'
-  | 'COMMUNICATIONS'
-  | 'SAFETY';
+  | "LOGISTICS"
+  | "CATERING"
+  | "WASTE_MANAGEMENT"
+  | "AV_EQUIPMENT"
+  | "COMMUNICATIONS"
+  | "SAFETY";
 
 export interface TimetableSlot {
   slot_id: string;
@@ -63,7 +60,7 @@ export interface ScheduleConflict {
   conflict_type: string;
   description: string;
   affected_activities: string[];
-  severity: 'WARNING' | 'ERROR' | string;
+  severity: "WARNING" | "ERROR" | string;
 }
 
 export interface ChecklistItem {
