@@ -1,94 +1,121 @@
-# EcoPlan — AI-Based Sustainable Event Planning Assistant
+# AI-Based Sustainable Event Planning Assistant
 
 A modular, scalable, software-only system designed to help college event organizers plan sustainable events within a given budget with ₹0 initial cost.
 
-> **Kilograms, rupees, and item counts — not fake scores.**  
-> EcoPlan eliminates arbitrary 87/100 sustainability ratings in favor of concrete physics and honest accounting: edible food surplus in kg, single-use packaging counts, plastic elimination ratios, and real rupee variances against budget ceilings.
-
----
-
 ## 🌟 Core Philosophy
-
-- **Physical & Verifiable Metrics**: Every estimate is expressed in measurable real-world units (servings, items, kilograms, currency) rather than opaque "green points."
-- **Deterministic First, AI/ML Optional**: Core calculations, cost modeling, constraint satisfaction, and plan alternatives run on a pure deterministic engine that never invents data or hallucinates budgets.
-- **Data Provenance & Assumption Transparency**: Every number traces back to its source—user input, calibrated institutional reference benchmarks, or explicit planning formulas.
-- **₹0 Cost-Free Stack**: Built exclusively with open-source tools: FastAPI, PostgreSQL, React, TypeScript, Tailwind CSS, Vitest, and Pytest.
+- **Modular Monolith**: Extensible domain modules (Food, Waste, Water, Energy, Materials, Transport, Venue, Vendors, Carbon).
+- **Core First, AI/ML Optional**: The deterministic planning engine, cost calculator, and sustainability scoring run independently without mandatory external AI services.
+- **Cost-Free Development**: Built strictly with open-source tools (FastAPI, React, PostgreSQL, OpenStreetMap, Vitest/Pytest).
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ Repository Architecture
 
 ```text
-Sustainable-Event-Planning/
-├── frontend/             # React 18 + TypeScript + Vite + Tailwind CSS
-│   ├── src/
-│   │   ├── components/   # Field Notebook UI components (wizard, complete_plan, planning)
-│   │   ├── context/      # PlanningWizardContext with sessionStorage persistence
-│   │   ├── pages/        # 7-step wizard pages & decision ledger
-│   │   ├── styles/       # Design system tokens (paper, ink, moss, clay)
-│   │   └── utils/        # Metric formatting, 12-hour time parsing, anime.js motion
-├── backend/              # FastAPI + SQLAlchemy 2.x Modular Monolith
+ESC PROJECT/
+├── frontend/             # React + TypeScript + Vite + Tailwind CSS
+├── backend/              # FastAPI + SQLAlchemy + Pydantic Modular Monolith
 │   └── app/
-│       ├── api/          # Route controllers (events, food, waste, planning, assumptions)
-│       ├── core/         # Settings, database engine, CORS, exception handling
-│       ├── models/       # SQLAlchemy ORM declarative models
-│       ├── schemas/      # Pydantic v2 schemas and validation contracts
-│       ├── services/     # Domain services orchestrating business logic
-│       └── planning/     # Assumption resolver & domain calculators (food, waste, multi-objective)
-├── database/             # PostgreSQL Alembic migrations & initial seed data
-├── docs/                 # Consolidated engineering documentation
-│   ├── index.md          # Technical documentation index
-│   ├── architecture.md   # System design & modular monolith principles
-│   ├── database.md       # Relational schema, tables & migrations
-│   ├── frontend.md       # React architecture & Field Notebook design system
-│   ├── modules.md        # Food & waste calculation methodology
-│   └── planning.md       # Multi-objective optimization & candidate evaluation
-├── scripts/              # Database seeding and migration utilities
-└── tests/                # Comprehensive Pytest suite (unit & integration)
+│       ├── api/          # Route controllers and API dependencies
+│       ├── core/         # Core configs, database, security, logging
+│       ├── models/       # SQLAlchemy ORM entity definitions
+│       ├── schemas/      # Pydantic validation schemas
+│       ├── services/     # Application service orchestrators
+│       ├── planning/     # Modular domain planning engines
+│       ├── optimization/ # Optimization interfaces & algorithms (e.g. OR-Tools)
+│       ├── sustainability/ Scoring, metrics, & recommendations
+│       ├── ai/           # Optional local/open-source AI/NLP helpers
+│       ├── ml/           # scikit-learn attendance & cost predictors
+│       ├── location/     # OpenStreetMap / MapLibre geocoding & routing
+│       ├── reporting/    # Report generators & exporters
+│       └── integrations/ # Interfaces for external and future systems
+├── database/             # Migrations, seed data, and schema docs
+├── tests/                # Unit and integration test suites
+├── docs/                 # Architectural Decision Records (ADRs) and design guides
+├── scripts/              # Development, migration, and deployment scripts
+├── config/               # Baseline assumptions and sustainability constants
+└── .github/              # CI/CD Workflows
 ```
 
 ---
 
-## 📋 The 7-Step Planning Wizard
+## 🎯 Target Event Types
+- Tech Fest
+- Cultural Fest
+- Hackathon
+- Workshop
+- Conference
+- Sports Event
+- College Farewell
+- Department Event
 
-EcoPlan guides organizers through a structured, 7-step workflow styled in the **Field Notebook** aesthetic (warm paper, editorial Fraunces typography, and deep forest moss accents):
-
-1. **Event Setup**: Configure event name, illustrated event type tiles, expected attendee headcount, duration in days, and venue context.
-2. **Budget Calibration**: Set total budget and currency with real-time variance monitoring and honest deficit warnings (no hidden cost assumptions).
-3. **Preferences & Constraints**: Express organizer rules with intuitive preference tags (*Must Have*, *Avoid*, *Would Be Nice*, *Flexible*).
-4. **Food Planning**: Select meals (breakfast, lunch, high tea, dinner), tune vegetarian ratio sliders, choose caterer cost models (per-plate or total), and project food surplus in kg.
-5. **Waste Planning**: Configure packaging, plastic bottles, and event decoration waste with transparent reference benchmarks and reusable fleet suggestions.
-6. **Plan Alternatives & Decision Ledger**: Review multi-objective alternatives:
-   - 💰 **Cost-First Baseline**: Minimizes budget absorption while meeting attendee catering targets.
-   - ⚖️ **Pragmatic Balance**: Optimal equilibrium between fiscal limits and high diversion rates.
-   - 🌱 **Maximum Circularity**: Eliminates single-use plastics and maximizes reusable tableware fleets.
-   - Includes visual spend-vs-waste trade-off meters and side-by-side comparison.
-7. **Run of Show / Complete Event Plan**:
-   - **Chronological Vertical Spine Timetable**: Formatted 12-hour slots (`09:00 AM – 10:00 AM`), activity status nodes, meal badges, and buffer conflict alerts (`BUFFER TIGHT`).
-   - **Operational Execution Checklist**: Chronological task grouping (*Before the Event*, *Morning*, *During*, *After*) with interactive session progress tracking.
-   - **Resource Manifest (3-Column Split)**: Separate cards for catering portions, tableware reusables, and plastic elimination, plus suggested equipment cards requiring organizer verification.
-   - **Plan Budget Summary & Ledger**: JetBrains Mono financial ledger with deficit alerts and contingency margins.
-   - **Sustainability Verification Criteria**: Clear action items with target metrics and physical on-site audit steps.
-   - **Assumptions Disclosure**: Full transparency accordion translating reference calculation factors into plain language.
-   - **Print Optimization**: Clean `@media print` day sheet hiding navigation controls for physical clipboard usage.
+## 📊 Planning Modes
+1. **Balanced**
+2. **Budget-focused**
+3. **Sustainability-focused**
+4. **Custom priorities**
 
 ---
 
-## 🎨 Motion & Aesthetics
+## 📌 Project Status
 
-- **Field Notebook Palette**: Warm paper background (`#F8F5EE`), deep ink text (`#1E231F`), forest moss (`#2D5A3D`), and terra-cotta clay (`#C46849`).
-- **Typography**: **Fraunces** serif for editorial titles, **Plus Jakarta Sans** for clean interface controls, and **JetBrains Mono** for figures and ledger tables.
-- **Lenis Smooth Inertial Scrolling**: Momentum scrolling across the application with route-based scroll reset and an ambient gradient reading beam.
-- **Anime.js Kinetic Micro-Interactions**: Real-time numerical tweening (`<AnimatedCounter />`) with spring physics for portions, expenditures, and waste mass.
-- **Accessibility Guarantee**: Built-in `prefersReducedMotion()` utility honoring operating system and browser accessibility preferences.
+### PHASE 1 STATUS:
+- Database foundation implemented (PostgreSQL + SQLAlchemy 2.x declarative models: Event, Budget, CostItem, Constraint, Assumption, Plan)
+- FastAPI foundation implemented (Health endpoints at `/health` and `/api/v1/health`, Pydantic Settings, CORS)
+- Event API implemented (`POST /api/v1/events`, `GET /api/v1/events/{event_id}`, `GET /api/v1/events`)
+
+### PHASE 2A STATUS:
+- **Assumption Engine Implemented** (`backend/app/planning/assumption_engine/`)
+- Reusable deterministic `AssumptionResolver` enforcing strict precedence: `EVENT-SPECIFIC` ──► `GLOBAL` ──► `MISSING` (never silently invents values)
+- Data provenance strictly preserved across source types (`USER_PROVIDED`, `REFERENCE`, `ASSUMED`, `ACTUAL`, `ML_PREDICTED`)
+- Assumption CRUD and `/api/v1/assumptions/resolve` API endpoints implemented
+
+### PHASE 2B STATUS:
+- **Food Planning Module Implemented** (`backend/app/planning/modules/food/`)
+- Pure, decoupled calculation engine (`FoodCalculator`) with whole-number servings and Decimal precision
+- Integrated with Assumption Engine for meal participation, costs per serving, waste percentages, and serving weights
+- Supports 3 pricing approaches: User-provided total, User-provided unit cost, Assumption-based cost
+- Rule-based constraint evaluation (vegetarian-only mandates, budget ceilings) and actionable eco-recommendations
+- Comprehensive unit and integration test suite
+
+### PHASE 2C STATUS:
+- **Waste Planning Module Implemented** (`backend/app/planning/modules/waste/`)
+- Covers 4 waste streams: Food Waste (reused directly from Food Module or user-overridden), Packaging Waste (Plate, Cup, Spoon, Fork, Glass, Other), Plastic Waste (Water Bottle, Plastic Bag, Wrapper, Plastic Cup, Other), and Other Waste (predefined categories and custom items)
+- Primary metrics are count/item-based (servings, items); no forced conversion to kilograms
+- Supports 4 calculation bases: `PER_PERSON`, `PER_MEAL`, `PER_EVENT`, `CUSTOM`
+- Baseline reference assumptions calibrated (including `Decorations Per Event` and `Containers Per Event`)
+- Reusable vs single-use split resolution with assumption fallback (`reusable_ratio_<item>`, `single_use_ratio_<item>`)
+- Pure calculation engine (`WasteCalculator`), rule-based recommendations (`WasteRulesEngine`), orchestrator (`WastePlanningService`), and `POST /api/v1/planning/waste` API endpoint
+- Complete automated test suite passing (123 total backend tests passing)
+
+### FRONTEND & DESIGN SYSTEM (Field Notebook UI):
+- **Field Notebook Design Language**:
+  - Curated, organic palette: warm paper (`#F8F5EE`), deep ink (`#1E231F`), forest moss (`#2D5A3D`), and terra-cotta clay (`#C46849`).
+  - Editorial typography: **Fraunces** serif for headings, **Plus Jakarta Sans** for interfaces, and **JetBrains Mono** for metrics and financial ledgers.
+  - Physical stationery aesthetics: `.surface-sheet`, `.label-kicker`, delicate rules, and tactile notebook shadow tokens.
+
+- **Full 7-Step Planning Wizard** (`frontend/src/pages/`):
+  1. **Event Setup**: Type selection via illustrated tiles, attendee headcount, duration, and venue context.
+  2. **Budget Calibration**: Currency and ceiling limits with real-time variance monitoring and honest deficit reporting.
+  3. **Preferences & Constraints**: User-prioritized rules with clear preference tags (*Must Have*, *Avoid*, *Would Be Nice*, *Flexible*).
+  4. **Food Planning**: Meal selection, dietary split sliders (veg/non-veg), caterer pricing modes, and edible surplus projections.
+  5. **Waste Planning**: Streamlined item-based calculations across packaging, plastic, and general waste streams with reference benchmark transparency.
+  6. **Plan Alternatives & Decision Ledger**: Multi-objective alternative cards (*Cost-First Ledger*, *Pragmatic Balance*, *Maximum Circularity*) with spend-vs-waste trade-off meters and comprehensive side-by-side comparison.
+  7. **Run of Show / Complete Event Plan**: Authentic chronological vertical spine timetable, interactive operational execution checklist with session tracking, 3-column resource manifest, budget ledger, sustainability verification criteria, and print-optimized (`@media print`) physical day sheet.
+
+- **Accessible Motion System (Anime.js + Lenis)**:
+  - **Accessibility Compliance**: Dedicated `prefersReducedMotion()` utility respecting operating system and browser accessibility settings.
+  - **Lenis Smooth Inertial Scrolling**: Momentum scrolling across the application with route-based scroll reset and an ambient gradient reading beam (hidden during print).
+  - **Kinetic Micro-Interactions**: Real-time numerical tweening (`<AnimatedCounter />`) with spring physics for portions, expenditures, and waste mass.
+  - **Choreographed Feedback**: Elastic active step pulse in wizard navigation, plan selection pulse, and staggered entrance reveals for alternative cards.
 
 ---
 
 ## 🚀 Getting Started
 
-### Option 1: Running with Docker (Recommended)
+### Method 1: Running with Docker (Recommended)
 
-1. Ensure **Docker Desktop** is running.
+1. Make sure **Docker Desktop** is running.
 2. Clone the repository and configure your environment:
    ```bash
    cp .env.example .env
@@ -98,18 +125,18 @@ EcoPlan guides organizers through a structured, 7-step workflow styled in the **
    docker compose up --build
    ```
 4. Access the applications:
-   - **Frontend Web UI**: [http://localhost:5173](http://localhost:5173)
-   - **FastAPI Interactive Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-   - **PostgreSQL Database**: `localhost:5432` (database: `event_planner`)
+   - **Frontend Web UI**: [http://localhost:5173](http://localhost:5173) (or [http://localhost:3000](http://localhost:3000))
+   - **FastAPI Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
+   - **PostgreSQL Database**: `localhost:5432` (`db: event_planner`)
 
-To stop all containers:
+To stop all services:
 ```bash
 docker compose down
 ```
 
 ---
 
-### Option 2: Running Locally
+### Method 2: Running Locally
 
 #### 1. Backend Setup
 ```bash
@@ -123,11 +150,11 @@ venv\Scripts\activate
 # Install dependencies
 pip install -r backend/requirements.txt
 
-# Run migrations and seed baseline assumptions
+# Run migrations and seed data
 alembic upgrade head
 python scripts/database/seed_assumptions.py
 
-# Start FastAPI server
+# Start the development server
 uvicorn backend.app.main:app --reload --port 8000
 ```
 
@@ -140,39 +167,21 @@ npm run dev
 
 ---
 
-## 🧪 Automated Testing & Quality Assurance
+## 🧪 Running Tests
 
-EcoPlan maintains a comprehensive test suite across backend calculation engines and frontend user journeys:
-
-- **Backend Pytest Suite** (123 tests passing):
+- **Backend Pytest Suite** (123 tests):
   ```bash
   pytest tests -q
   ```
-- **Frontend Vitest Suite** (104 tests passing):
+- **Frontend Vitest Suite** (104 tests):
   ```bash
   cd frontend
   npm test -- --run
   ```
-- **Frontend Production TypeScript Build**:
+- **Frontend Production Build**:
   ```bash
   cd frontend
   npm run build
   ```
 
----
-
-## 📚 Technical Documentation
-
-For detailed architecture diagrams, database schemas, and calculation methodology, explore the consolidated documentation in [`docs/`](docs/index.md):
-
-- [Architecture & Modular Monolith Principles](docs/architecture.md)
-- [Database Models & Relational Schema](docs/database.md)
-- [Frontend Architecture & Design Tokens](docs/frontend.md)
-- [Food & Waste Calculation Modules](docs/modules.md)
-- [Planning Engine & Optimization Pipeline](docs/planning.md)
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+Refer to [docs/architecture/README.md](docs/architecture/README.md) and [docs/database/README.md](docs/database/README.md) for detailed architecture documentation.
