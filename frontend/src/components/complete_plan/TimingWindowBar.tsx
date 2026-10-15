@@ -108,27 +108,27 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-6 mb-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-slate-100 gap-2">
+    <div className="surface-sheet p-5 sm:p-6 mb-8 border border-line">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-line gap-2">
         <div className="flex items-center space-x-2">
-          <Clock className="w-5 h-5 text-emerald-600" />
-          <h2 className="text-base sm:text-lg font-extrabold text-slate-900">
+          <Clock className="w-5 h-5 text-moss-600" />
+          <h2 className="font-serif text-base sm:text-lg font-bold text-ink">
             Event Timing & Schedule Window
           </h2>
         </div>
 
         <div className="flex items-center space-x-2 text-xs">
           {isOrganizerConfirmed && localDate ? (
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-paper-inset text-moss-800 border border-line font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5 text-moss-600" />
               <span>
                 Organizer configured ({format12Hour(localStart)} –{" "}
                 {format12Hour(localEnd)})
               </span>
             </span>
           ) : (
-            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-semibold">
-              <Info className="w-3.5 h-3.5 text-amber-600" />
+            <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-clay-50 text-clay-800 border border-clay-300 font-semibold">
+              <Info className="w-3.5 h-3.5 text-clay-600" />
               <span>
                 Default timing suggestion ({format12Hour("09:00")} –{" "}
                 {format12Hour("17:00")})
@@ -144,9 +144,9 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
           <div>
             <label
               htmlFor="timing-event-date"
-              className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5"
+              className="label-kicker text-[11px] block mb-1.5"
             >
-              Event Date <span className="text-rose-500">*</span>
+              Event Date <span className="text-clay-600">*</span>
             </label>
             <div className="relative">
               <input
@@ -154,11 +154,11 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
                 type="date"
                 value={localDate}
                 onChange={(e) => handleDateChange(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-medium text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors"
+                className="w-full px-3.5 py-2 rounded-xl border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600 transition-colors"
                 required
               />
             </div>
-            <p className="text-[11px] text-slate-400 mt-1">
+            <p className="text-[11px] text-ink-muted mt-1">
               Calendar date for Day 1
             </p>
           </div>
@@ -190,10 +190,10 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
 
         {/* Multi-day Notice */}
         {durationDays > 1 && (
-          <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 flex items-start space-x-2.5">
-            <Info className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+          <div className="p-3.5 rounded-xl bg-paper-inset/40 border border-line text-xs text-ink-muted flex items-start space-x-2.5">
+            <Info className="w-4 h-4 text-moss-600 flex-shrink-0 mt-0.5" />
             <div>
-              <strong className="font-semibold text-slate-800">
+              <strong className="font-semibold text-ink">
                 Multi-day Operating Hours:
               </strong>{" "}
               The current planning system applies this same operating window (
@@ -207,9 +207,9 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
         {validationError && (
           <div
             role="alert"
-            className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-xs text-rose-800 flex items-center space-x-2.5"
+            className="p-3.5 rounded-xl bg-clay-50 border border-clay-300 text-xs text-clay-900 flex items-center space-x-2.5"
           >
-            <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 text-clay-600 flex-shrink-0" />
             <span className="font-medium">{validationError}</span>
           </div>
         )}
@@ -220,11 +220,11 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
             id="generate-plan-btn"
             type="submit"
             disabled={isGenerating}
-            className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
+            className="btn-primary"
           >
             {isGenerating ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-4 h-4 border-2 border-paper-raised border-t-transparent rounded-full animate-spin" />
                 <span>Scheduling Timetable...</span>
               </>
             ) : (

@@ -11,6 +11,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { usePlanningWizard } from "../../context/PlanningWizardContext";
+import { pulseActiveStep } from "../../utils/animations";
 
 export interface WizardStep {
   id: number;
@@ -91,9 +92,15 @@ export const WizardProgress: React.FC<WizardProgressProps> = ({
   const navigate = useNavigate();
   const { event } = usePlanningWizard();
   const effectiveEventId = eventId || event?.id;
+  const currentStepRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (currentStepRef.current) {
+      pulseActiveStep(currentStepRef.current);
+    }
+  }, [currentStep]);
 
   const handleStepClick = (step: WizardStep) => {
-    // Only allow navigating if event is created, or if going to step 1
     if (step.id === 1) {
       navigate("/events/new");
     } else if (effectiveEventId && step.id <= currentStep + 1) {
@@ -102,10 +109,10 @@ export const WizardProgress: React.FC<WizardProgressProps> = ({
   };
 
   return (
-    <div className="w-full bg-white border-b border-slate-200 py-4 shadow-sm mb-6">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <div className="w-full mb-8">
+      <div className="surface-sheet px-3 sm:px-5 py-4">
         <nav aria-label="Progress">
-          <ol className="flex items-center justify-between">
+          <ol className="flex items-start justify-between gap-1">
             {WIZARD_STEPS.map((step, index) => {
               const isCompleted = step.id < currentStep;
               const isCurrent = step.id === currentStep;
@@ -114,21 +121,25 @@ export const WizardProgress: React.FC<WizardProgressProps> = ({
               const StepIcon = step.icon;
 
               return (
-                <li key={step.key} className="flex-1 relative">
-                  <div className="flex items-center">
-                    {/* Connecting line */}
+                <li key={step.key} className="flex-1 relative min-w-0">
+                  <div className="flex items-center justify-center">
                     {index > 0 && (
                       <div
-                        className={`absolute left-0 -translate-x-1/2 top-4 w-full h-0.5 transition-colors ${
-                          step.id <= currentStep
-                            ? "bg-emerald-600"
-                            : "bg-slate-200"
+                        className={`absolute left-0 right-1/2 top-[1.125rem] h-px ${
+                          step.id <= currentStep ? "bg-moss-600" : "bg-line"
+                        }`}
+                        style={{ zIndex: 0 }}
+                      />
+                    )}
+                    {index < WIZARD_STEPS.length - 1 && (
+                      <div
+                        className={`absolute left-1/2 right-0 top-[1.125rem] h-px ${
+                          step.id < currentStep ? "bg-moss-600" : "bg-line"
                         }`}
                         style={{ zIndex: 0 }}
                       />
                     )}
 
-                    {/* Step button / circle */}
                     <button
                       type="button"
                       onClick={() => isClickable && handleStepClick(step)}
@@ -137,34 +148,37 @@ export const WizardProgress: React.FC<WizardProgressProps> = ({
                       className={`relative z-10 flex flex-col items-center group focus:outline-none ${
                         isClickable
                           ? "cursor-pointer"
-                          : "cursor-not-allowed opacity-60"
+                          : "cursor-not-allowed opacity-50"
                       }`}
                     >
                       <div
-                        className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all shadow-sm ${
+                        ref={isCurrent ? currentStepRef : undefined}
+                        className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
                           isCompleted
-                            ? "bg-emerald-600 text-white shadow-emerald-500/20"
+                            ? "bg-moss-600 text-paper-raised"
                             : isCurrent
-                              ? "bg-white border-2 border-emerald-600 text-emerald-700 ring-4 ring-emerald-100 shadow-md"
-                              : "bg-white border border-slate-300 text-slate-400 group-hover:border-slate-400"
+                              ? "bg-paper-raised text-moss-800 ring-2 ring-moss-600 ring-offset-2 ring-offset-paper-raised"
+                              : "bg-paper-inset border border-line text-ink-faint"
                         }`}
                       >
                         {isCompleted ? (
-                          <Check className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                          <Check className="w-4 h-4" strokeWidth={2.25} />
                         ) : (
                           <StepIcon
-                            className={`w-4 h-4 ${isCurrent ? "text-emerald-600" : "text-slate-400"}`}
+                            className={`w-4 h-4 ${
+                              isCurrent ? "text-moss-700" : "text-ink-faint"
+                            }`}
                           />
                         )}
                       </div>
 
                       <span
-                        className={`mt-1.5 text-xs font-semibold whitespace-nowrap transition-colors ${
+                        className={`mt-2 text-[11px] sm:text-xs font-semibold text-center leading-tight px-0.5 ${
                           isCurrent
-                            ? "text-emerald-700 font-bold"
+                            ? "text-moss-800"
                             : isCompleted
-                              ? "text-slate-700"
-                              : "text-slate-400"
+                              ? "text-ink"
+                              : "text-ink-faint"
                         }`}
                       >
                         {step.label}

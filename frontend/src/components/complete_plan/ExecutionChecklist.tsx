@@ -22,25 +22,25 @@ const PHASE_CONFIG: Record<
     label: "Before the Event",
     description:
       "Procurement, vendor confirmations, menu orders, and communications",
-    badgeColor: "bg-blue-50 text-blue-700 border-blue-200",
+    badgeColor: "bg-paper-inset text-ink-muted border-line",
   },
   EVENT_DAY_MORNING: {
     label: "Event-Day Preparation",
     description:
       "Morning venue setup, signage, waste sorting stations, and vendor arrivals",
-    badgeColor: "bg-amber-50 text-amber-800 border-amber-200",
+    badgeColor: "bg-clay-50 text-clay-800 border-clay-200",
   },
   DURING_EVENT: {
     label: "During the Event",
     description:
       "Live catering monitoring, waste station guidance, and schedule adherence",
-    badgeColor: "bg-emerald-50 text-emerald-800 border-emerald-200",
+    badgeColor: "bg-moss-50 text-moss-800 border-moss-200",
   },
   AFTER_EVENT: {
     label: "After the Event",
     description:
       "Surplus food donation, dish collection, compost handover, and post-event wrapup",
-    badgeColor: "bg-purple-50 text-purple-700 border-purple-200",
+    badgeColor: "bg-paper-inset text-ink border-line-strong",
   },
 };
 
@@ -89,34 +89,34 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
       : phases.filter((p) => p === selectedPhaseFilter);
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-8 mb-8">
+    <div className="surface-sheet p-5 sm:p-8 mb-8 border border-line">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-slate-100 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-line gap-4">
         <div>
-          <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-2 border border-emerald-200">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-paper-inset text-moss-800 text-xs font-semibold tracking-wide uppercase mb-2 border border-line">
+            <CheckCircle2 className="w-3.5 h-3.5 text-moss-600" />
             <span>Execution Milestones</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+          <h2 className="font-serif text-xl sm:text-2xl font-bold text-ink tracking-tight">
             Preparation & Delivery Checklist
           </h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-ink-muted mt-1 leading-relaxed">
             Actionable tasks grouped chronologically to ensure sustainable
             delivery before, during, and after your event.
           </p>
         </div>
 
-        {/* Progress Pill */}
-        <div className="flex-shrink-0 bg-slate-50 border border-slate-200 rounded-2xl p-3 sm:w-56">
+        {/* Progress Tally Pill */}
+        <div className="flex-shrink-0 bg-paper-inset/40 border border-line rounded-xl p-3 sm:w-60">
           <div className="flex items-center justify-between text-xs mb-1.5">
-            <span className="font-bold text-slate-700">Checklist Progress</span>
-            <span className="font-extrabold text-emerald-700">
+            <span className="font-bold text-ink">Checklist Progress</span>
+            <span className="font-mono font-bold text-moss-700">
               {completedCount} / {totalTasks} ({progressPercent}%)
             </span>
           </div>
-          <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+          <div className="w-full bg-paper rounded-full h-2 overflow-hidden border border-line/60">
             <div
-              className="bg-emerald-600 h-2 rounded-full transition-all duration-300"
+              className="bg-moss-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -124,10 +124,10 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
       </div>
 
       {/* Temporary Progress Notice */}
-      <div className="mb-6 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 flex items-start space-x-2.5">
-        <Info className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+      <div className="mb-6 p-3.5 rounded-xl bg-paper-inset/40 border border-line text-xs text-ink-muted flex items-start space-x-2.5">
+        <Info className="w-4 h-4 text-moss-600 flex-shrink-0 mt-0.5" />
         <div>
-          <strong className="font-semibold text-slate-800">
+          <strong className="font-semibold text-ink">
             Session-only Tracker:
           </strong>{" "}
           Checkbox completion is saved temporarily in your current browser
@@ -136,14 +136,14 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
       </div>
 
       {/* Phase Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-1.5 mb-6 pb-2 border-b border-slate-100">
+      <div className="flex flex-wrap items-center gap-1.5 mb-6 pb-2 border-b border-line">
         <button
           type="button"
           onClick={() => setSelectedPhaseFilter("ALL")}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
             selectedPhaseFilter === "ALL"
-              ? "bg-slate-900 text-white shadow-sm"
-              : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+              ? "bg-moss-700 text-paper-raised shadow-xs"
+              : "bg-paper-inset/50 text-ink-muted hover:text-ink hover:bg-paper-inset border border-line"
           }`}
         >
           All Phases ({totalTasks})
@@ -157,8 +157,8 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
               onClick={() => setSelectedPhaseFilter(p)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
                 selectedPhaseFilter === p
-                  ? "bg-emerald-600 text-white shadow-sm"
-                  : "bg-slate-100 text-slate-600 hover:text-slate-900 hover:bg-slate-200"
+                  ? "bg-moss-700 text-paper-raised shadow-xs"
+                  : "bg-paper-inset/50 text-ink-muted hover:text-ink hover:bg-paper-inset border border-line"
               }`}
             >
               {PHASE_CONFIG[p].label} ({count})
@@ -176,16 +176,16 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
           const config = PHASE_CONFIG[phase];
           return (
             <div key={phase} className="space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-1">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-line gap-1">
                 <div>
-                  <h3 className="text-sm sm:text-base font-extrabold text-slate-900 flex items-center space-x-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
+                  <h3 className="font-serif text-sm sm:text-base font-bold text-ink flex items-center space-x-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-moss-600" />
                     <span>{config.label}</span>
                   </h3>
-                  <p className="text-xs text-slate-500">{config.description}</p>
+                  <p className="text-xs text-ink-muted">{config.description}</p>
                 </div>
                 <span
-                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border self-start sm:self-auto ${config.badgeColor}`}
+                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border self-start sm:self-auto font-mono ${config.badgeColor}`}
                 >
                   {phaseItems.length} tasks
                 </span>
@@ -198,41 +198,41 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
                     <div
                       key={item.task_id}
                       onClick={() => toggleTask(item.task_id)}
-                      className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-start space-x-3.5 ${
+                      className={`p-4 rounded-xl border transition-all cursor-pointer flex items-start space-x-3.5 card-hover ${
                         isChecked
-                          ? "bg-slate-50/80 border-slate-200 text-slate-400"
-                          : "bg-white border-slate-200/90 hover:border-emerald-300 hover:bg-emerald-50/10 text-slate-900 shadow-sm"
+                          ? "bg-paper-inset/30 border-line/60 text-ink-faint"
+                          : "bg-paper-raised border-line hover:border-moss-400 text-ink shadow-xs"
                       }`}
                     >
                       <button
                         type="button"
                         aria-label={`Mark task ${item.title} as ${isChecked ? "incomplete" : "complete"}`}
-                        className="mt-0.5 text-emerald-600 focus:outline-none flex-shrink-0"
+                        className="mt-0.5 text-moss-600 focus:outline-none flex-shrink-0"
                       >
                         {isChecked ? (
-                          <CheckSquare className="w-5 h-5 text-emerald-600" />
+                          <CheckSquare className="w-5 h-5 text-moss-600" />
                         ) : (
-                          <Square className="w-5 h-5 text-slate-300 hover:text-emerald-500" />
+                          <Square className="w-5 h-5 text-ink-faint hover:text-moss-600" />
                         )}
                       </button>
 
                       <div className="flex-1 min-w-0">
                         <div className="flex flex-wrap items-center gap-2 mb-1">
                           <span
-                            className={`font-bold text-sm ${
+                            className={`font-semibold text-sm ${
                               isChecked
-                                ? "line-through text-slate-400"
-                                : "text-slate-900"
+                                ? "line-through text-ink-faint"
+                                : "text-ink"
                             }`}
                           >
                             {item.title}
                           </span>
-                          <span className="px-2 py-0.5 rounded-md bg-slate-100 border border-slate-200 text-[10px] font-bold text-slate-600">
+                          <span className="px-2 py-0.5 rounded-md bg-paper-inset text-[10px] font-bold text-ink-muted border border-line">
                             {formatCategory(item.category)}
                           </span>
                           {item.deadline_relative && (
-                            <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-50 border border-slate-200 text-[10px] text-slate-500 font-medium">
-                              <Clock className="w-3 h-3 text-slate-400" />
+                            <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-paper-inset/40 border border-line text-[10px] text-ink-muted font-mono">
+                              <Clock className="w-3 h-3 text-ink-muted" />
                               <span>
                                 {convertTextTimesTo12Hour(
                                   item.deadline_relative,
@@ -241,8 +241,8 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
                             </span>
                           )}
                           {item.is_sustainability_action && (
-                            <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">
-                              <Leaf className="w-3 h-3 text-emerald-600" />
+                            <span className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-moss-50 text-moss-800 border border-moss-200 text-[10px] font-bold">
+                              <Leaf className="w-3 h-3 text-moss-600" />
                               <span>Green Action</span>
                             </span>
                           )}
@@ -251,7 +251,7 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
                         {item.description && (
                           <p
                             className={`text-xs ${
-                              isChecked ? "text-slate-400" : "text-slate-600"
+                              isChecked ? "text-ink-faint" : "text-ink-muted"
                             }`}
                           >
                             {item.description}
@@ -259,7 +259,7 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
                         )}
 
                         {item.notes && (
-                          <p className="text-[11px] text-slate-400 mt-1 italic">
+                          <p className="text-[11px] text-ink-muted mt-1 italic">
                             Note: {item.notes}
                           </p>
                         )}
@@ -267,7 +267,7 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
 
                       {item.is_suggestion && (
                         <div className="flex-shrink-0 self-center">
-                          <span className="text-[10px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+                          <span className="text-[10px] font-medium text-ink-muted bg-paper-inset/40 px-2 py-0.5 rounded border border-line">
                             Suggested
                           </span>
                         </div>

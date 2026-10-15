@@ -1,6 +1,4 @@
-# ==========================================
-# Python & Virtual Environments
-# ==========================================
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -22,36 +20,34 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-.venv/
+.venv
 venv/
 ENV/
 .pytest_cache/
 .coverage
 htmlcov/
 
-# ==========================================
-# Node.js & Frontend Build Outputs
-# ==========================================
+# Node / Frontend
 node_modules/
+frontend/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 frontend/dist/
 frontend/dist-ssr/
+dist/
 *.local
+*.timestamp-*.mjs
+*.timestamp-*.js
 
-# ==========================================
-# Environment Variables & Secrets
-# ==========================================
+# Environment & Secret files
 .env
 .env.local
 .env.*.local
 *.pem
 *.key
 
-# ==========================================
-# IDE & Operating System Files
-# ==========================================
+# IDE & Editor
 .vscode/
 .idea/
 *.swp
@@ -60,22 +56,14 @@ frontend/dist-ssr/
 .DS_Store
 Thumbs.db
 
-# ==========================================
 # Database & Logs
-# ==========================================
 *.sqlite3
 *.log
 logs/
 
-# ==========================================
-# Docker Local Overrides & Data Caches
-# ==========================================
-docker-compose.override.yml
-.docker/
-
-# ==========================================
 # Planning, Roadmaps & Scratch Documents
-# ==========================================
+plan.md
+plans.md
 *plan*.md
 *PLAN*.md
 docs/*plan*.md

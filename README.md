@@ -88,19 +88,26 @@ ESC PROJECT/
 - Pure calculation engine (`WasteCalculator`), rule-based recommendations (`WasteRulesEngine`), orchestrator (`WastePlanningService`), and `POST /api/v1/planning/waste` API endpoint
 - Complete automated test suite passing (123 total backend tests passing)
 
-### PHASE 3 STATUS (Frontend & Motion Experience):
+### FRONTEND & DESIGN SYSTEM (Field Notebook UI):
+- **Field Notebook Design Language**:
+  - Curated, organic palette: warm paper (`#F8F5EE`), deep ink (`#1E231F`), forest moss (`#2D5A3D`), and terra-cotta clay (`#C46849`).
+  - Editorial typography: **Fraunces** serif for headings, **Plus Jakarta Sans** for interfaces, and **JetBrains Mono** for metrics and financial ledgers.
+  - Physical stationery aesthetics: `.surface-sheet`, `.label-kicker`, delicate rules, and tactile notebook shadow tokens.
+
 - **Full 7-Step Planning Wizard** (`frontend/src/pages/`):
-  1. **Event Setup**: Type, name, attendee headcount, duration, and venue context.
-  2. **Budget Calibration**: Currency and budget limits with real-time variance monitoring.
-  3. **Preferences & Constraints**: User-prioritized rules (Must Have, Avoid, Would Be Nice).
-  4. **Food Planning**: Meal selection, dietary split (veg/non-veg), caterer cost approaches, and waste projections.
-  5. **Waste Planning**: Streamlined MVP UX across food, packaging, plastic, and general waste with actionable reduction recommendations.
-  6. **Plan Alternatives**: Side-by-side comparison of Balanced, Budget-Optimized, and Eco-Focused options.
-  7. **Complete Event Plan**: Chronological day-of-event timetable, vendor checklists, and exportable operational guides.
-- **Cinematic Eco-Modern Motion System**:
-  - **Lenis Smooth Inertial Scrolling**: Momentum scrolling across the application with an ambient `2.5px` emerald reading progress beam and elevated glassmorphic navbar.
-  - **Ambient Eco-Particle Canvas**: Interactive HTML5 2D canvas with organic constellation links, mouse proximity aura, and Retina DPI scaling.
-  - **Anime.js Kinetic Micro-Interactions**: Real-time numerical tweening (`<AnimatedCounter />`) with spring physics for portions, expenditures, and waste mass, plus staggered entrance choreography.
+  1. **Event Setup**: Type selection via illustrated tiles, attendee headcount, duration, and venue context.
+  2. **Budget Calibration**: Currency and ceiling limits with real-time variance monitoring and honest deficit reporting.
+  3. **Preferences & Constraints**: User-prioritized rules with clear preference tags (*Must Have*, *Avoid*, *Would Be Nice*, *Flexible*).
+  4. **Food Planning**: Meal selection, dietary split sliders (veg/non-veg), caterer pricing modes, and edible surplus projections.
+  5. **Waste Planning**: Streamlined item-based calculations across packaging, plastic, and general waste streams with reference benchmark transparency.
+  6. **Plan Alternatives & Decision Ledger**: Multi-objective alternative cards (*Cost-First Ledger*, *Pragmatic Balance*, *Maximum Circularity*) with spend-vs-waste trade-off meters and comprehensive side-by-side comparison.
+  7. **Run of Show / Complete Event Plan**: Authentic chronological vertical spine timetable, interactive operational execution checklist with session tracking, 3-column resource manifest, budget ledger, sustainability verification criteria, and print-optimized (`@media print`) physical day sheet.
+
+- **Accessible Motion System (Anime.js + Lenis)**:
+  - **Accessibility Compliance**: Dedicated `prefersReducedMotion()` utility respecting operating system and browser accessibility settings.
+  - **Lenis Smooth Inertial Scrolling**: Momentum scrolling across the application with route-based scroll reset and an ambient gradient reading beam (hidden during print).
+  - **Kinetic Micro-Interactions**: Real-time numerical tweening (`<AnimatedCounter />`) with spring physics for portions, expenditures, and waste mass.
+  - **Choreographed Feedback**: Elastic active step pulse in wizard navigation, plan selection pulse, and staggered entrance reveals for alternative cards.
 
 ---
 

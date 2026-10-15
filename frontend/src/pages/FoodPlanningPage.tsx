@@ -394,31 +394,28 @@ export const FoodPlanningPage: React.FC = () => {
       <WizardProgress currentStep={4} eventId={event?.id || Number(eventId)} />
       <EventSummaryBanner event={event} budget={budget} />
 
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10">
+      <div className="surface-sheet p-6 sm:p-10">
         {/* Page Heading & Introduction */}
-        <div className="border-b border-slate-100 pb-6 mb-8">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-3 border border-emerald-200">
-            <Utensils className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Step 4 of 6 • Food Planning</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="border-b border-line pb-6 mb-8">
+          <p className="label-kicker mb-2">Step 04 / Food Planning</p>
+          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight">
             Plan Your Event Food
           </h1>
-          <p className="text-slate-600 text-sm mt-1.5 max-w-2xl">
+          <p className="text-ink-muted text-sm mt-1.5 max-w-2xl leading-relaxed">
             Choose the meals you want to serve. We'll estimate the food
             quantity, cost, and possible food waste for your event.
           </p>
 
           {/* Event Details Context */}
           {event && (
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-slate-500 bg-slate-50 border border-slate-200/80 rounded-xl px-4 py-2.5">
-              <span className="font-semibold text-slate-700 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-slate-500" />
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted bg-paper-inset/40 border border-line rounded-xl px-4 py-2.5">
+              <span className="font-semibold text-ink flex items-center gap-1.5">
+                <Users className="w-3.5 h-3.5 text-ink-muted" />
                 {event.expected_attendees} Expected Attendees
               </span>
-              <span className="text-slate-300">•</span>
-              <span className="font-semibold text-slate-700 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-slate-500" />
+              <span className="text-line-strong">•</span>
+              <span className="font-semibold text-ink flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-ink-muted" />
                 {durationDays} {durationDays === 1 ? "Day Event" : "Days Event"}
               </span>
             </div>
@@ -429,9 +426,9 @@ export const FoodPlanningPage: React.FC = () => {
         {validationError && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm flex items-start space-x-2.5"
+            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
             <span>{validationError}</span>
           </div>
         )}
@@ -439,9 +436,9 @@ export const FoodPlanningPage: React.FC = () => {
         {apiError && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-sm flex items-start space-x-2.5"
+            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
             <span>{apiError}</span>
           </div>
         )}
@@ -451,10 +448,10 @@ export const FoodPlanningPage: React.FC = () => {
         {/* ========================================================================= */}
         <section className="mb-10">
           <div className="mb-4">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            <h2 className="font-display text-lg font-semibold text-ink">
               Which meals will you serve?
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-ink-muted mt-0.5">
               Select one or more meals for your attendees. You can serve
               different meals on each day.
             </p>
@@ -462,7 +459,7 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* Multi-Day Selector Tabs */}
           {durationDays > 1 && (
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-2 rounded-2xl border border-slate-200">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-paper-inset/40 p-2 rounded-2xl border border-line">
               <div className="flex flex-wrap gap-1.5">
                 {Array.from({ length: durationDays }, (_, i) => i + 1).map(
                   (dayNum) => {
@@ -475,15 +472,15 @@ export const FoodPlanningPage: React.FC = () => {
                         key={dayNum}
                         type="button"
                         onClick={() => setSelectedDay(dayNum)}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all focus:outline-none ${
+                        className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus:outline-none ${
                           isActive
-                            ? "bg-white text-emerald-800 shadow-sm border border-emerald-300"
-                            : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+                            ? "bg-paper-raised text-moss-800 shadow-sm border border-moss-300"
+                            : "text-ink-muted hover:text-ink hover:bg-paper-inset/60"
                         }`}
                       >
                         Day {dayNum}
                         {dayMealsCount > 0 && (
-                          <span className="ml-1.5 px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">
+                          <span className="ml-1.5 px-1.5 py-0.5 rounded-full bg-moss-100 text-moss-800 text-[10px] font-bold">
                             {dayMealsCount}
                           </span>
                         )}
@@ -497,7 +494,7 @@ export const FoodPlanningPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleCopyMealsToAllDays}
-                  className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 hover:underline px-2 py-1"
+                  className="text-[11px] font-semibold text-moss-700 hover:text-moss-800 hover:underline px-2 py-1"
                 >
                   Copy Day {selectedDay} meals to all days
                 </button>
@@ -515,21 +512,21 @@ export const FoodPlanningPage: React.FC = () => {
                   type="button"
                   onClick={() => handleToggleMeal(meal.type, selectedDay)}
                   aria-pressed={isSelected}
-                  className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none ${
+                  className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                     isSelected
-                      ? "border-emerald-600 bg-emerald-50/70 text-emerald-950 font-semibold ring-2 ring-emerald-500/20 shadow-sm"
-                      : "border-slate-200 bg-white hover:border-slate-300 text-slate-700"
+                      ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                      : "border-line bg-paper-raised hover:border-line-strong text-ink"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-slate-100/80 border border-slate-200/60">
+                    <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
                       {meal.icon}
                     </div>
                     <div
                       className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
                         isSelected
-                          ? "bg-emerald-600 border-emerald-600 text-white"
-                          : "border-slate-300 bg-white"
+                          ? "bg-moss-700 border-moss-700 text-paper-raised"
+                          : "border-line bg-paper-raised"
                       }`}
                     >
                       {isSelected && (
@@ -538,10 +535,10 @@ export const FoodPlanningPage: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <span className="block text-sm font-bold text-slate-900">
+                    <span className="block text-sm font-semibold text-ink">
                       {meal.label}
                     </span>
-                    <span className="text-xs text-slate-500 mt-0.5 block line-clamp-2">
+                    <span className="text-xs text-ink-muted mt-0.5 block line-clamp-2">
                       {meal.description}
                     </span>
                   </div>
@@ -551,17 +548,17 @@ export const FoodPlanningPage: React.FC = () => {
           </div>
 
           {/* Scheduled Meals Summary Pill */}
-          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-            <span className="font-bold text-slate-700">Scheduled:</span>
+          <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-ink-muted">
+            <span className="font-semibold text-ink">Scheduled:</span>
             {foodConfig.meals.length === 0 ? (
-              <span className="text-slate-400 italic">
+              <span className="text-ink-faint italic">
                 No meals selected yet. Please select at least one meal.
               </span>
             ) : (
               foodConfig.meals.map((m, idx) => (
                 <span
                   key={idx}
-                  className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 font-medium text-[11px] border border-slate-200"
+                  className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-paper-inset/60 text-ink font-medium text-[11px] border border-line"
                 >
                   <span>
                     {durationDays > 1 ? `Day ${m.day}: ` : ""}
@@ -576,12 +573,12 @@ export const FoodPlanningPage: React.FC = () => {
         {/* ========================================================================= */}
         {/* SECTION B — Food Preference */}
         {/* ========================================================================= */}
-        <section className="mb-10 pt-8 border-t border-slate-100">
+        <section className="mb-10 pt-8 border-t border-line">
           <div className="mb-4">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            <h2 className="font-display text-lg font-semibold text-ink">
               What food options will you offer?
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-ink-muted mt-0.5">
               Choose dietary preferences for your catering menu.
             </p>
           </div>
@@ -592,20 +589,20 @@ export const FoodPlanningPage: React.FC = () => {
                 id: "VEGETARIAN" as DietaryPreference,
                 label: "Vegetarian only",
                 description: "All meals served will be strictly vegetarian.",
-                icon: <Leaf className="w-5 h-5 text-emerald-600" />,
+                icon: <Leaf className="w-5 h-5 text-moss-700" />,
               },
               {
                 id: "NON_VEGETARIAN" as DietaryPreference,
                 label: "Non-vegetarian only",
                 description: "All meals will include non-vegetarian dishes.",
-                icon: <Flame className="w-5 h-5 text-amber-600" />,
+                icon: <Flame className="w-5 h-5 text-clay-600" />,
               },
               {
                 id: "MIXED" as DietaryPreference,
                 label: "Both options",
                 description:
                   "Offer both vegetarian and non-vegetarian choices.",
-                icon: <Users className="w-5 h-5 text-sky-600" />,
+                icon: <Users className="w-5 h-5 text-moss-600" />,
               },
             ].map((opt) => {
               const isSelected =
@@ -616,21 +613,21 @@ export const FoodPlanningPage: React.FC = () => {
                   type="button"
                   onClick={() => handleDietaryChange(opt.id)}
                   aria-pressed={isSelected}
-                  className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none ${
+                  className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                     isSelected
-                      ? "border-emerald-600 bg-emerald-50/70 text-emerald-950 font-semibold ring-2 ring-emerald-500/20 shadow-sm"
-                      : "border-slate-200 bg-white hover:border-slate-300 text-slate-700"
+                      ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                      : "border-line bg-paper-raised hover:border-line-strong text-ink"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-slate-100/80 border border-slate-200/60">
+                    <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
                       {opt.icon}
                     </div>
                     <div
                       className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
                         isSelected
-                          ? "bg-emerald-600 border-emerald-600 text-white"
-                          : "border-slate-300 bg-white"
+                          ? "bg-moss-700 border-moss-700 text-paper-raised"
+                          : "border-line bg-paper-raised"
                       }`}
                     >
                       {isSelected && (
@@ -639,10 +636,10 @@ export const FoodPlanningPage: React.FC = () => {
                     </div>
                   </div>
                   <div>
-                    <span className="block text-sm font-bold text-slate-900">
+                    <span className="block text-sm font-semibold text-ink">
                       {opt.label}
                     </span>
-                    <span className="text-xs text-slate-500 mt-0.5 block">
+                    <span className="text-xs text-ink-muted mt-0.5 block">
                       {opt.description}
                     </span>
                   </div>
@@ -653,15 +650,15 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* If "Both options" is selected: Configurable Vegetarian Ratio */}
           {foodConfig.default_dietary_preference === "MIXED" && (
-            <div className="mt-4 p-5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div className="mt-4 p-5 rounded-2xl bg-paper-inset/40 border border-line">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                 <label
                   htmlFor="veg-split-slider"
-                  className="text-xs font-bold uppercase tracking-wider text-slate-700"
+                  className="text-xs font-mono uppercase tracking-wider text-ink-muted"
                 >
                   Vegetarian Portion Ratio
                 </label>
-                <span className="text-xs font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200">
+                <span className="text-xs font-bold text-moss-800 bg-moss-100 px-2.5 py-1 rounded-full border border-moss-200">
                   {Math.round(Number(foodConfig.vegetarian_ratio || 0.7) * 100)}
                   % Vegetarian •{" "}
                   {100 -
@@ -685,16 +682,16 @@ export const FoodPlanningPage: React.FC = () => {
                     vegetarian_ratio: e.target.value,
                   }))
                 }
-                className="w-full accent-emerald-600 cursor-pointer"
+                className="w-full accent-moss-700 cursor-pointer"
               />
 
-              <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1.5">
+              <div className="flex items-center justify-between text-[11px] text-ink-faint mt-1.5">
                 <span>All Non-Veg (0%)</span>
                 <span>Standard Campus Benchmark (70%)</span>
                 <span>All Veg (100%)</span>
               </div>
 
-              <p className="text-xs text-slate-500 mt-3">
+              <p className="text-xs text-ink-muted mt-3">
                 We use this ratio to calculate portion requirements for
                 vegetarian and non-vegetarian catering.
               </p>
@@ -705,12 +702,12 @@ export const FoodPlanningPage: React.FC = () => {
         {/* ========================================================================= */}
         {/* SECTION C — Food Budget */}
         {/* ========================================================================= */}
-        <section className="mb-10 pt-8 border-t border-slate-100">
+        <section className="mb-10 pt-8 border-t border-line">
           <div className="mb-4">
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">
+            <h2 className="font-display text-lg font-semibold text-ink">
               What's your food budget?
             </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-ink-muted mt-0.5">
               You can set a dedicated food budget or let the system calculate
               catering costs automatically.
             </p>
@@ -721,21 +718,21 @@ export const FoodPlanningPage: React.FC = () => {
               type="button"
               onClick={() => handleBudgetModeChange("ESTIMATE")}
               aria-pressed={foodConfig.budgetMode !== "ENTER"}
-              className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none ${
+              className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                 foodConfig.budgetMode !== "ENTER"
-                  ? "border-emerald-600 bg-emerald-50/70 text-emerald-950 font-semibold ring-2 ring-emerald-500/20 shadow-sm"
-                  : "border-slate-200 bg-white hover:border-slate-300 text-slate-700"
+                  ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                  : "border-line bg-paper-raised hover:border-line-strong text-ink"
               }`}
             >
               <div className="flex items-start justify-between gap-2 mb-3">
-                <div className="p-2 rounded-xl bg-slate-100/80 border border-slate-200/60">
-                  <Calculator className="w-5 h-5 text-emerald-600" />
+                <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
+                  <Calculator className="w-5 h-5 text-moss-700" />
                 </div>
                 <div
                   className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
                     foodConfig.budgetMode !== "ENTER"
-                      ? "bg-emerald-600 border-emerald-600 text-white"
-                      : "border-slate-300 bg-white"
+                      ? "bg-moss-700 border-moss-700 text-paper-raised"
+                      : "border-line bg-paper-raised"
                   }`}
                 >
                   {foodConfig.budgetMode !== "ENTER" && (
@@ -745,14 +742,14 @@ export const FoodPlanningPage: React.FC = () => {
               </div>
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="block text-sm font-bold text-slate-900">
+                  <span className="block text-sm font-semibold text-ink">
                     Estimate it for me
                   </span>
-                  <span className="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                  <span className="px-1.5 py-0.5 rounded bg-moss-100 text-moss-800 text-[10px] font-bold">
                     Recommended
                   </span>
                 </div>
-                <span className="text-xs text-slate-500 mt-0.5 block">
+                <span className="text-xs text-ink-muted mt-0.5 block">
                   Estimate catering costs automatically using verified campus
                   benchmarks.
                 </span>
@@ -763,21 +760,21 @@ export const FoodPlanningPage: React.FC = () => {
               type="button"
               onClick={() => handleBudgetModeChange("ENTER")}
               aria-pressed={foodConfig.budgetMode === "ENTER"}
-              className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none ${
+              className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                 foodConfig.budgetMode === "ENTER"
-                  ? "border-emerald-600 bg-emerald-50/70 text-emerald-950 font-semibold ring-2 ring-emerald-500/20 shadow-sm"
-                  : "border-slate-200 bg-white hover:border-slate-300 text-slate-700"
+                  ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                  : "border-line bg-paper-raised hover:border-line-strong text-ink"
               }`}
             >
               <div className="flex items-start justify-between gap-2 mb-3">
-                <div className="p-2 rounded-xl bg-slate-100/80 border border-slate-200/60">
-                  <Wallet className="w-5 h-5 text-indigo-600" />
+                <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
+                  <Wallet className="w-5 h-5 text-ink-muted" />
                 </div>
                 <div
                   className={`w-5 h-5 rounded-full border flex items-center justify-center transition-colors ${
                     foodConfig.budgetMode === "ENTER"
-                      ? "bg-emerald-600 border-emerald-600 text-white"
-                      : "border-slate-300 bg-white"
+                      ? "bg-moss-700 border-moss-700 text-paper-raised"
+                      : "border-line bg-paper-raised"
                   }`}
                 >
                   {foodConfig.budgetMode === "ENTER" && (
@@ -786,10 +783,10 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
               </div>
               <div>
-                <span className="block text-sm font-bold text-slate-900">
+                <span className="block text-sm font-semibold text-ink">
                   I'll enter my food budget
                 </span>
-                <span className="text-xs text-slate-500 mt-0.5 block">
+                <span className="text-xs text-ink-muted mt-0.5 block">
                   Set a specific spending limit dedicated to food and catering.
                 </span>
               </div>
@@ -798,15 +795,15 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* If user chooses to enter food budget */}
           {foodConfig.budgetMode === "ENTER" && (
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+            <div className="p-5 rounded-2xl bg-paper-inset/40 border border-line space-y-2">
               <label
                 htmlFor="food-budget-input"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700"
+                className="block text-xs font-mono uppercase tracking-wider text-ink-muted"
               >
                 Food Budget Amount (₹)
               </label>
               <div className="relative max-w-sm">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 font-bold text-sm">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-ink-faint font-bold text-sm">
                   ₹
                 </span>
                 <input
@@ -822,10 +819,10 @@ export const FoodPlanningPage: React.FC = () => {
                       food_budget: e.target.value,
                     }))
                   }
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600"
                 />
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-ink-muted mt-1">
                 Note: This food budget is dedicated to catering and is separate
                 from your overall event budget.
               </p>
@@ -836,39 +833,39 @@ export const FoodPlanningPage: React.FC = () => {
         {/* ========================================================================= */}
         {/* SECTION D — Optional Customization */}
         {/* ========================================================================= */}
-        <section className="mb-10 pt-8 border-t border-slate-100">
+        <section className="mb-10 pt-8 border-t border-line">
           <button
             type="button"
             onClick={() => setIsCustomizationOpen(!isCustomizationOpen)}
-            className="w-full flex items-center justify-between p-4 rounded-2xl bg-slate-50 hover:bg-slate-100/80 border border-slate-200 transition-colors focus:outline-none"
+            className="w-full flex items-center justify-between p-4 rounded-2xl bg-paper-inset/30 hover:bg-paper-inset/60 border border-line transition-colors focus:outline-none cursor-pointer"
             aria-expanded={isCustomizationOpen}
           >
             <div className="text-left">
-              <h3 className="text-sm font-bold text-slate-900">
+              <h3 className="text-sm font-semibold text-ink">
                 Adjust your food estimates (Optional)
               </h3>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-ink-muted mt-0.5">
                 Only change these settings if you have more information.
               </p>
             </div>
-            <div className="p-1 rounded-lg text-slate-400">
+            <div className="p-1 rounded-lg text-ink-muted">
               {isCustomizationOpen ? (
-                <ChevronUp className="w-5 h-5 text-slate-600" />
+                <ChevronUp className="w-5 h-5 text-ink" />
               ) : (
-                <ChevronDown className="w-5 h-5 text-slate-600" />
+                <ChevronDown className="w-5 h-5 text-ink" />
               )}
             </div>
           </button>
 
           {isCustomizationOpen && (
-            <div className="mt-4 p-5 rounded-2xl bg-slate-50/60 border border-slate-200 space-y-6">
+            <div className="mt-4 p-5 rounded-2xl bg-paper-inset/20 border border-line space-y-6">
               {/* Subsection 1: How many people will eat? */}
               {foodConfig.meals.length > 0 && (
                 <div>
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-ink-muted mb-1">
                     How many people will eat?
                   </h4>
-                  <p className="text-xs text-slate-500 mb-3">
+                  <p className="text-xs text-ink-muted mb-3">
                     Meal attendance may be lower than total event attendance
                     (for example, some attendees may arrive later or skip
                     certain meals). You can optionally adjust expected
@@ -891,9 +888,9 @@ export const FoodPlanningPage: React.FC = () => {
                       return (
                         <div
                           key={index}
-                          className="p-3.5 bg-white rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                          className="p-3.5 bg-paper-raised rounded-xl border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
                         >
-                          <div className="font-semibold text-slate-800">
+                          <div className="font-semibold text-ink">
                             {durationDays > 1 ? `Day ${meal.day} • ` : ""}
                             {meal.meal_type.charAt(0) +
                               meal.meal_type.slice(1).toLowerCase()}
@@ -904,7 +901,7 @@ export const FoodPlanningPage: React.FC = () => {
                             <div className="flex items-center space-x-1.5">
                               <label
                                 htmlFor={`meal-attendance-${index}`}
-                                className="text-slate-600 font-medium text-[11px]"
+                                className="text-ink-muted font-medium text-[11px]"
                               >
                                 Expected meal attendance:
                               </label>
@@ -923,7 +920,7 @@ export const FoodPlanningPage: React.FC = () => {
                                       : undefined,
                                   )
                                 }
-                                className="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                className="w-24 px-2.5 py-1.5 rounded-lg border border-line text-xs text-ink bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                               />
                             </div>
 
@@ -931,7 +928,7 @@ export const FoodPlanningPage: React.FC = () => {
                             <div className="flex items-center space-x-1.5">
                               <label
                                 htmlFor={`meal-percent-${index}`}
-                                className="text-slate-600 font-medium text-[11px]"
+                                className="text-ink-muted font-medium text-[11px]"
                               >
                                 Attendance rate:
                               </label>
@@ -961,9 +958,9 @@ export const FoodPlanningPage: React.FC = () => {
                                       );
                                     }
                                   }}
-                                  className="w-20 pl-2.5 pr-6 py-1.5 rounded-lg border border-slate-300 text-xs text-slate-900 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                                  className="w-20 pl-2.5 pr-6 py-1.5 rounded-lg border border-line text-xs text-ink bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                                 />
-                                <span className="absolute right-2 text-slate-400 font-bold text-xs pointer-events-none">
+                                <span className="absolute right-2 text-ink-faint font-bold text-xs pointer-events-none">
                                   %
                                 </span>
                               </div>
@@ -977,11 +974,11 @@ export const FoodPlanningPage: React.FC = () => {
               )}
 
               {/* Subsection 2: Do you already have a caterer's price? */}
-              <div className="pt-4 border-t border-slate-200">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+              <div className="pt-4 border-t border-line">
+                <h4 className="text-xs font-mono uppercase tracking-wider text-ink-muted mb-1">
                   Do you already have a caterer's price?
                 </h4>
-                <p className="text-xs text-slate-500 mb-3">
+                <p className="text-xs text-ink-muted mb-3">
                   If you already have a quote from your catering vendor, select
                   how your caterer charges.
                 </p>
@@ -1013,14 +1010,14 @@ export const FoodPlanningPage: React.FC = () => {
                           costApproach: opt.id as any,
                         }))
                       }
-                      className={`text-left p-3 rounded-xl border text-xs transition-all focus:outline-none ${
+                      className={`text-left p-3 rounded-xl border text-xs transition-all focus:outline-none cursor-pointer ${
                         foodConfig.costApproach === opt.id
-                          ? "border-emerald-600 bg-emerald-50 text-emerald-950 font-bold shadow-sm"
-                          : "border-slate-200 bg-white text-slate-700 hover:border-slate-300"
+                          ? "border-moss-600 bg-moss-50 text-moss-950 font-bold shadow-sm"
+                          : "border-line bg-paper-raised text-ink hover:border-line-strong"
                       }`}
                     >
-                      <span className="block font-bold">{opt.label}</span>
-                      <span className="text-[11px] text-slate-500 mt-0.5 block">
+                      <span className="block font-semibold">{opt.label}</span>
+                      <span className="text-[11px] text-ink-muted mt-0.5 block">
                         {opt.desc}
                       </span>
                     </button>
@@ -1029,16 +1026,16 @@ export const FoodPlanningPage: React.FC = () => {
 
                 {/* Price per person or serving: amount and unit selector */}
                 {foodConfig.costApproach === "UNIT" && (
-                  <div className="mt-3 p-4 rounded-xl bg-white border border-slate-200 max-w-md space-y-2">
+                  <div className="mt-3 p-4 rounded-xl bg-paper-raised border border-line max-w-md space-y-2">
                     <label
                       htmlFor="known-unit-cost-input"
-                      className="block text-[11px] font-bold uppercase tracking-wider text-slate-700"
+                      className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted"
                     >
                       Price per person or serving
                     </label>
                     <div className="flex flex-wrap items-center gap-2">
                       <div className="relative flex-1 min-w-[140px]">
-                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">
+                        <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-ink-faint font-bold text-xs">
                           ₹
                         </span>
                         <input
@@ -1053,7 +1050,7 @@ export const FoodPlanningPage: React.FC = () => {
                               known_unit_cost: e.target.value,
                             }))
                           }
-                          className="w-full pl-7 pr-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                          className="w-full pl-7 pr-3 py-2 rounded-lg border border-line text-xs font-semibold bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                         />
                       </div>
                       <select
@@ -1066,7 +1063,7 @@ export const FoodPlanningPage: React.FC = () => {
                               .value as FoodPricingUnit,
                           }))
                         }
-                        className="px-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        className="px-3 py-2 rounded-lg border border-line text-xs font-semibold bg-paper-raised text-ink focus:outline-none focus:ring-1 focus:ring-moss-600"
                       >
                         <option value="PER_PERSON">per person</option>
                         <option value="PER_SERVING">per serving</option>
@@ -1077,15 +1074,15 @@ export const FoodPlanningPage: React.FC = () => {
 
                 {/* Total catering price: single total amount field */}
                 {foodConfig.costApproach === "TOTAL" && (
-                  <div className="mt-3 p-4 rounded-xl bg-white border border-slate-200 max-w-md space-y-2">
+                  <div className="mt-3 p-4 rounded-xl bg-paper-raised border border-line max-w-md space-y-2">
                     <label
                       htmlFor="known-total-cost-input"
-                      className="block text-[11px] font-bold uppercase tracking-wider text-slate-700"
+                      className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted"
                     >
                       Total catering price
                     </label>
                     <div className="relative">
-                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold text-xs">
+                      <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-ink-faint font-bold text-xs">
                         ₹
                       </span>
                       <input
@@ -1100,7 +1097,7 @@ export const FoodPlanningPage: React.FC = () => {
                             known_total_cost: e.target.value,
                           }))
                         }
-                        className="w-full pl-7 pr-3 py-2 rounded-lg border border-slate-300 text-xs font-semibold bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                        className="w-full pl-7 pr-3 py-2 rounded-lg border border-line text-xs font-semibold bg-paper-raised text-ink focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                       />
                     </div>
                   </div>
@@ -1113,13 +1110,13 @@ export const FoodPlanningPage: React.FC = () => {
         {/* ========================================================================= */}
         {/* SECTION E — Explicit Calculation */}
         {/* ========================================================================= */}
-        <section className="mb-10 pt-8 border-t border-slate-100">
+        <section className="mb-10 pt-8 border-t border-line">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-base sm:text-lg font-bold text-slate-900">
+              <h2 className="font-display text-lg font-semibold text-ink">
                 Food Estimation & Waste Projections
               </h2>
-              <p className="text-xs text-slate-500 mt-0.5">
+              <p className="text-xs text-ink-muted mt-0.5">
                 Calculate portion counts, catering costs, and food waste
                 projections based on your selections.
               </p>
@@ -1129,7 +1126,7 @@ export const FoodPlanningPage: React.FC = () => {
               type="button"
               onClick={handleCalculateFoodEstimates}
               disabled={isCalculating}
-              className="inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
+              className="inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-2xl bg-moss-700 hover:bg-moss-800 disabled:bg-moss-300 text-paper-raised font-bold text-sm shadow-sm transition-all focus:outline-none cursor-pointer"
             >
               {isCalculating ? (
                 <>
@@ -1147,12 +1144,12 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* State Before Calculation */}
           {!foodPlanResponse && !isCalculating && (
-            <div className="p-8 rounded-2xl border border-dashed border-slate-200 bg-slate-50/60 text-center">
-              <Utensils className="w-8 h-8 text-slate-400 mx-auto mb-2" />
-              <p className="text-sm font-semibold text-slate-700">
+            <div className="p-8 rounded-2xl border border-dashed border-line bg-paper-inset/30 text-center">
+              <Utensils className="w-8 h-8 text-ink-faint mx-auto mb-2" />
+              <p className="text-sm font-semibold text-ink">
                 Select your meals and calculate to see your food estimates.
               </p>
-              <p className="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+              <p className="text-xs text-ink-muted mt-1 max-w-md mx-auto">
                 We'll project required servings, estimated catering expenditure,
                 and expected surplus waste using verified campus benchmarks.
               </p>
@@ -1165,14 +1162,14 @@ export const FoodPlanningPage: React.FC = () => {
               {/* Primary Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* 1. Servings Card */}
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-2xl p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Estimated Servings
                     </span>
-                    <Utensils className="w-4 h-4 text-emerald-600" />
+                    <Utensils className="w-4 h-4 text-moss-700" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink">
                     {foodPlanResponse.total_estimated_servings !== null &&
                     foodPlanResponse.total_estimated_servings !== undefined ? (
                       <AnimatedCounter
@@ -1186,15 +1183,15 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.total_veg_servings != null &&
                     foodPlanResponse.total_non_veg_servings != null &&
                     foodPlanResponse.total_non_veg_servings > 0 && (
-                      <div className="text-xs text-slate-500 mt-1.5 flex items-center gap-1.5">
-                        <span className="text-emerald-700 font-semibold">
+                      <div className="text-xs text-ink-muted mt-1.5 flex items-center gap-1.5">
+                        <span className="text-moss-700 font-semibold">
                           <AnimatedCounter
                             value={foodPlanResponse.total_veg_servings}
                             suffix=" veg"
                           />
                         </span>
                         <span>•</span>
-                        <span className="text-amber-700 font-semibold">
+                        <span className="text-clay-700 font-semibold">
                           <AnimatedCounter
                             value={foodPlanResponse.total_non_veg_servings}
                             suffix=" non-veg"
@@ -1202,21 +1199,21 @@ export const FoodPlanningPage: React.FC = () => {
                         </span>
                       </div>
                     )}
-                  <p className="text-[11px] text-slate-500 mt-2">
+                  <p className="text-[11px] text-ink-muted mt-2">
                     Calculated from attendee count and participation rate
                     assumptions.
                   </p>
                 </div>
 
                 {/* 2. Food Cost Card */}
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-2xl p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Estimated Food Cost
                     </span>
-                    <Wallet className="w-4 h-4 text-indigo-600" />
+                    <Wallet className="w-4 h-4 text-ink-muted" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink">
                     {foodPlanResponse.cost_summary.estimated_total_cost !==
                       null &&
                     foodPlanResponse.cost_summary.estimated_total_cost !==
@@ -1234,7 +1231,7 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.cost_summary.cost_per_attendee !== null &&
                     foodPlanResponse.cost_summary.cost_per_attendee !==
                       undefined && (
-                      <div className="text-xs text-slate-500 mt-1.5 font-medium">
+                      <div className="text-xs text-ink-muted mt-1.5 font-medium">
                         <AnimatedCounter
                           value={
                             foodPlanResponse.cost_summary.cost_per_attendee
@@ -1246,8 +1243,8 @@ export const FoodPlanningPage: React.FC = () => {
                       </div>
                     )}
                   {foodPlanResponse.cost_summary.is_over_budget ? (
-                    <div className="mt-2 text-[11px] font-bold text-rose-700 flex items-center space-x-1">
-                      <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                    <div className="mt-2 text-[11px] font-bold text-clay-700 flex items-center space-x-1">
+                      <AlertTriangle className="w-3.5 h-3.5 text-clay-600" />
                       <span>
                         ₹
                         {Number(
@@ -1257,12 +1254,12 @@ export const FoodPlanningPage: React.FC = () => {
                       </span>
                     </div>
                   ) : foodPlanResponse.cost_summary.food_budget ? (
-                    <div className="mt-2 text-[11px] font-semibold text-emerald-700 flex items-center space-x-1">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <div className="mt-2 text-[11px] font-semibold text-moss-700 flex items-center space-x-1">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-moss-600" />
                       <span>Within allocated food budget</span>
                     </div>
                   ) : (
-                    <p className="text-[11px] text-slate-500 mt-2">
+                    <p className="text-[11px] text-ink-muted mt-2">
                       Pricing:{" "}
                       {foodPlanResponse.cost_summary.pricing_approach
                         .toLowerCase()
@@ -1272,14 +1269,14 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 3. Food Waste Card */}
-                <div className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-2xl p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Expected Food Waste
                     </span>
-                    <Leaf className="w-4 h-4 text-emerald-600" />
+                    <Leaf className="w-4 h-4 text-moss-700" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink">
                     {foodPlanResponse.waste_summary.estimated_waste_servings !==
                       null &&
                     foodPlanResponse.waste_summary.estimated_waste_servings !==
@@ -1301,7 +1298,7 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.waste_summary.estimated_waste_kg !== null &&
                   foodPlanResponse.waste_summary.estimated_waste_kg !==
                     undefined ? (
-                    <div className="text-xs font-bold text-emerald-800 mt-1.5">
+                    <div className="text-xs font-bold text-moss-800 mt-1.5">
                       <AnimatedCounter
                         prefix="~"
                         value={
@@ -1312,13 +1309,13 @@ export const FoodPlanningPage: React.FC = () => {
                       />
                     </div>
                   ) : (
-                    <div className="text-[11px] text-amber-700 mt-1.5 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200">
+                    <div className="text-[11px] text-clay-700 mt-1.5 bg-clay-50 px-2 py-1 rounded-lg border border-clay-200">
                       Food waste in kilograms hasn't been estimated because a
                       serving-weight assumption is unavailable.
                     </div>
                   )}
 
-                  <p className="text-[11px] text-slate-500 mt-2">
+                  <p className="text-[11px] text-ink-muted mt-2">
                     Surplus buffer portions estimated to remain unconsumed.
                   </p>
                 </div>
@@ -1326,18 +1323,18 @@ export const FoodPlanningPage: React.FC = () => {
 
               {/* Actionable Recommendations (if any) */}
               {foodPlanResponse.recommendations.length > 0 && (
-                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2">
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-700 block">
+                <div className="bg-paper-inset/40 border border-line rounded-2xl p-4 space-y-2">
+                  <span className="text-xs font-mono uppercase tracking-wider text-ink-muted block">
                     Food Waste & Cost Recommendations
                   </span>
                   {foodPlanResponse.recommendations.map((rec, i) => (
                     <div
                       key={i}
-                      className="text-xs text-slate-600 flex items-start space-x-2"
+                      className="text-xs text-ink-muted flex items-start space-x-2"
                     >
-                      <Sparkles className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
+                      <Sparkles className="w-4 h-4 text-moss-700 flex-shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-slate-900">{rec.title}:</strong>{" "}
+                        <strong className="text-ink">{rec.title}:</strong>{" "}
                         {rec.description}
                       </div>
                     </div>
@@ -1350,9 +1347,9 @@ export const FoodPlanningPage: React.FC = () => {
                 foodPlanResponse.constraints_evaluation.filter(
                   (c) => c.status === "VIOLATED" || c.status === "WARNING",
                 ).length > 0 && (
-                  <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
-                    <span className="font-bold flex items-center gap-1.5 text-amber-800">
-                      <AlertTriangle className="w-4 h-4 text-amber-600" />
+                  <div className="p-4 rounded-2xl bg-clay-50 border border-clay-300 text-xs text-clay-900 space-y-1">
+                    <span className="font-bold flex items-center gap-1.5 text-clay-800">
+                      <AlertTriangle className="w-4 h-4 text-clay-600" />
                       Preference & Constraint Notices:
                     </span>
                     {foodPlanResponse.constraints_evaluation
@@ -1375,11 +1372,11 @@ export const FoodPlanningPage: React.FC = () => {
         {/* SECTION F — Explainable Estimates */}
         {/* ========================================================================= */}
         {foodPlanResponse && (
-          <section className="mb-10 pt-6 border-t border-slate-100">
+          <section className="mb-10 pt-6 border-t border-line">
             <button
               type="button"
               onClick={() => setIsExplainOpen(!isExplainOpen)}
-              className="inline-flex items-center space-x-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-800 focus:outline-none"
+              className="inline-flex items-center space-x-1.5 text-xs font-bold text-moss-700 hover:text-moss-800 focus:outline-none cursor-pointer"
               aria-expanded={isExplainOpen}
             >
               <span>How we calculated your food estimates</span>
@@ -1392,7 +1389,7 @@ export const FoodPlanningPage: React.FC = () => {
 
             {isExplainOpen && (
               <div className="mt-4 space-y-4">
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-ink-muted">
                   These estimates are based on your event size (
                   {foodPlanResponse.expected_attendees} attendees), your
                   selected meal schedule, and verified reference benchmarks or
@@ -1400,20 +1397,20 @@ export const FoodPlanningPage: React.FC = () => {
                 </p>
 
                 {/* 1. Estimated food servings */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-2">
+                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
                   <div className="flex items-center space-x-2">
-                    <Utensils className="w-4 h-4 text-emerald-600" />
-                    <h4 className="font-bold text-slate-900 text-sm">
+                    <Utensils className="w-4 h-4 text-moss-700" />
+                    <h4 className="font-semibold text-ink text-sm">
                       Estimated food servings
                     </h4>
                   </div>
-                  <p className="text-slate-600">
+                  <p className="text-ink-muted">
                     The number of servings needed is calculated from your
                     attendee count and the expected attendance rate for each
                     meal.
                   </p>
 
-                  <div className="bg-white rounded-xl p-3 border border-slate-200/80 space-y-1.5">
+                  <div className="bg-paper-raised rounded-xl p-3 border border-line space-y-1.5">
                     {foodPlanResponse.meal_plans.map((meal, idx) => {
                       const attendees = meal.attendee_count;
                       const partRate =
@@ -1431,10 +1428,10 @@ export const FoodPlanningPage: React.FC = () => {
                           key={idx}
                           className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1"
                         >
-                          <span className="font-semibold text-slate-800">
+                          <span className="font-semibold text-ink">
                             {meal.name || meal.meal_type}
                           </span>
-                          <span className="text-slate-600 font-mono text-[11px]">
+                          <span className="text-ink-muted font-mono text-[11px]">
                             {attendees} attendees{" "}
                             {partPct != null ? `× ${partPct}% attendance` : ""}{" "}
                             = {meal.estimated_servings} portions
@@ -1445,7 +1442,7 @@ export const FoodPlanningPage: React.FC = () => {
                   </div>
 
                   {foodPlanResponse.meal_plans.length > 1 && (
-                    <div className="text-xs font-semibold text-slate-800 pt-1">
+                    <div className="text-xs font-semibold text-ink pt-1">
                       Total across all {foodPlanResponse.meal_plans.length}{" "}
                       meals: {foodPlanResponse.total_estimated_servings}{" "}
                       portions
@@ -1455,7 +1452,7 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.total_veg_servings != null &&
                     foodPlanResponse.total_non_veg_servings != null &&
                     foodPlanResponse.total_non_veg_servings > 0 && (
-                      <p className="text-[11px] text-slate-500">
+                      <p className="text-[11px] text-ink-muted">
                         Dietary split: {foodPlanResponse.total_veg_servings}{" "}
                         vegetarian and {foodPlanResponse.total_non_veg_servings}{" "}
                         non-vegetarian portions.
@@ -1464,20 +1461,20 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 2. Estimated food cost */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-2">
+                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
                   <div className="flex items-center space-x-2">
-                    <Wallet className="w-4 h-4 text-indigo-600" />
-                    <h4 className="font-bold text-slate-900 text-sm">
+                    <Wallet className="w-4 h-4 text-ink-muted" />
+                    <h4 className="font-semibold text-ink text-sm">
                       Estimated food cost
                     </h4>
                   </div>
 
                   {foodPlanResponse.cost_summary.pricing_approach ===
                   "USER_PROVIDED_TOTAL" ? (
-                    <p className="text-slate-600">
+                    <p className="text-ink-muted">
                       Cost is based on your specified total catering contract
                       quote of{" "}
-                      <strong className="text-slate-900">
+                      <strong className="text-ink">
                         ₹
                         {Number(
                           foodPlanResponse.cost_summary.estimated_total_cost,
@@ -1488,10 +1485,10 @@ export const FoodPlanningPage: React.FC = () => {
                   ) : foodPlanResponse.cost_summary.pricing_approach ===
                     "USER_PROVIDED_UNIT" ? (
                     <div className="space-y-1.5">
-                      <p className="text-slate-600">
+                      <p className="text-ink-muted">
                         Cost is calculated from your entered rate per portion:
                       </p>
-                      <div className="bg-white rounded-xl p-3 border border-slate-200/80 font-mono text-slate-800 text-xs">
+                      <div className="bg-paper-raised rounded-xl p-3 border border-line font-mono text-ink text-xs">
                         {foodPlanResponse.total_estimated_servings} portions × ₹
                         {Number(foodConfig.known_unit_cost || 0)} per portion =
                         ₹
@@ -1503,20 +1500,20 @@ export const FoodPlanningPage: React.FC = () => {
                   ) : foodPlanResponse.cost_summary.estimated_total_cost !=
                     null ? (
                     <div className="space-y-2">
-                      <p className="text-slate-600">
+                      <p className="text-ink-muted">
                         Cost is estimated using reference catering rates for
                         campus events:
                       </p>
-                      <div className="bg-white rounded-xl p-3 border border-slate-200/80 space-y-1.5">
+                      <div className="bg-paper-raised rounded-xl p-3 border border-line space-y-1.5">
                         {foodPlanResponse.meal_plans.map((meal, idx) => (
                           <div
                             key={idx}
                             className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1"
                           >
-                            <span className="font-semibold text-slate-800">
+                            <span className="font-semibold text-ink">
                               {meal.name || meal.meal_type}
                             </span>
-                            <span className="text-slate-600 font-mono text-[11px]">
+                            <span className="text-ink-muted font-mono text-[11px]">
                               {meal.estimated_servings} portions × ₹
                               {Number(meal.unit_cost || 0).toFixed(2)} = ₹
                               {Number(meal.total_cost || 0).toLocaleString()}
@@ -1524,7 +1521,7 @@ export const FoodPlanningPage: React.FC = () => {
                           </div>
                         ))}
                       </div>
-                      <div className="text-xs font-semibold text-slate-800 flex justify-between pt-1">
+                      <div className="text-xs font-semibold text-ink flex justify-between pt-1">
                         <span>Total catering cost:</span>
                         <span>
                           ₹
@@ -1535,7 +1532,7 @@ export const FoodPlanningPage: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-amber-800 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                    <p className="text-clay-800 bg-clay-50 p-2.5 rounded-xl border border-clay-200">
                       Cost could not be calculated because reference pricing
                       assumptions are unavailable.
                     </p>
@@ -1543,10 +1540,10 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 3. Expected food waste */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-2">
+                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
                   <div className="flex items-center space-x-2">
-                    <Leaf className="w-4 h-4 text-emerald-600" />
-                    <h4 className="font-bold text-slate-900 text-sm">
+                    <Leaf className="w-4 h-4 text-moss-700" />
+                    <h4 className="font-semibold text-ink text-sm">
                       Expected food waste
                     </h4>
                   </div>
@@ -1554,11 +1551,11 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.waste_summary.waste_percentage_used !=
                   null ? (
                     <div className="space-y-2">
-                      <p className="text-slate-600">
+                      <p className="text-ink-muted">
                         Catering operations typically include a small surplus
                         buffer. Based on campus event reference data, an
                         estimated{" "}
-                        <strong className="text-slate-900">
+                        <strong className="text-ink">
                           {Math.round(
                             Number(
                               foodPlanResponse.waste_summary
@@ -1576,7 +1573,7 @@ export const FoodPlanningPage: React.FC = () => {
                         of prepared portions is expected to remain unconsumed.
                       </p>
 
-                      <div className="bg-white rounded-xl p-3 border border-slate-200/80 font-mono text-slate-800 text-xs space-y-1">
+                      <div className="bg-paper-raised rounded-xl p-3 border border-line font-mono text-ink text-xs space-y-1">
                         <div>
                           {foodPlanResponse.total_estimated_servings} portions ×{" "}
                           {Math.round(
@@ -1603,7 +1600,7 @@ export const FoodPlanningPage: React.FC = () => {
                           null &&
                         foodPlanResponse.waste_summary.serving_weight_kg_used !=
                           null ? (
-                          <div className="pt-1 text-slate-600 border-t border-slate-100">
+                          <div className="pt-1 text-ink-muted border-t border-line">
                             {
                               foodPlanResponse.waste_summary
                                 .estimated_waste_servings
@@ -1622,23 +1619,23 @@ export const FoodPlanningPage: React.FC = () => {
 
                       {foodPlanResponse.waste_summary.estimated_waste_kg ==
                         null && (
-                        <p className="text-[11px] text-slate-500 italic">
+                        <p className="text-[11px] text-ink-muted italic">
                           Food waste in kilograms was not calculated because an
                           average portion weight benchmark is not available.
                         </p>
                       )}
                     </div>
                   ) : (
-                    <p className="text-slate-500 italic">
+                    <p className="text-ink-muted italic">
                       Food waste estimates are currently unavailable.
                     </p>
                   )}
                 </div>
 
                 {/* Note below Expected Food Waste calculation */}
-                <div className="p-3 sm:p-3.5 rounded-xl bg-slate-50 border border-slate-200/90 text-slate-500 flex items-start space-x-2.5">
-                  <Info className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-[11px] sm:text-xs text-slate-500 leading-relaxed">
+                <div className="p-3 sm:p-3.5 rounded-xl bg-paper-inset/40 border border-line text-ink-muted flex items-start space-x-2.5">
+                  <Info className="w-4 h-4 text-ink-faint flex-shrink-0 mt-0.5" />
+                  <p className="text-[11px] sm:text-xs text-ink-muted leading-relaxed">
                     These figures are estimates based on configured assumptions.
                     Actual food waste may vary depending on the menu, serving
                     sizes, and attendee consumption.
@@ -1646,12 +1643,12 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 4. Assumptions and data sources */}
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-3">
+                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-3">
                   <div>
-                    <h4 className="font-bold text-slate-900 text-sm">
+                    <h4 className="font-semibold text-ink text-sm">
                       Assumptions and data sources
                     </h4>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-ink-muted mt-0.5">
                       Values and reference benchmarks used to produce these
                       estimates:
                     </p>
@@ -1673,13 +1670,13 @@ export const FoodPlanningPage: React.FC = () => {
                         return (
                           <div
                             key={idx}
-                            className="p-3 bg-white rounded-xl border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                            className="p-3 bg-paper-raised rounded-xl border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                           >
                             <div>
-                              <span className="font-bold text-slate-800 text-xs block">
+                              <span className="font-semibold text-ink text-xs block">
                                 {paramLabel}
                               </span>
-                              <span className="text-[11px] text-slate-500">
+                              <span className="text-[11px] text-ink-muted">
                                 {assump.explanation ||
                                   assump.reference_notes ||
                                   "Standard planning assumption"}
@@ -1687,14 +1684,14 @@ export const FoodPlanningPage: React.FC = () => {
                             </div>
 
                             <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-1.5 flex-shrink-0">
-                              <span className="font-extrabold text-slate-900 text-xs">
+                              <span className="font-bold text-ink text-xs">
                                 {formattedVal}
                               </span>
                               <span
                                 className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
                                   sourceInfo.isUser
-                                    ? "bg-blue-50 text-blue-700 border-blue-200"
-                                    : "bg-emerald-50 text-emerald-800 border-emerald-200"
+                                    ? "bg-moss-100 text-moss-800 border-moss-300"
+                                    : "bg-paper-inset text-ink-muted border-line"
                                 }`}
                               >
                                 {sourceInfo.label}
@@ -1705,7 +1702,7 @@ export const FoodPlanningPage: React.FC = () => {
                       })}
                     </div>
                   ) : (
-                    <p className="text-slate-500 italic">
+                    <p className="text-ink-muted italic">
                       No external assumptions were required for this
                       calculation.
                     </p>
@@ -1713,8 +1710,8 @@ export const FoodPlanningPage: React.FC = () => {
 
                   {foodPlanResponse.missing_assumptions &&
                     foodPlanResponse.missing_assumptions.length > 0 && (
-                      <div className="pt-2 border-t border-slate-200">
-                        <span className="font-semibold text-slate-700 block text-[11px] mb-1">
+                      <div className="pt-2 border-t border-line">
+                        <span className="font-semibold text-ink block text-[11px] mb-1">
                           Unavailable benchmarks:
                         </span>
                         <div className="flex flex-wrap gap-1.5">
@@ -1722,7 +1719,7 @@ export const FoodPlanningPage: React.FC = () => {
                             (m, idx) => (
                               <span
                                 key={idx}
-                                className="px-2 py-0.5 bg-slate-200/60 text-slate-600 rounded-md text-[10px]"
+                                className="px-2 py-0.5 bg-paper-inset text-ink-muted rounded-md text-[10px] border border-line"
                               >
                                 {getHumanReadableParameter(m)}
                               </span>
@@ -1740,11 +1737,11 @@ export const FoodPlanningPage: React.FC = () => {
         {/* ========================================================================= */}
         {/* Navigation Buttons */}
         {/* ========================================================================= */}
-        <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="pt-8 border-t border-line flex flex-col sm:flex-row justify-between items-center gap-4">
           <button
             type="button"
             onClick={handleBack}
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition-colors focus:outline-none"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-xl border border-line hover:bg-paper-inset/60 text-ink font-semibold text-sm transition-colors focus:outline-none cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Constraints</span>
@@ -1754,13 +1751,13 @@ export const FoodPlanningPage: React.FC = () => {
             <button
               type="button"
               onClick={handleNext}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-xl bg-moss-700 hover:bg-moss-800 text-paper-raised font-bold text-sm shadow-sm transition-all focus:outline-none cursor-pointer"
             >
               <span>Continue to Waste Planning</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             {!foodPlanResponse && (
-              <span className="text-[11px] text-slate-400 mt-1">
+              <span className="text-[11px] text-ink-faint mt-1">
                 You can continue without calculating, or calculate now to
                 preview estimates.
               </span>

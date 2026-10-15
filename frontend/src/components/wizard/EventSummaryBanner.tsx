@@ -23,54 +23,60 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
     : null;
 
   return (
-    <div className="bg-gradient-to-r from-emerald-900 to-slate-900 text-white rounded-2xl p-4 sm:p-5 mb-8 shadow-md">
+    <div className="mb-8 rounded-sheet bg-moss-950 text-paper-raised p-5 sm:p-6 shadow-notebook-lg">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-            <span className="text-xs uppercase font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+            <span className="text-[11px] uppercase font-semibold tracking-[0.14em] px-2.5 py-0.5 rounded-full bg-moss-800 text-moss-100">
               {event.event_type?.replace("_", " ") || "EVENT"}
             </span>
-            <span className="text-xs text-slate-400">Event ID #{event.id}</span>
+            <span className="text-xs text-moss-300 font-mono">
+              #{event.id}
+            </span>
           </div>
-          <h2 className="text-lg sm:text-xl font-bold tracking-tight text-white mt-1">
+          <h2 className="font-display text-xl sm:text-2xl tracking-tight text-paper-raised mt-2">
             {event.name}
           </h2>
         </div>
 
-        <div className="flex items-center gap-3 sm:gap-6 flex-wrap text-xs sm:text-sm text-slate-200">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap text-sm text-moss-100">
           <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-            <Users className="w-4 h-4 text-emerald-400" />
+            <Users className="w-4 h-4 text-moss-300" />
             <span>
-              <strong className="text-white">{event.expected_attendees}</strong>{" "}
+              <strong className="text-paper-raised font-semibold">
+                {event.expected_attendees}
+              </strong>{" "}
               Attendees
             </span>
           </div>
 
           <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-            <Clock className="w-4 h-4 text-emerald-400" />
+            <Clock className="w-4 h-4 text-moss-300" />
             <span>
-              <strong className="text-white">{event.duration_days}</strong>{" "}
+              <strong className="text-paper-raised font-semibold">
+                {event.duration_days}
+              </strong>{" "}
               {event.duration_days === 1 ? "Day" : "Days"}
             </span>
           </div>
 
           {event.location && (
             <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
-              <MapPin className="w-4 h-4 text-emerald-400" />
+              <MapPin className="w-4 h-4 text-moss-300" />
               <span className="max-w-[140px] truncate">{event.location}</span>
             </div>
           )}
 
           {formattedBudget && (
-            <div className="flex items-center space-x-1.5 bg-emerald-500/20 px-3 py-1.5 rounded-lg border border-emerald-500/40 text-emerald-200 font-semibold">
-              <Wallet className="w-4 h-4 text-emerald-300" />
+            <div className="flex items-center space-x-1.5 bg-clay-500/20 px-3 py-1.5 rounded-lg border border-clay-400/30 text-clay-100 font-semibold">
+              <Wallet className="w-4 h-4 text-clay-400" />
               <span>Budget: {formattedBudget}</span>
             </div>
           )}
 
           <Link
             to={`/events/${event.id}/edit`}
-            className="inline-flex items-center space-x-1 text-xs text-slate-300 hover:text-white underline underline-offset-2 py-1"
+            className="inline-flex items-center space-x-1 text-xs text-moss-200 hover:text-paper-raised underline underline-offset-2 py-1"
           >
             <Edit2 className="w-3 h-3" />
             <span>Edit</span>

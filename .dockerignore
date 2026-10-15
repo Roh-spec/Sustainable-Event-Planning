@@ -1,43 +1,8 @@
-# ==========================================
-# Version Control & IDE
-# ==========================================
-.git/
-.github/
-.vscode/
-.idea/
-
-# ==========================================
-# Python Environments & Caches
-# ==========================================
-.venv/
-venv/
-ENV/
-__pycache__/
+.git
+.venv
+__pycache__
 *.pyc
 *.pyo
-*.pyd
-.pytest_cache/
-.coverage
-htmlcov/
-
-# ==========================================
-# Frontend Node Modules & Production Builds
-# ==========================================
-frontend/node_modules/
-frontend/dist/
-frontend/dist-ssr/
-
-# ==========================================
-# Environment & Local Secrets
-# ==========================================
-.env
-.env.local
-.env.*.local
-
-# ==========================================
-# Documentation & Scratch Files
-# ==========================================
-docs/
-*.md
-scratch/
-test_out.txt
+.pytest_cache
+frontend/node_modules
+frontend/dist

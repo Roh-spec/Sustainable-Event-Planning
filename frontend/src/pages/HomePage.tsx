@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Sparkles,
-  Leaf,
   ShieldCheck,
   ArrowRight,
   Calendar,
@@ -12,11 +11,20 @@ import {
   Trash2,
   Utensils,
   Layers,
+  Scale,
 } from "lucide-react";
 import { eventsApi } from "../api/events";
 import { EventResponse } from "../types/events";
-import { EcoParticleCanvas } from "../components/effects/EcoParticleCanvas";
 import { staggerEntrance } from "../utils/animations";
+
+const WORKFLOW_STEPS = [
+  { step: "01", label: "Event", desc: "Type, people, duration", icon: Calendar },
+  { step: "02", label: "Budget", desc: "A hard ceiling in ₹", icon: Wallet },
+  { step: "03", label: "Limits", desc: "Must-haves and avoid", icon: ShieldCheck },
+  { step: "04", label: "Food", desc: "Meals and leftovers", icon: Utensils },
+  { step: "05", label: "Waste", desc: "Reusable vs single-use", icon: Trash2 },
+  { step: "06", label: "Plans", desc: "Three honest options", icon: Sparkles },
+];
 
 export const HomePage: React.FC = () => {
   const [events, setEvents] = useState<EventResponse[]>([]);
@@ -30,7 +38,6 @@ export const HomePage: React.FC = () => {
       .catch(() => {})
       .finally(() => setIsLoading(false));
 
-    // Stagger in cards on page mount with Anime.js
     staggerEntrance(".stagger-card", {
       delay: 100,
       stagger: 80,
@@ -39,253 +46,212 @@ export const HomePage: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
-      {/* Hero Section */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white p-8 sm:p-14 shadow-xl border border-emerald-900/50">
-        {/* Ambient Eco-Particle Canvas (Casberry Inspired) */}
-        <EcoParticleCanvas
-          density={40}
-          speedMultiplier={0.45}
-          theme="dark"
-          interactive={true}
-        />
-
-        <div className="relative z-10 max-w-3xl space-y-5">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold tracking-wide uppercase border border-emerald-500/40">
-            <Leaf className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Multi-Objective Planning Engine (Phase 3B)</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-            Plan Events that{" "}
-            <span className="text-emerald-400">
-              Reduce Environmental Impact
-            </span>{" "}
-            While Respecting Budget & Constraints.
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+      <section className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-end">
+        <div className="lg:col-span-7 space-y-6">
+          <p className="label-kicker">A notebook for the event, not a score</p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl text-ink leading-[1.08]">
+            Plan the gathering.
+            <br />
+            Count the waste.
+            <br />
+            <span className="text-moss-700">Keep the budget honest.</span>
           </h1>
-
-          <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Not a generic event planner with a green label. EcoPlan combines
-            rigorous Food & Waste domain engines to estimate physical food
-            waste, packaging items, and plastic footprints with total
-            explainability.
+          <p className="text-ink-muted text-base sm:text-lg leading-relaxed max-w-xl">
+            EcoPlan estimates kilograms of food waste, packaging counts, and
+            rupees — then shows what you gain if you spend a little more. No
+            invented 87/100 sustainability scores.
           </p>
-
-          <div className="pt-3 flex flex-wrap items-center gap-4">
-            <Link
-              to="/events/new"
-              className="inline-flex items-center space-x-2.5 px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/30 transition-all focus:outline-none"
-            >
+          <div className="flex flex-wrap items-center gap-3 pt-1">
+            <Link to="/events/new" className="btn-primary px-6 py-3.5 text-sm">
               <Sparkles className="w-4 h-4" />
-              <span>Start Guided Event Planning</span>
+              <span>Start planning</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
-
-            <Link
-              to="/events"
-              className="inline-flex items-center space-x-2 px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/15 text-white font-bold text-sm border border-white/10 transition-colors"
-            >
-              <Calendar className="w-4 h-4 text-emerald-400" />
-              <span>View Existing Events</span>
+            <Link to="/events" className="btn-ghost px-6 py-3.5 text-sm">
+              <Calendar className="w-4 h-4 text-moss-700" />
+              <span>Browse events</span>
             </Link>
           </div>
         </div>
-      </div>
 
-      {/* Product Pillars / Measurable Principles */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="stagger-card card-hover bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
-            <ShieldCheck className="w-5 h-5 text-emerald-600" />
+        <aside className="lg:col-span-5">
+          <div className="surface-sheet p-6 sm:p-8 space-y-5">
+            <p className="label-kicker">What you will see</p>
+            <ul className="space-y-4">
+              <li className="flex items-baseline justify-between gap-4 border-b border-line pb-3">
+                <span className="text-sm text-ink-muted">Food waste</span>
+                <span className="font-mono text-lg text-ink">kg</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-4 border-b border-line pb-3">
+                <span className="text-sm text-ink-muted">Packaging</span>
+                <span className="font-mono text-lg text-ink">items</span>
+              </li>
+              <li className="flex items-baseline justify-between gap-4">
+                <span className="text-sm text-ink-muted">Spend vs ceiling</span>
+                <span className="font-mono text-lg text-clay-600">₹</span>
+              </li>
+            </ul>
+            <p className="text-sm text-ink-muted leading-relaxed">
+              Three alternatives: lean budget, balanced, or lower-waste. You
+              pick. The engine does not hide a deficit.
+            </p>
           </div>
-          <h3 className="text-base font-bold text-slate-900">
-            Zero Arbitrary Scores
-          </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            We never invent fake scores like "87/100" or arbitrary weights.
-            Every indicator represents physical units: kilograms of food waste,
-            single-use items count, and exact currency amounts.
-          </p>
-        </div>
+        </aside>
+      </section>
 
-        <div className="stagger-card card-hover bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
-          <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold">
-            <Wallet className="w-5 h-5 text-blue-600" />
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <article className="stagger-card card-hover surface-sheet p-6 sm:p-7 space-y-3">
+          <div className="w-10 h-10 rounded-lg bg-moss-100 text-moss-800 flex items-center justify-center">
+            <Scale className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-slate-900">
-            Zero Silent Inflation
-          </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            Our planning engine strictly evaluates feasibility against your
-            stated budget ceiling. If a budget is insufficient, it reports the
-            deficit and asks for explicit organizer confirmation before
-            adjusting.
+          <h2 className="font-display text-xl text-ink">Physical units</h2>
+          <p className="text-sm text-ink-muted leading-relaxed">
+            Kilograms of leftovers, counts of cups and plates, rupees on the
+            line. Nothing is flattened into a fake green score.
           </p>
-        </div>
+        </article>
 
-        <div className="stagger-card card-hover bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
-          <div className="w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
-            <Layers className="w-5 h-5 text-amber-600" />
+        <article className="stagger-card card-hover surface-sheet p-6 sm:p-7 space-y-3">
+          <div className="w-10 h-10 rounded-lg bg-clay-50 text-clay-700 flex items-center justify-center">
+            <Wallet className="w-5 h-5" />
           </div>
-          <h3 className="text-base font-bold text-slate-900">
-            Multi-Objective Trade-Offs
-          </h3>
-          <p className="text-xs text-slate-600 leading-relaxed">
-            Generate and compare up to three distinct alternatives:{" "}
-            <strong>Budget-Focused</strong>, <strong>Balanced</strong>, and{" "}
-            <strong>Sustainability-Focused</strong>, answering "What do I gain
-            if I spend more?"
+          <h2 className="font-display text-xl text-ink">A hard ceiling</h2>
+          <p className="text-sm text-ink-muted leading-relaxed">
+            If a plan does not fit the budget, EcoPlan says so and waits for
+            you — it does not quietly inflate the number.
           </p>
-        </div>
-      </div>
+        </article>
 
-      {/* Guided Workflow Steps Preview */}
-      <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 space-y-6">
+        <article className="stagger-card card-hover surface-sheet p-6 sm:p-7 space-y-3 md:bg-moss-950 md:text-paper-raised md:border-moss-900">
+          <div className="w-10 h-10 rounded-lg bg-moss-800 text-moss-100 flex items-center justify-center">
+            <Layers className="w-5 h-5" />
+          </div>
+          <h2 className="font-display text-xl text-ink md:text-paper-raised">
+            Real trade-offs
+          </h2>
+          <p className="text-sm text-ink-muted md:text-moss-200 leading-relaxed">
+            Spend a little more, throw away a little less. Compare budget,
+            balanced, and sustainability-focused plans side by side.
+          </p>
+        </article>
+      </section>
+
+      <section className="surface-sheet p-6 sm:p-8 space-y-6">
         <div>
-          <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-            Guided Workflow
-          </span>
-          <h2 className="text-xl font-extrabold text-slate-900 mt-1">
-            One Continuous Planning Experience
+          <p className="label-kicker">Guided path</p>
+          <h2 className="font-display text-2xl sm:text-3xl text-ink mt-1">
+            One notebook, six pages
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-center">
-          {[
-            {
-              step: "1. Event",
-              desc: "Type, attendees, duration",
-              icon: Calendar,
-            },
-            { step: "2. Budget", desc: "Explicit ceiling in ₹", icon: Wallet },
-            {
-              step: "3. Constraints",
-              desc: "Required & Not Allowed",
-              icon: ShieldCheck,
-            },
-            { step: "4. Food", desc: "Meal schedules & waste", icon: Utensils },
-            { step: "5. Waste", desc: "Reusable vs. Single-use", icon: Trash2 },
-            {
-              step: "6. Plans",
-              desc: "Alternative comparison",
-              icon: Sparkles,
-            },
-          ].map((item, idx) => {
+        <ol className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {WORKFLOW_STEPS.map((item) => {
             const Icon = item.icon;
             return (
-              <div
-                key={idx}
-                className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm space-y-1.5"
+              <li
+                key={item.step}
+                className="rounded-xl border border-line bg-paper p-4 space-y-2"
               >
-                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 mx-auto flex items-center justify-center">
-                  <Icon className="w-4 h-4" />
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[11px] text-moss-700">
+                    {item.step}
+                  </span>
+                  <Icon className="w-4 h-4 text-moss-700" />
                 </div>
-                <h4 className="text-xs font-bold text-slate-900">
-                  {item.step}
-                </h4>
-                <p className="text-[10px] text-slate-500">{item.desc}</p>
-              </div>
+                <h3 className="text-sm font-semibold text-ink">{item.label}</h3>
+                <p className="text-xs text-ink-muted leading-snug">{item.desc}</p>
+              </li>
             );
           })}
-        </div>
-      </div>
+        </ol>
+      </section>
 
-      {/* Recent Events List */}
-      <div>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-bold text-slate-900 flex items-center space-x-2">
-            <Calendar className="w-5 h-5 text-emerald-600" />
-            <span>Recent Events in System</span>
-          </h2>
+      <section>
+        <div className="flex justify-between items-end mb-5 gap-4">
+          <div>
+            <p className="label-kicker">On the desk</p>
+            <h2 className="font-display text-2xl text-ink mt-1">
+              Recent events
+            </h2>
+          </div>
           <Link
             to="/events"
-            className="text-xs font-bold text-emerald-700 hover:text-emerald-900"
+            className="text-sm font-semibold text-moss-800 hover:text-moss-950"
           >
-            View All ({events.length}) →
+            View all ({events.length}) →
           </Link>
         </div>
 
         {isLoading ? (
-          <div className="p-8 text-center text-xs text-slate-400">
-            Loading events from backend...
+          <div className="p-10 text-center text-sm text-ink-faint">
+            Loading events…
           </div>
         ) : events.length === 0 ? (
-          <div className="p-8 text-center border-2 border-dashed border-slate-200 rounded-3xl text-slate-400 text-xs">
-            No events found. Click "Start Guided Event Planning" above to create
-            your first sustainable event!
+          <div className="p-10 text-center border border-dashed border-line-strong rounded-sheet text-ink-muted text-sm">
+            Nothing here yet. Start planning to open the first notebook.
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {events.slice(0, 6).map((ev) => (
-              <div
+              <article
                 key={ev.id}
-                className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition-all flex flex-col justify-between"
+                className="surface-sheet p-5 flex flex-col justify-between card-hover"
               >
                 <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.12em] px-2 py-0.5 rounded-full bg-moss-100 text-moss-800">
                       {ev.event_type.replace("_", " ")}
                     </span>
-                    <span className="text-[10px] text-slate-400">#{ev.id}</span>
+                    <span className="text-xs text-ink-faint font-mono">
+                      #{ev.id}
+                    </span>
                   </div>
-                  <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                  <h3 className="font-display text-lg text-ink tracking-tight">
                     {ev.name}
                   </h3>
-                  <div className="flex items-center space-x-3 text-xs text-slate-500 mt-2">
-                    <span className="flex items-center space-x-1">
-                      <Users className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{ev.expected_attendees}</span>
+                  <div className="flex items-center flex-wrap gap-x-3 gap-y-1 text-sm text-ink-muted mt-2">
+                    <span className="inline-flex items-center gap-1">
+                      <Users className="w-3.5 h-3.5" />
+                      {ev.expected_attendees}
                     </span>
-                    <span className="flex items-center space-x-1">
-                      <Clock className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{ev.duration_days}d</span>
+                    <span className="inline-flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      {ev.duration_days}d
                     </span>
                     {ev.budget?.total_budget && (
-                      <span className="font-semibold text-slate-700">
+                      <span className="font-semibold text-ink">
                         ₹{Number(ev.budget.total_budget).toLocaleString()}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center text-xs">
+                <div className="mt-4 pt-3 border-t border-line flex justify-between items-center text-sm">
                   <Link
                     to={`/events/${ev.id}/plans`}
-                    className="font-bold text-emerald-700 hover:text-emerald-900 inline-flex items-center space-x-1"
+                    className="font-semibold text-moss-800 hover:text-moss-950 inline-flex items-center gap-1"
                   >
-                    <span>View Plans</span>
-                    <ArrowRight className="w-3 h-3" />
+                    View plans
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                   <Link
                     to={`/events/${ev.id}/budget`}
-                    className="text-slate-400 hover:text-slate-600 font-medium"
+                    className="text-ink-faint hover:text-ink font-medium"
                   >
                     Configure
                   </Link>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         )}
-      </div>
+      </section>
 
-      {/* Module Scope Notice */}
-      <div className="p-6 rounded-3xl bg-slate-100 border border-slate-200 text-xs text-slate-600 space-y-1">
-        <h4 className="font-bold text-slate-800">
-          Current Scope & Future Modules
-        </h4>
-        <p>
-          <strong>Implemented in Phase 3B:</strong> Event Management, Budget
-          Ceilings, Constraints Engine, Food & Catering Module, Waste &
-          Packaging Module, Multi-Objective Candidate Optimization, Comparative
-          Trade-Off Table.
-        </p>
-        <p className="text-slate-500">
-          <strong>Future Phases:</strong> Energy Consumption, Participant
-          Transportation, Venue Selection, Carbon Accounting, Vendor
-          Marketplace, Machine Learning Forecasting.
-        </p>
-      </div>
+      <p className="text-sm text-ink-faint max-w-2xl">
+        Today: event, budget, constraints, food, waste, and comparable plans.
+        Later: energy, travel, venue, and carbon.
+      </p>
     </div>
   );
 };

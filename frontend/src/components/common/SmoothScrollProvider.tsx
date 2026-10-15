@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useLocation } from "react-router-dom";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
@@ -25,10 +26,20 @@ export const useSmoothScroll = () => useContext(SmoothScrollContext);
 export const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const location = useLocation();
   const [lenisInstance, setLenisInstance] = useState<Lenis | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const rafIdRef = useRef<number | null>(null);
+
+  // Scroll to top on route change
+  useEffect(() => {
+    if (lenisInstance) {
+      lenisInstance.scrollTo(0, { immediate: true });
+    } else if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname, lenisInstance]);
 
   useEffect(() => {
     // Check if user prefers reduced motion
@@ -78,13 +89,13 @@ export const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({
     >
       {/* Top 2.5px ambient gradient reading beam */}
       <div
-        className="fixed top-0 left-0 right-0 h-[2.5px] z-50 pointer-events-none transition-opacity duration-300"
+        className="fixed top-0 left-0 right-0 h-[2.5px] z-50 pointer-events-none transition-opacity duration-300 print:hidden"
         style={{
           opacity: scrollProgress > 0.01 ? 1 : 0,
         }}
       >
         <div
-          className="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-green-500 shadow-sm shadow-emerald-400/50"
+          className="h-full bg-gradient-to-r from-moss-700 via-moss-500 to-clay-500"
           style={{
             width: `${Math.min(100, Math.max(0, scrollProgress * 100))}%`,
             transition: "width 0.1s linear",

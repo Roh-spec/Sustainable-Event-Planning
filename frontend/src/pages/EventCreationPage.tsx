@@ -1,18 +1,81 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  Sparkles,
   Calendar,
   Users,
   Clock,
   MapPin,
   ArrowRight,
   AlertCircle,
+  Laptop,
+  Music,
+  Terminal,
+  BookOpen,
+  Presentation,
+  Trophy,
+  GraduationCap,
+  Building2,
 } from "lucide-react";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { eventsApi } from "../api/events";
 import { EVENT_TYPE_OPTIONS, EventType } from "../types/events";
+
+const EVENT_TYPE_TILES: {
+  value: EventType;
+  label: string;
+  desc: string;
+  icon: React.ComponentType<{ className?: string }>;
+}[] = [
+  {
+    value: "TECH_FEST",
+    label: "Tech Fest",
+    desc: "Coding fairs & tech demos",
+    icon: Laptop,
+  },
+  {
+    value: "CULTURAL_FEST",
+    label: "Cultural Fest",
+    desc: "Performances, drama & arts",
+    icon: Music,
+  },
+  {
+    value: "HACKATHON",
+    label: "Hackathon",
+    desc: "Intensive 24-48h sprints",
+    icon: Terminal,
+  },
+  {
+    value: "WORKSHOP",
+    label: "Workshop",
+    desc: "Hands-on labs & seminars",
+    icon: BookOpen,
+  },
+  {
+    value: "CONFERENCE",
+    label: "Conference",
+    desc: "Keynotes & symposiums",
+    icon: Presentation,
+  },
+  {
+    value: "SPORTS_EVENT",
+    label: "Sports Event",
+    desc: "Tournaments & athletic meets",
+    icon: Trophy,
+  },
+  {
+    value: "FAREWELL",
+    label: "Farewell",
+    desc: "Graduation & batch send-offs",
+    icon: GraduationCap,
+  },
+  {
+    value: "DEPARTMENT_EVENT",
+    label: "Department",
+    desc: "Club meets & symposiums",
+    icon: Building2,
+  },
+];
 
 export const EventCreationPage: React.FC = () => {
   const navigate = useNavigate();
@@ -126,17 +189,14 @@ export const EventCreationPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
       <WizardProgress currentStep={1} eventId={event?.id} />
 
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10">
-        <div className="border-b border-slate-100 pb-6 mb-8">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-3 border border-emerald-200">
-            <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Step 1 of 6 • Event Details</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+      <div className="surface-sheet p-6 sm:p-10">
+        <div className="border-b border-line pb-6 mb-8">
+          <p className="label-kicker mb-2">Step 01 / Event details</p>
+          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight">
             {eventId ? "Edit Event Details" : "Create Your Sustainable Event"}
           </h1>
-          <p className="text-slate-600 text-sm mt-1.5 max-w-2xl">
-            Provide the basic event footprint parameters. These will form the
+          <p className="text-ink-muted text-sm mt-1.5 max-w-2xl leading-relaxed">
+            Provide the basic event footprint parameters. These form the
             foundation for domain food calculations, waste stream evaluations,
             and multi-objective planning alternatives.
           </p>
@@ -145,9 +205,9 @@ export const EventCreationPage: React.FC = () => {
         {error && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-start space-x-3"
+            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-3"
           >
-            <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
             <div>
               <span className="font-bold">Validation Error: </span>
               <span>{error}</span>
@@ -155,14 +215,14 @@ export const EventCreationPage: React.FC = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} noValidate className="space-y-6">
+        <form onSubmit={handleSubmit} noValidate className="space-y-8">
           {/* Event Name */}
           <div>
             <label
               htmlFor="event-name"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+              className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
             >
-              Event Name <span className="text-rose-500">*</span>
+              Event Name <span className="text-clay-600">*</span>
             </label>
             <input
               type="text"
@@ -170,49 +230,95 @@ export const EventCreationPage: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Annual College Tech Fest 2026"
-              className="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-shadow"
+              className="w-full px-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
               required
             />
           </div>
 
-          {/* Event Type & Expected Attendees */}
+          {/* Event Type as Illustrated Tiles */}
+          <div>
+            <div className="flex items-center justify-between mb-2">
+              <label
+                htmlFor="event-type"
+                className="block text-xs font-bold uppercase tracking-wider text-ink"
+              >
+                Event Type <span className="text-clay-600">*</span>
+              </label>
+              <span className="text-xs text-ink-muted">
+                Select gathering format
+              </span>
+            </div>
+
+            {/* Hidden native select keeps full accessibility and test compatibility */}
+            <select
+              id="event-type"
+              aria-label="Event Type"
+              value={eventType}
+              onChange={(e) => setEventType(e.target.value)}
+              className="sr-only"
+            >
+              {EVENT_TYPE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+
+            {/* Illustrated tile selection grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {EVENT_TYPE_TILES.map((tile) => {
+                const isSelected = eventType === tile.value;
+                const TileIcon = tile.icon;
+                return (
+                  <button
+                    key={tile.value}
+                    type="button"
+                    onClick={() => setEventType(tile.value)}
+                    className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
+                      isSelected
+                        ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-600/30 text-ink shadow-sm"
+                        : "border-line bg-paper-inset/40 hover:bg-paper-inset hover:border-line-strong text-ink-muted"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between w-full mb-2">
+                      <div
+                        className={`p-2 rounded-lg ${
+                          isSelected
+                            ? "bg-moss-600 text-paper-raised"
+                            : "bg-paper-raised text-ink-muted border border-line"
+                        }`}
+                      >
+                        <TileIcon className="w-4 h-4" />
+                      </div>
+                      {isSelected && (
+                        <span className="w-2 h-2 rounded-full bg-moss-600" />
+                      )}
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-ink block">
+                        {tile.label}
+                      </span>
+                      <span className="text-[11px] text-ink-muted line-clamp-1 mt-0.5">
+                        {tile.desc}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Expected Attendees & Duration */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label
-                htmlFor="event-type"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
-              >
-                Event Type <span className="text-rose-500">*</span>
-              </label>
-              <select
-                id="event-type"
-                value={eventType}
-                onChange={(e) => setEventType(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
-              >
-                {EVENT_TYPE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-              <p className="text-xs text-slate-500 mt-1">
-                {
-                  EVENT_TYPE_OPTIONS.find((o) => o.value === eventType)
-                    ?.description
-                }
-              </p>
-            </div>
-
-            <div>
-              <label
                 htmlFor="expected-attendees"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
               >
-                Expected Attendees <span className="text-rose-500">*</span>
+                Expected Attendees <span className="text-clay-600">*</span>
               </label>
               <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
                   <Users className="w-4 h-4" />
                 </div>
                 <input
@@ -223,27 +329,24 @@ export const EventCreationPage: React.FC = () => {
                   value={expectedAttendees}
                   onChange={(e) => setExpectedAttendees(e.target.value)}
                   placeholder="e.g. 150"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
                   required
                 />
               </div>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-ink-muted mt-1.5">
                 Directly drives meal servings and packaging estimations.
               </p>
             </div>
-          </div>
 
-          {/* Duration & Location */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label
                 htmlFor="duration-days"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
               >
-                Duration (Days) <span className="text-rose-500">*</span>
+                Duration (Days) <span className="text-clay-600">*</span>
               </label>
               <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
                   <Clock className="w-4 h-4" />
                 </div>
                 <input
@@ -253,21 +356,27 @@ export const EventCreationPage: React.FC = () => {
                   max="30"
                   value={durationDays}
                   onChange={(e) => setDurationDays(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
                   required
                 />
               </div>
+              <p className="text-xs text-ink-muted mt-1.5">
+                Multi-day schedules allow customized per-day meal planning.
+              </p>
             </div>
+          </div>
 
+          {/* Location & Optional Event Date */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label
                 htmlFor="event-location"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
+                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
               >
                 Location / Venue
               </label>
               <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <input
@@ -276,43 +385,42 @@ export const EventCreationPage: React.FC = () => {
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder="e.g. Main Auditorium, Block C"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="event-date"
+                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
+              >
+                Event Date{" "}
+                <span className="text-xs font-normal text-ink-faint lowercase">
+                  (optional)
+                </span>
+              </label>
+              <div className="relative rounded-xl">
+                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
+                  <Calendar className="w-4 h-4" />
+                </div>
+                <input
+                  type="date"
+                  id="event-date"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors"
                 />
               </div>
             </div>
           </div>
 
-          {/* Event Date (Optional) */}
-          <div>
-            <label
-              htmlFor="event-date"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5"
-            >
-              Event Date{" "}
-              <span className="text-xs font-normal text-slate-400 lowercase">
-                (optional)
-              </span>
-            </label>
-            <div className="relative rounded-xl max-w-sm">
-              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                <Calendar className="w-4 h-4" />
-              </div>
-              <input
-                type="date"
-                id="event-date"
-                value={eventDate}
-                onChange={(e) => setEventDate(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-              />
-            </div>
-          </div>
-
           {/* Action Button */}
-          <div className="pt-6 border-t border-slate-100 flex justify-end">
+          <div className="pt-6 border-t border-line flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-md shadow-emerald-600/20 transition-all focus:outline-none"
+              className="btn-primary px-8 py-3.5 text-sm"
             >
               <span>
                 {isSubmitting ? "Saving Event..." : "Continue to Budget Step"}

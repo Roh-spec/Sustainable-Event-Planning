@@ -27,17 +27,17 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
   const confirmations = assumptions?.items_requiring_confirmation || [];
 
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-5 sm:p-8 mb-8">
+    <div className="surface-sheet p-5 sm:p-8 mb-8 border border-line">
       {/* Header */}
-      <div className="pb-6 mb-6 border-b border-slate-100">
-        <div className="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800 text-xs font-bold tracking-wide uppercase mb-2 border border-slate-200">
-          <Info className="w-3.5 h-3.5 text-slate-600" />
+      <div className="pb-6 mb-6 border-b border-line">
+        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-paper-inset text-moss-800 text-xs font-semibold tracking-wide uppercase mb-2 border border-line">
+          <Info className="w-3.5 h-3.5 text-moss-600" />
           <span>Transparency & Grounding</span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+        <h2 className="font-serif text-xl sm:text-2xl font-bold text-ink tracking-tight">
           Assumptions & Organizer Confirmations
         </h2>
-        <p className="text-xs text-slate-500 mt-1">
+        <p className="text-xs text-ink-muted mt-1 leading-relaxed">
           Review the planning assumptions used to calculate estimates and items
           requiring confirmation with your venue or vendors.
         </p>
@@ -45,12 +45,12 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
 
       {/* Items Requiring Confirmation */}
       {confirmations.length > 0 && (
-        <div className="mb-6 p-5 rounded-2xl bg-amber-50/70 border border-amber-200/90 text-amber-950">
-          <div className="flex items-center space-x-2 font-bold text-sm text-amber-900 mb-2">
-            <ShieldAlert className="w-4 h-4 text-amber-700 flex-shrink-0" />
+        <div className="mb-6 p-5 rounded-sheet bg-clay-50/70 border border-clay-200 text-clay-950">
+          <div className="flex items-center space-x-2 font-bold text-sm text-clay-900 mb-2">
+            <ShieldAlert className="w-4 h-4 text-clay-700 flex-shrink-0" />
             <span>Items Requiring Organizer Confirmation</span>
           </div>
-          <p className="text-xs text-amber-800 mb-3">
+          <p className="text-xs text-clay-800 mb-3 leading-relaxed">
             Please confirm the following operational requirements directly with
             your venue, caterer, or campus facilities team:
           </p>
@@ -58,9 +58,9 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
             {confirmations.map((item, idx) => (
               <li
                 key={idx}
-                className="flex items-start space-x-2.5 text-xs text-slate-800 bg-white/80 p-2.5 rounded-xl border border-amber-200/60"
+                className="flex items-start space-x-2.5 text-xs text-ink bg-paper-raised p-2.5 rounded-xl border border-clay-200/60 shadow-xs"
               >
-                <CheckCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-clay-600 flex-shrink-0 mt-0.5" />
                 <span className="font-medium leading-relaxed">{item}</span>
               </li>
             ))}
@@ -69,20 +69,20 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
       )}
 
       {/* Assumptions Accordion */}
-      <div className="border border-slate-200/80 rounded-2xl overflow-hidden">
+      <div className="border border-line rounded-xl overflow-hidden">
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full px-5 py-4 bg-slate-50 hover:bg-slate-100 flex items-center justify-between text-left transition-colors"
+          className="w-full px-5 py-4 bg-paper-inset/40 hover:bg-paper-inset/70 flex items-center justify-between text-left transition-colors cursor-pointer"
         >
           <div className="flex items-center space-x-2">
-            <FileText className="w-4 h-4 text-emerald-600" />
-            <span className="font-bold text-xs sm:text-sm text-slate-900">
+            <FileText className="w-4 h-4 text-moss-600" />
+            <span className="font-serif font-bold text-xs sm:text-sm text-ink">
               Planning Assumptions & Calculation Factors (
               {planningAssumptions.length} reference parameters)
             </span>
           </div>
-          <div className="flex items-center space-x-2 text-slate-500 text-xs font-semibold">
+          <div className="flex items-center space-x-2 text-ink-muted text-xs font-semibold">
             <span>{isExpanded ? "Hide Details" : "View Assumptions"}</span>
             {isExpanded ? (
               <ChevronUp className="w-4 h-4" />
@@ -93,8 +93,8 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
         </button>
 
         {isExpanded && (
-          <div className="p-5 space-y-4 bg-white">
-            <p className="text-xs text-slate-500">
+          <div className="p-5 space-y-4 bg-paper-raised border-t border-line">
+            <p className="text-xs text-ink-muted leading-relaxed">
               Estimates are computed using campus sustainability benchmarks and
               standard service ratios. All technical terms are translated into
               plain language below:
@@ -121,23 +121,23 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
                 return (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-xl border border-slate-100 bg-slate-50/50 space-y-1 text-xs"
+                    className="p-3.5 rounded-xl border border-line bg-paper-inset/30 space-y-1 text-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
-                      <span className="font-bold text-slate-800">
+                      <span className="font-semibold text-ink">
                         {friendlyTitle}
                       </span>
-                      <span className="font-extrabold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 flex-shrink-0">
+                      <span className="font-mono font-bold text-moss-800 bg-moss-50 px-2 py-0.5 rounded border border-moss-200 flex-shrink-0">
                         {friendlyValue}
                       </span>
                     </div>
-                    <p className="text-[11px] text-slate-400">{provenance}</p>
+                    <p className="text-[11px] text-ink-muted">{provenance}</p>
                   </div>
                 );
               })}
             </div>
 
-            <div className="pt-2 text-[11px] text-slate-400 italic">
+            <div className="pt-2 text-[11px] text-ink-muted italic">
               Note: Assumptions are verified across institutional catering
               baselines. Actual values will depend on final attendee turnout and
               local service conditions.

@@ -7,6 +7,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { formatProvenanceLabel } from "../../utils/metricFormatting";
+import { AnimatedCounter } from "../common/AnimatedCounter";
 
 interface ExplainableMetricProps {
   label: string;
@@ -51,14 +52,14 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
   const provenance = formatProvenanceLabel(sourceType);
 
   return (
-    <div className="bg-slate-50/80 border border-slate-200/80 rounded-xl p-3 sm:p-3.5 shadow-sm hover:border-emerald-300 transition-colors flex flex-col justify-between">
+    <div className="bg-paper-inset/40 border border-line rounded-xl p-3 sm:p-3.5 shadow-xs hover:border-moss-400 transition-colors flex flex-col justify-between">
       <div>
         <div className="flex items-center justify-between gap-1.5">
           <div className="flex items-center space-x-1.5 min-w-0">
             {icon && (
-              <div className="text-emerald-600 flex-shrink-0">{icon}</div>
+              <div className="text-moss-700 flex-shrink-0">{icon}</div>
             )}
-            <span className="text-xs font-bold text-slate-600 uppercase tracking-wide truncate">
+            <span className="text-xs font-mono font-semibold text-ink-muted uppercase tracking-wide truncate">
               {label}
             </span>
           </div>
@@ -68,11 +69,11 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
             <button
               type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center space-x-1 text-[11px] font-medium text-slate-500 hover:text-emerald-700 px-1.5 py-0.5 rounded hover:bg-emerald-50 transition-colors focus:outline-none flex-shrink-0"
+              className="inline-flex items-center space-x-1 text-[11px] font-medium text-ink-muted hover:text-moss-700 px-1.5 py-0.5 rounded hover:bg-moss-50 transition-colors focus:outline-none flex-shrink-0 cursor-pointer"
               aria-label={`Why this ${label} estimate?`}
               aria-expanded={isOpen}
             >
-              <HelpCircle className="w-3.5 h-3.5 text-slate-400 hover:text-emerald-600" />
+              <HelpCircle className="w-3.5 h-3.5 text-ink-faint hover:text-moss-700" />
               <span className="hidden sm:inline">Why?</span>
               {isOpen ? (
                 <ChevronUp className="w-3 h-3 ml-0.5" />
@@ -87,24 +88,38 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
           <div className="flex items-baseline space-x-1.5">
             {isAvailable ? (
               <>
-                <span className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                  {formattedValue}
-                </span>
+                {!isNaN(Number(value)) ? (
+                  <AnimatedCounter
+                    value={value}
+                    decimals={
+                      typeof value === "string" && value.includes(".")
+                        ? value.split(".")[1].length
+                        : typeof value === "number" && !Number.isInteger(value)
+                          ? 1
+                          : 0
+                    }
+                    className="text-xl sm:text-2xl font-display font-bold text-ink tracking-tight"
+                  />
+                ) : (
+                  <span className="text-xl sm:text-2xl font-display font-bold text-ink tracking-tight">
+                    {formattedValue}
+                  </span>
+                )}
                 {unit && (
-                  <span className="text-xs font-semibold text-slate-500">
+                  <span className="text-xs font-semibold text-ink-muted">
                     {unit}
                   </span>
                 )}
               </>
             ) : (
-              <span className="text-sm font-medium text-slate-400 italic">
+              <span className="text-sm font-medium text-ink-faint italic">
                 Not available
               </span>
             )}
           </div>
 
           {badge && (
-            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-100/80 text-emerald-800 border border-emerald-300/60 inline-flex items-center">
+            <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-moss-100 text-moss-800 border border-moss-300 inline-flex items-center">
               {badge}
             </span>
           )}
@@ -112,16 +127,16 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
       </div>
 
       {description && !isOpen && (
-        <p className="mt-1.5 text-xs text-slate-500 line-clamp-1">
+        <p className="mt-1.5 text-xs text-ink-muted line-clamp-1">
           {description}
         </p>
       )}
 
       {/* Collapsible Explainability Drawer */}
       {isOpen && (
-        <div className="mt-3 pt-3 border-t border-slate-200/70 text-xs text-slate-600 space-y-2 bg-slate-100/70 -mx-3 sm:-mx-3.5 -mb-3 sm:-mb-3.5 p-3 rounded-b-xl">
-          <div className="flex items-start space-x-1.5 text-slate-800 leading-relaxed">
-            <Info className="w-3.5 h-3.5 text-emerald-600 mt-0.5 flex-shrink-0" />
+        <div className="mt-3 pt-3 border-t border-line text-xs text-ink-muted space-y-2 bg-paper-inset/70 -mx-3 sm:-mx-3.5 -mb-3 sm:-mb-3.5 p-3 rounded-b-xl">
+          <div className="flex items-start space-x-1.5 text-ink leading-relaxed">
+            <Info className="w-3.5 h-3.5 text-moss-700 mt-0.5 flex-shrink-0" />
             <span className="font-medium">
               {explanation ||
                 description ||
@@ -130,9 +145,9 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
           </div>
 
           {sourceType && (
-            <div className="pt-1.5 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-500">
+            <div className="pt-1.5 border-t border-line flex items-center justify-between text-[11px] text-ink-muted">
               <span className="inline-flex items-center space-x-1">
-                <CheckCircle2 className="w-3 h-3 text-emerald-600 flex-shrink-0" />
+                <CheckCircle2 className="w-3 h-3 text-moss-700 flex-shrink-0" />
                 <span>{provenance}</span>
               </span>
             </div>

@@ -1,6 +1,2 @@
-# Node dependencies and local build outputs
-node_modules/
-dist/
-dist-ssr/
-.git/
-*.log
+node_modules
+dist

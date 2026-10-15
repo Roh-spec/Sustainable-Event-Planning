@@ -1,7 +1,4 @@
 services:
-  # ==========================================
-  # 1. FastAPI Application Backend
-  # ==========================================
   backend:
     build:
       context: .
@@ -19,9 +16,6 @@ services:
     volumes:
       - .:/workspace
 
-  # ==========================================
-  # 2. React + Vite Frontend Web App
-  # ==========================================
   frontend:
     build:
       context: ./frontend
@@ -36,9 +30,6 @@ services:
       - ./frontend:/app
       - /app/node_modules
 
-  # ==========================================
-  # 3. PostgreSQL Database
-  # ==========================================
   db:
     image: postgres:16-alpine
     container_name: esc_postgres
@@ -55,4 +46,3 @@ services:
 
 volumes:
   postgres_data:
-    name: esc_postgres_data

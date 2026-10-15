@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { animate } from "animejs";
+import { prefersReducedMotion } from "../../utils/animations";
 
 interface AnimatedCounterProps {
   value: number | string | null | undefined;
@@ -35,6 +36,12 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({
 
   useEffect(() => {
     if (!isValidNumber) return;
+
+    if (prefersReducedMotion()) {
+      setDisplayValue(numericTarget);
+      prevValueRef.current = numericTarget;
+      return;
+    }
 
     const fromVal = prevValueRef.current;
     const toVal = numericTarget;

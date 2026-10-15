@@ -314,27 +314,24 @@ export const WastePlanningPage: React.FC = () => {
       <WizardProgress currentStep={5} eventId={event?.id || Number(eventId)} />
       <EventSummaryBanner event={event} budget={budget} />
 
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 space-y-8">
+      <div className="surface-sheet p-6 sm:p-10 space-y-8">
         {/* Step Header */}
-        <div className="border-b border-slate-100 pb-6">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-3 border border-emerald-200">
-            <Trash2 className="w-3.5 h-3.5 text-emerald-600" />
-            <span>Step 5 of 6 • Waste Planning</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="border-b border-line pb-6">
+          <p className="label-kicker mb-2">Step 05 / Waste Planning</p>
+          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight">
             Let's reduce event waste
           </h1>
-          <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-2xl">
+          <p className="text-ink-muted text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
             Estimate the waste your event may generate and find simple ways to
             reduce it.
           </p>
         </div>
 
         {/* Paper Waste Waitlist Notice */}
-        <div className="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-amber-900 flex items-start space-x-3">
-          <Clock className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+        <div className="p-4 rounded-2xl bg-paper-inset/40 border border-line text-xs text-ink-muted flex items-start space-x-3">
+          <Clock className="w-4 h-4 text-ink-muted mt-0.5 flex-shrink-0" />
           <div>
-            <strong className="font-semibold text-amber-950">
+            <strong className="font-semibold text-ink">
               Release Note on Paper Waste:
             </strong>{" "}
             Paper waste estimation is currently <strong>waitlisted</strong> and
@@ -347,9 +344,9 @@ export const WastePlanningPage: React.FC = () => {
         {error && (
           <div
             role="alert"
-            className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-sm flex items-start space-x-2.5"
+            className="p-4 rounded-2xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-rose-600 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-5 h-5 text-clay-600 mt-0.5 flex-shrink-0" />
             <div>
               <p className="font-bold">Estimation Error</p>
               <p>{error}</p>
@@ -360,9 +357,9 @@ export const WastePlanningPage: React.FC = () => {
         {validationError && (
           <div
             role="alert"
-            className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-800 text-sm flex items-start space-x-2.5"
+            className="p-4 rounded-2xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-5 h-5 text-clay-600 mt-0.5 flex-shrink-0" />
             <p className="font-medium">{validationError}</p>
           </div>
         )}
@@ -370,10 +367,10 @@ export const WastePlanningPage: React.FC = () => {
         {/* Four Selectable Categories */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-bold text-slate-900">
+            <h2 className="font-display text-lg font-semibold text-ink">
               Select Waste Categories
             </h2>
-            <span className="text-xs text-slate-500 font-medium">
+            <span className="text-xs text-ink-muted font-medium">
               Choose what applies to your event
             </span>
           </div>
@@ -390,29 +387,29 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-2xl border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isFoodSelected
-                  ? "border-emerald-400 bg-emerald-50/50 ring-1 ring-emerald-400/40 shadow-sm"
-                  : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/30"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
               <div className="flex items-start space-x-3.5">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors flex-shrink-0 ${
                     isFoodSelected
-                      ? "bg-emerald-600 text-white shadow-sm"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
                   <Utensils className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  <h3 className="font-semibold text-ink text-sm sm:text-base">
                     Food waste
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-ink-muted mt-1">
                     Leftover food after meals.
                   </p>
                   {foodConfig.meals.length > 0 && (
-                    <span className="inline-block mt-2 px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[11px] font-semibold">
+                    <span className="inline-block mt-2 px-2 py-0.5 rounded-md bg-moss-100 text-moss-800 text-[11px] font-semibold border border-moss-200">
                       Connected to scheduled meals
                     </span>
                   )}
@@ -421,8 +418,8 @@ export const WastePlanningPage: React.FC = () => {
               <div
                 className={`w-5 h-5 rounded-md border flex items-center justify-center mt-1 transition-colors flex-shrink-0 ${
                   isFoodSelected
-                    ? "bg-emerald-600 border-emerald-600 text-white"
-                    : "border-slate-300 bg-white"
+                    ? "bg-moss-700 border-moss-700 text-paper-raised"
+                    : "border-line bg-paper-raised"
                 }`}
               >
                 {isFoodSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
@@ -440,25 +437,25 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-2xl border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isDisposableSelected
-                  ? "border-emerald-400 bg-emerald-50/50 ring-1 ring-emerald-400/40 shadow-sm"
-                  : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/30"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
               <div className="flex items-start space-x-3.5">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors flex-shrink-0 ${
                     isDisposableSelected
-                      ? "bg-emerald-600 text-white shadow-sm"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
                   <Package className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  <h3 className="font-semibold text-ink text-sm sm:text-base">
                     Disposable items
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-ink-muted mt-1">
                     Plates, cups, spoons and forks.
                   </p>
                 </div>
@@ -466,8 +463,8 @@ export const WastePlanningPage: React.FC = () => {
               <div
                 className={`w-5 h-5 rounded-md border flex items-center justify-center mt-1 transition-colors flex-shrink-0 ${
                   isDisposableSelected
-                    ? "bg-emerald-600 border-emerald-600 text-white"
-                    : "border-slate-300 bg-white"
+                    ? "bg-moss-700 border-moss-700 text-paper-raised"
+                    : "border-line bg-paper-raised"
                 }`}
               >
                 {isDisposableSelected && (
@@ -487,25 +484,25 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-2xl border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isPlasticSelected
-                  ? "border-emerald-400 bg-emerald-50/50 ring-1 ring-emerald-400/40 shadow-sm"
-                  : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/30"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
               <div className="flex items-start space-x-3.5">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors flex-shrink-0 ${
                     isPlasticSelected
-                      ? "bg-emerald-600 text-white shadow-sm"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
                   <Trash2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  <h3 className="font-semibold text-ink text-sm sm:text-base">
                     Plastic waste
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-ink-muted mt-1">
                     Bottles, bags and wrappers.
                   </p>
                 </div>
@@ -513,8 +510,8 @@ export const WastePlanningPage: React.FC = () => {
               <div
                 className={`w-5 h-5 rounded-md border flex items-center justify-center mt-1 transition-colors flex-shrink-0 ${
                   isPlasticSelected
-                    ? "bg-emerald-600 border-emerald-600 text-white"
-                    : "border-slate-300 bg-white"
+                    ? "bg-moss-700 border-moss-700 text-paper-raised"
+                    : "border-line bg-paper-raised"
                 }`}
               >
                 {isPlasticSelected && (
@@ -534,25 +531,25 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-2xl border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isOtherSelected
-                  ? "border-emerald-400 bg-emerald-50/50 ring-1 ring-emerald-400/40 shadow-sm"
-                  : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/30"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
               <div className="flex items-start space-x-3.5">
                 <div
                   className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors flex-shrink-0 ${
                     isOtherSelected
-                      ? "bg-emerald-600 text-white shadow-sm"
-                      : "bg-slate-100 text-slate-500"
+                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
                   <Layers className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  <h3 className="font-semibold text-ink text-sm sm:text-base">
                     Other waste
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <p className="text-xs text-ink-muted mt-1">
                     Decorations and containers.
                   </p>
                 </div>
@@ -560,8 +557,8 @@ export const WastePlanningPage: React.FC = () => {
               <div
                 className={`w-5 h-5 rounded-md border flex items-center justify-center mt-1 transition-colors flex-shrink-0 ${
                   isOtherSelected
-                    ? "bg-emerald-600 border-emerald-600 text-white"
-                    : "border-slate-300 bg-white"
+                    ? "bg-moss-700 border-moss-700 text-paper-raised"
+                    : "border-line bg-paper-raised"
                 }`}
               >
                 {isOtherSelected && (
@@ -578,16 +575,16 @@ export const WastePlanningPage: React.FC = () => {
             type="button"
             onClick={handleEstimateWaste}
             disabled={isEstimating}
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-md transition-all focus:outline-none cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-xl bg-moss-700 hover:bg-moss-800 text-paper-raised font-bold text-sm shadow-sm transition-all focus:outline-none cursor-pointer disabled:opacity-50"
           >
             {isEstimating ? (
               <>
-                <Loader2 className="w-4 h-4 animate-spin text-emerald-400" />
+                <Loader2 className="w-4 h-4 animate-spin text-paper-raised" />
                 <span>Estimating my waste...</span>
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <Sparkles className="w-4 h-4 text-paper-raised" />
                 <span>Estimate my waste</span>
               </>
             )}
@@ -596,23 +593,23 @@ export const WastePlanningPage: React.FC = () => {
 
         {/* Results Section */}
         {wastePlanResponse && (
-          <div className="space-y-6 pt-6 border-t border-slate-200">
+          <div className="space-y-6 pt-6 border-t border-line">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-lg font-extrabold text-slate-900">
+                <h2 className="font-display text-lg font-semibold text-ink">
                   Estimated Event Waste
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-ink-muted mt-0.5">
                   Summary of waste estimates based on your selected categories.
                 </p>
               </div>
               <span
-                className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                className={`px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider ${
                   wastePlanResponse.status === "COMPLETE"
-                    ? "bg-emerald-100 text-emerald-800"
+                    ? "bg-moss-100 text-moss-800 border border-moss-300"
                     : wastePlanResponse.status === "PARTIAL"
-                      ? "bg-amber-100 text-amber-800"
-                      : "bg-rose-100 text-rose-800"
+                      ? "bg-paper-inset text-ink border border-line"
+                      : "bg-clay-100 text-clay-900 border border-clay-300"
                 }`}
               >
                 {wastePlanResponse.status === "COMPLETE"
@@ -627,25 +624,25 @@ export const WastePlanningPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {/* Food Waste Metric */}
               {isFoodSelected && (
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide block">
+                <div className="p-4 rounded-2xl bg-paper-raised border border-line shadow-sm">
+                  <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Food Waste
                   </span>
                   <div className="mt-2">
                     {wastePlanResponse.food_waste?.planning_servings != null ? (
                       <div>
                         <AnimatedCounter
-                          className="text-2xl font-extrabold text-slate-900"
+                          className="text-2xl font-display font-bold text-ink"
                           value={Number(
                             wastePlanResponse.food_waste.planning_servings,
                           )}
                         />
-                        <span className="text-xs font-semibold text-slate-500 ml-1">
+                        <span className="text-xs font-semibold text-ink-muted ml-1">
                           servings
                         </span>
                         {wastePlanResponse.food_waste.estimated_kg != null && (
                           <AnimatedCounter
-                            className="block text-xs font-medium text-slate-600 mt-1"
+                            className="block text-xs font-medium text-moss-700 mt-1"
                             prefix="Approx. "
                             value={Number(
                               wastePlanResponse.food_waste.estimated_kg,
@@ -656,7 +653,7 @@ export const WastePlanningPage: React.FC = () => {
                         )}
                       </div>
                     ) : (
-                      <span className="text-xs text-slate-400 italic">
+                      <span className="text-xs text-ink-faint italic">
                         Estimate unavailable
                       </span>
                     )}
@@ -666,25 +663,25 @@ export const WastePlanningPage: React.FC = () => {
 
               {/* Disposable Items Metric */}
               {isDisposableSelected && (
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide block">
+                <div className="p-4 rounded-2xl bg-paper-raised border border-line shadow-sm">
+                  <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Disposable Items
                   </span>
                   <div className="mt-2">
                     {wastePlanResponse.packaging_waste.total_items != null ? (
                       <div>
                         <AnimatedCounter
-                          className="text-2xl font-extrabold text-slate-900"
+                          className="text-2xl font-display font-bold text-ink"
                           value={Number(
                             wastePlanResponse.packaging_waste.total_items,
                           )}
                         />
-                        <span className="text-xs font-semibold text-slate-500 ml-1">
+                        <span className="text-xs font-semibold text-ink-muted ml-1">
                           items
                         </span>
                         {wastePlanResponse.packaging_waste
                           .reusable_percentage != null && (
-                          <span className="block text-xs font-bold text-emerald-600 mt-1">
+                          <span className="block text-xs font-bold text-moss-700 mt-1">
                             <AnimatedCounter
                               value={Number(
                                 wastePlanResponse.packaging_waste
@@ -697,7 +694,7 @@ export const WastePlanningPage: React.FC = () => {
                         )}
                       </div>
                     ) : (
-                      <span className="text-xs text-slate-400 italic">
+                      <span className="text-xs text-ink-faint italic">
                         Estimate unavailable
                       </span>
                     )}
@@ -707,8 +704,8 @@ export const WastePlanningPage: React.FC = () => {
 
               {/* Plastic Waste Metric */}
               {isPlasticSelected && (
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide block">
+                <div className="p-4 rounded-2xl bg-paper-raised border border-line shadow-sm">
+                  <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Plastic Waste
                   </span>
                   <div className="mt-2">
@@ -716,18 +713,18 @@ export const WastePlanningPage: React.FC = () => {
                     null ? (
                       <div>
                         <AnimatedCounter
-                          className="text-2xl font-extrabold text-slate-900"
+                          className="text-2xl font-display font-bold text-ink"
                           value={Number(
                             wastePlanResponse.plastic_waste
                               .total_planning_items,
                           )}
                         />
-                        <span className="text-xs font-semibold text-slate-500 ml-1">
+                        <span className="text-xs font-semibold text-ink-muted ml-1">
                           items
                         </span>
                       </div>
                     ) : (
-                      <span className="text-xs text-slate-400 italic">
+                      <span className="text-xs text-ink-faint italic">
                         Estimate unavailable
                       </span>
                     )}
@@ -737,25 +734,25 @@ export const WastePlanningPage: React.FC = () => {
 
               {/* Other Waste Metric */}
               {isOtherSelected && (
-                <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
-                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wide block">
+                <div className="p-4 rounded-2xl bg-paper-raised border border-line shadow-sm">
+                  <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Other Waste
                   </span>
                   <div className="mt-2">
                     {wastePlanResponse.other_waste.total_items != null ? (
                       <div>
                         <AnimatedCounter
-                          className="text-2xl font-extrabold text-slate-900"
+                          className="text-2xl font-display font-bold text-ink"
                           value={Number(
                             wastePlanResponse.other_waste.total_items,
                           )}
                         />
-                        <span className="text-xs font-semibold text-slate-500 ml-1">
+                        <span className="text-xs font-semibold text-ink-muted ml-1">
                           items
                         </span>
                       </div>
                     ) : (
-                      <span className="text-xs text-slate-400 italic">
+                      <span className="text-xs text-ink-faint italic">
                         Estimate unavailable
                       </span>
                     )}
@@ -766,10 +763,10 @@ export const WastePlanningPage: React.FC = () => {
 
             {/* Waste Reduction Recommendations */}
             {wastePlanResponse.recommendations.length > 0 && (
-              <div className="p-5 rounded-2xl border border-emerald-200 bg-emerald-50/50 space-y-3">
+              <div className="p-5 rounded-2xl border border-line bg-paper-inset/30 space-y-3">
                 <div className="flex items-center space-x-2">
-                  <Recycle className="w-4 h-4 text-emerald-700" />
-                  <h3 className="text-sm font-bold text-emerald-950">
+                  <Recycle className="w-4 h-4 text-moss-700" />
+                  <h3 className="text-sm font-semibold text-ink">
                     Waste Reduction Recommendations
                   </h3>
                 </div>
@@ -778,17 +775,17 @@ export const WastePlanningPage: React.FC = () => {
                   {wastePlanResponse.recommendations.map((rec, i) => (
                     <div
                       key={i}
-                      className="p-3.5 rounded-xl bg-white border border-emerald-100 text-xs shadow-xs space-y-1"
+                      className="p-3.5 rounded-xl bg-paper-raised border border-line text-xs shadow-xs space-y-1"
                     >
                       <div className="flex items-center justify-between">
-                        <strong className="font-bold text-slate-900">
+                        <strong className="font-semibold text-ink">
                           {rec.title}
                         </strong>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold">
+                        <span className="px-2 py-0.5 rounded-full bg-moss-100 text-moss-800 text-[10px] font-bold border border-moss-200">
                           {rec.impact}
                         </span>
                       </div>
-                      <p className="text-slate-600">{rec.description}</p>
+                      <p className="text-ink-muted">{rec.description}</p>
                     </div>
                   ))}
                 </div>
@@ -796,23 +793,23 @@ export const WastePlanningPage: React.FC = () => {
             )}
 
             {/* Collapsible Section: "How we estimated it" */}
-            <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+            <div className="border border-line rounded-2xl overflow-hidden bg-paper-inset/20">
               <button
                 type="button"
                 onClick={() => setIsExplanationOpen(!isExplanationOpen)}
-                className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-slate-100/60 transition-colors focus:outline-none"
+                className="w-full p-4 sm:p-5 flex items-center justify-between text-left hover:bg-paper-inset/40 transition-colors focus:outline-none cursor-pointer"
                 aria-expanded={isExplanationOpen}
               >
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">
+                  <h3 className="font-semibold text-ink text-sm sm:text-base">
                     How we estimated it
                   </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="text-xs text-ink-muted mt-0.5">
                     Review the reference benchmarks and calculation details used
                     for your estimates.
                   </p>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-500 flex-shrink-0 ml-3">
+                <div className="w-8 h-8 rounded-full bg-paper-raised border border-line flex items-center justify-center text-ink flex-shrink-0 ml-3">
                   {isExplanationOpen ? (
                     <ChevronUp className="w-4 h-4" />
                   ) : (
@@ -822,8 +819,8 @@ export const WastePlanningPage: React.FC = () => {
               </button>
 
               {isExplanationOpen && (
-                <div className="p-4 sm:p-6 border-t border-slate-200 bg-white space-y-4">
-                  <p className="text-xs text-slate-600">
+                <div className="p-4 sm:p-6 border-t border-line bg-paper-raised space-y-4">
+                  <p className="text-xs text-ink-muted">
                     Calculations apply verified campus reference rates based on
                     your event size ({event?.expected_attendees || "attendees"}{" "}
                     attendees) and selected categories:
@@ -844,24 +841,24 @@ export const WastePlanningPage: React.FC = () => {
                         return (
                           <div
                             key={idx}
-                            className="p-3.5 rounded-xl border border-slate-200 bg-slate-50 text-xs space-y-1"
+                            className="p-3.5 rounded-xl border border-line bg-paper-inset/20 text-xs space-y-1"
                           >
                             <div className="flex items-center justify-between">
-                              <span className="font-bold text-slate-800">
+                              <span className="font-semibold text-ink">
                                 {label}
                               </span>
-                              <span className="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-600 text-[10px] font-semibold">
+                              <span className="px-2 py-0.5 rounded bg-paper-raised border border-line text-ink-muted text-[10px] font-semibold">
                                 {source.label}
                               </span>
                             </div>
-                            <div className="text-slate-600">
+                            <div className="text-ink-muted">
                               Configured Rate:{" "}
-                              <strong className="text-slate-900 font-semibold">
+                              <strong className="text-ink font-semibold">
                                 {val}
                               </strong>
                             </div>
                             {(assump.reference_notes || assump.explanation) && (
-                              <p className="text-[11px] text-slate-500 italic mt-0.5">
+                              <p className="text-[11px] text-ink-muted italic mt-0.5">
                                 {assump.reference_notes || assump.explanation}
                               </p>
                             )}
@@ -869,14 +866,14 @@ export const WastePlanningPage: React.FC = () => {
                         );
                       })
                     ) : (
-                      <p className="text-xs text-slate-400 italic">
+                      <p className="text-xs text-ink-faint italic">
                         No assumptions were needed or recorded.
                       </p>
                     )}
                   </div>
 
                   {wastePlanResponse.missing_assumptions.length > 0 && (
-                    <div className="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 space-y-1">
+                    <div className="p-3.5 rounded-xl bg-clay-50 border border-clay-200 text-xs text-clay-900 space-y-1">
                       <strong>Missing Parameters:</strong>
                       <p>
                         The following reference parameters were not configured
@@ -894,10 +891,10 @@ export const WastePlanningPage: React.FC = () => {
             </div>
 
             {/* Required Disclaimer */}
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-600 flex items-start space-x-2.5">
-              <Info className="w-4 h-4 text-slate-500 mt-0.5 flex-shrink-0" />
+            <div className="p-4 rounded-2xl bg-paper-inset/40 border border-line text-xs text-ink-muted flex items-start space-x-2.5">
+              <Info className="w-4 h-4 text-ink-faint mt-0.5 flex-shrink-0" />
               <div>
-                <strong>Notice on Estimations:</strong> These figures are
+                <strong className="text-ink">Notice on Estimations:</strong> These figures are
                 estimates based on available assumptions. Actual waste may vary
                 depending on event activities and attendee behavior.
               </div>
@@ -906,12 +903,12 @@ export const WastePlanningPage: React.FC = () => {
         )}
 
         {/* Wizard Navigation Buttons */}
-        <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="pt-8 border-t border-line flex flex-col sm:flex-row justify-between items-center gap-4">
           <button
             type="button"
             onClick={handleBack}
             disabled={isGenerating}
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition-colors focus:outline-none"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-xl border border-line hover:bg-paper-inset/60 text-ink font-semibold text-sm transition-colors focus:outline-none cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Food Planning</span>
@@ -921,7 +918,7 @@ export const WastePlanningPage: React.FC = () => {
             type="button"
             onClick={handleContinueToPlans}
             disabled={isGenerating}
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-9 py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-extrabold text-base shadow-lg shadow-emerald-600/30 transition-all focus:outline-none cursor-pointer disabled:opacity-50"
+            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-9 py-4 rounded-xl bg-moss-700 hover:bg-moss-800 text-paper-raised font-bold text-base shadow-sm transition-all focus:outline-none cursor-pointer disabled:opacity-50"
           >
             {isGenerating ? (
               <>

@@ -71,12 +71,25 @@ export const PlanComparisonPage: React.FC = () => {
     return unit ? `${displayNum} ${unit}` : `${displayNum}`;
   };
 
+  const getObjectiveBadgeClass = (objective: string) => {
+    switch (objective) {
+      case "BUDGET_FOCUSED":
+        return "bg-clay-100 text-clay-800 border-clay-300";
+      case "BALANCED":
+        return "bg-moss-100 text-moss-800 border-moss-300";
+      case "SUSTAINABILITY_FOCUSED":
+        return "bg-moss-700 text-paper-raised border-moss-800";
+      default:
+        return "bg-paper-inset text-ink-muted border-line";
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <div className="mb-6 flex items-center justify-between">
         <Link
           to={`/events/${event?.id || eventId}/plans`}
-          className="inline-flex items-center space-x-1.5 text-xs font-bold text-slate-600 hover:text-slate-900"
+          className="inline-flex items-center space-x-1.5 text-xs font-semibold text-ink-muted hover:text-ink transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Plans View</span>
@@ -85,20 +98,20 @@ export const PlanComparisonPage: React.FC = () => {
 
       <EventSummaryBanner event={event} budget={budget} />
 
-      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-10 mb-8">
-        <div className="border-b border-slate-100 pb-6 mb-8">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold tracking-wide uppercase mb-3 border border-emerald-200">
-            <Columns3 className="w-3.5 h-3.5 text-emerald-600" />
+      <div className="surface-sheet p-6 sm:p-10 mb-8">
+        <div className="border-b border-line pb-6 mb-8">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-paper-inset text-moss-800 text-xs font-semibold tracking-wide uppercase mb-3 border border-line">
+            <Columns3 className="w-3.5 h-3.5 text-moss-600" />
             <span>Comparative Trade-Off Analysis</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink tracking-tight">
             Side-by-Side Sustainable Plan Comparison
           </h1>
-          <p className="text-slate-600 text-sm mt-1.5 max-w-3xl">
+          <p className="text-ink-muted text-sm mt-1.5 max-w-3xl leading-relaxed">
             Compare generated alternatives across budget expenditure, physical
             food waste, single-use vs. reusable packaging items, and constraint
             satisfaction. Evaluate:{" "}
-            <strong className="text-emerald-950 font-bold">
+            <strong className="text-ink font-bold">
               "What measurable environmental gains do I achieve if I spend
               more?"
             </strong>
@@ -106,15 +119,15 @@ export const PlanComparisonPage: React.FC = () => {
         </div>
 
         {selectionNotice && (
-          <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-xs flex items-center justify-between">
+          <div className="mb-6 p-4 rounded-xl bg-moss-50 border border-moss-300 text-moss-900 text-xs flex items-center justify-between shadow-notebook">
             <div className="flex items-center space-x-2">
-              <CheckCircle className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+              <CheckCircle className="w-4 h-4 text-moss-600 flex-shrink-0" />
               <span>{selectionNotice}</span>
             </div>
             <button
               type="button"
               onClick={() => setSelectionNotice(null)}
-              className="text-xs font-bold text-emerald-700 hover:text-emerald-900"
+              className="text-xs font-bold text-moss-700 hover:text-moss-900 underline underline-offset-2"
             >
               Dismiss
             </button>
@@ -122,18 +135,18 @@ export const PlanComparisonPage: React.FC = () => {
         )}
 
         {plans.length === 0 ? (
-          <div className="p-16 text-center text-slate-400 text-sm">
+          <div className="p-16 text-center text-ink-muted text-sm border-2 border-dashed border-line rounded-sheet bg-paper-inset/20">
             No plans available to compare. Please navigate back to generate
             plans.
           </div>
         ) : (
           <>
-            {/* Desktop / Tablet Table View (hidden on narrow screens) */}
-            <div className="hidden md:block overflow-x-auto">
+            {/* Desktop / Tablet Ledger Table View */}
+            <div className="hidden md:block overflow-x-auto rounded-sheet border border-line bg-paper-raised shadow-xs">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b-2 border-slate-200">
-                    <th className="py-4 px-4 text-xs font-extrabold uppercase tracking-wider text-slate-400 w-1/4">
+                  <tr className="border-b-2 border-line">
+                    <th className="py-4 px-5 text-xs font-bold uppercase tracking-wider text-ink-muted w-1/4 bg-paper-inset/40 border-r border-line">
                       Evaluation Dimension
                     </th>
                     {plans.map((p) => {
@@ -141,20 +154,26 @@ export const PlanComparisonPage: React.FC = () => {
                       return (
                         <th
                           key={p.plan_id}
-                          className={`py-4 px-4 ${isSel ? "bg-emerald-50/60 rounded-t-2xl" : ""}`}
+                          className={`py-4 px-5 border-r border-line last:border-r-0 transition-colors ${
+                            isSel ? "bg-moss-50/70 border-b-2 border-moss-600" : "bg-paper-inset/20"
+                          }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <span className="text-xs uppercase font-extrabold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
+                          <div className="flex items-center justify-between gap-2">
+                            <span
+                              className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-full border ${getObjectiveBadgeClass(
+                                p.planning_objective,
+                              )}`}
+                            >
                               {p.planning_objective.replace("_", " ")}
                             </span>
                             {isSel && (
-                              <span className="text-[10px] font-bold text-emerald-700 flex items-center space-x-0.5">
+                              <span className="text-[10px] font-bold text-moss-700 flex items-center space-x-0.5">
                                 <Check className="w-3 h-3" />
                                 <span>Selected</span>
                               </span>
                             )}
                           </div>
-                          <h3 className="text-base font-extrabold text-slate-900 mt-1">
+                          <h3 className="font-serif text-base font-bold text-ink mt-2">
                             {p.name}
                           </h3>
                         </th>
@@ -163,33 +182,51 @@ export const PlanComparisonPage: React.FC = () => {
                   </tr>
                 </thead>
 
-                <tbody className="divide-y divide-slate-100 text-xs">
+                <tbody className="divide-y divide-line text-xs">
+                  {/* Category: Financial Dimensions */}
+                  <tr className="bg-paper-inset/50 border-y border-line">
+                    <td
+                      colSpan={plans.length + 1}
+                      className="py-2 px-5 text-[10px] font-bold uppercase tracking-widest text-ink-muted"
+                    >
+                      Financial Dimensions
+                    </td>
+                  </tr>
+
                   {/* Row: Estimated Cost */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Estimated Total Cost
                     </td>
-                    {plans.map((p) => (
-                      <td
-                        key={p.plan_id}
-                        className="py-3.5 px-4 font-extrabold text-slate-900 text-sm"
-                      >
-                        {formatCost(p.estimated_cost)}
-                      </td>
-                    ))}
+                    {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3.5 px-5 font-mono font-bold text-ink text-sm border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
+                        >
+                          {formatCost(p.estimated_cost)}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Budget Difference */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Budget Headroom / Deficit
                     </td>
                     {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
                       if (!eventBudgetNum || !p.estimated_cost) {
                         return (
                           <td
                             key={p.plan_id}
-                            className="py-3.5 px-4 text-slate-400"
+                            className={`py-3.5 px-5 text-ink-faint border-r border-line last:border-r-0 ${
+                              isSel ? "bg-moss-50/30" : ""
+                            }`}
                           >
                             N/A
                           </td>
@@ -200,7 +237,9 @@ export const PlanComparisonPage: React.FC = () => {
                       return (
                         <td
                           key={p.plan_id}
-                          className={`py-3.5 px-4 font-semibold ${isOver ? "text-rose-600" : "text-emerald-700"}`}
+                          className={`py-3.5 px-5 font-mono font-semibold border-r border-line last:border-r-0 ${
+                            isOver ? "text-clay-600" : "text-moss-700"
+                          } ${isSel ? "bg-moss-50/30" : ""}`}
                         >
                           {isOver
                             ? `Deficit ₹${Math.abs(diff).toLocaleString()}`
@@ -210,68 +249,91 @@ export const PlanComparisonPage: React.FC = () => {
                     })}
                   </tr>
 
+                  {/* Category: Waste & Packaging Indicators */}
+                  <tr className="bg-paper-inset/50 border-y border-line">
+                    <td
+                      colSpan={plans.length + 1}
+                      className="py-2 px-5 text-[10px] font-bold uppercase tracking-widest text-ink-muted"
+                    >
+                      Waste & Packaging Indicators
+                    </td>
+                  </tr>
+
                   {/* Row: Food Waste */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Estimated Food Waste
                     </td>
-                    {plans.map((p) => (
-                      <td
-                        key={p.plan_id}
-                        className="py-3.5 px-4 font-bold text-slate-800"
-                      >
-                        {p.food_metrics?.estimated_waste_kg !== null &&
-                        p.food_metrics?.estimated_waste_kg !== undefined
-                          ? formatMetric(
-                              p.food_metrics.estimated_waste_kg,
-                              "kg",
-                            )
-                          : formatMetric(
-                              p.food_metrics?.estimated_waste_servings,
-                              "servings",
-                            )}
-                      </td>
-                    ))}
+                    {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3.5 px-5 font-mono font-bold text-ink border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
+                        >
+                          {p.food_metrics?.estimated_waste_kg !== null &&
+                          p.food_metrics?.estimated_waste_kg !== undefined
+                            ? formatMetric(
+                                p.food_metrics.estimated_waste_kg,
+                                "kg",
+                              )
+                            : formatMetric(
+                                p.food_metrics?.estimated_waste_servings,
+                                "servings",
+                              )}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Single-Use Items */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Single-Use Packaging
                     </td>
-                    {plans.map((p) => (
-                      <td
-                        key={p.plan_id}
-                        className="py-3.5 px-4 font-semibold text-slate-700"
-                      >
-                        {formatMetric(
-                          p.waste_metrics?.single_use_packaging_items,
-                          "items",
-                        )}
-                      </td>
-                    ))}
+                    {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3.5 px-5 font-mono font-medium text-ink-muted border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
+                        >
+                          {formatMetric(
+                            p.waste_metrics?.single_use_packaging_items,
+                            "items",
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Reusable Items */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Reusable Packaging Items
                     </td>
                     {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
                       const reusablePctBadge = formatReusablePercentage(
                         p.waste_metrics,
                       );
                       return (
                         <td
                           key={p.plan_id}
-                          className="py-3.5 px-4 font-bold text-emerald-800"
+                          className={`py-3.5 px-5 font-mono font-bold text-moss-700 border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
                         >
                           {formatMetric(
                             p.waste_metrics?.reusable_packaging_items,
                             "items",
                           )}{" "}
                           {reusablePctBadge && (
-                            <span className="text-[11px] text-emerald-600 font-normal">
+                            <span className="text-[11px] text-moss-600 font-sans font-normal">
                               ({reusablePctBadge})
                             </span>
                           )}
@@ -281,103 +343,136 @@ export const PlanComparisonPage: React.FC = () => {
                   </tr>
 
                   {/* Row: Plastic Items */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Plastic Waste Items
                     </td>
                     {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
                       const count = p.waste_metrics?.total_plastic_items;
                       const isZero = count === 0 || count === "0";
                       return (
                         <td
                           key={p.plan_id}
-                          className="py-3.5 px-4 font-semibold"
+                          className={`py-3.5 px-5 border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
                         >
                           {isZero ? (
-                            <span className="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
+                            <span className="px-2.5 py-0.5 rounded-full bg-moss-100 text-moss-800 font-bold border border-moss-200">
                               Zero Plastic
                             </span>
                           ) : (
-                            formatMetric(count, "items")
+                            <span className="font-mono text-ink-muted">
+                              {formatMetric(count, "items")}
+                            </span>
                           )}
                         </td>
                       );
                     })}
                   </tr>
 
+                  {/* Category: Feasibility & Preferences */}
+                  <tr className="bg-paper-inset/50 border-y border-line">
+                    <td
+                      colSpan={plans.length + 1}
+                      className="py-2 px-5 text-[10px] font-bold uppercase tracking-widest text-ink-muted"
+                    >
+                      Feasibility & Preferences
+                    </td>
+                  </tr>
+
                   {/* Row: Constraint Result */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Constraint Satisfaction
                     </td>
-                    {plans.map((p) => (
-                      <td key={p.plan_id} className="py-3.5 px-4">
-                        {p.constraint_result.feasible ? (
-                          <span className="text-emerald-700 font-semibold flex items-center space-x-1">
-                            <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
-                            <span>
-                              {p.constraint_result.relaxed_constraints
-                                .length === 0
-                                ? "All satisfied"
-                                : `${p.constraint_result.relaxed_constraints.length} relaxed`}
+                    {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3.5 px-5 border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
+                        >
+                          {p.constraint_result.feasible ? (
+                            <span className="text-moss-700 font-semibold flex items-center space-x-1">
+                              <CheckCircle className="w-3.5 h-3.5 text-moss-600 flex-shrink-0" />
+                              <span>
+                                {p.constraint_result.relaxed_constraints
+                                  .length === 0
+                                  ? "All satisfied"
+                                  : `${p.constraint_result.relaxed_constraints.length} relaxed`}
+                              </span>
                             </span>
-                          </span>
-                        ) : (
-                          <span className="text-rose-600 font-semibold flex items-center space-x-1">
-                            <AlertTriangle className="w-3.5 h-3.5" />
-                            <span>Infeasible</span>
-                          </span>
-                        )}
-                      </td>
-                    ))}
+                          ) : (
+                            <span className="text-clay-600 font-semibold flex items-center space-x-1">
+                              <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
+                              <span>Infeasible</span>
+                            </span>
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Relaxed Constraints */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Relaxed Constraints
                     </td>
-                    {plans.map((p) => (
-                      <td
-                        key={p.plan_id}
-                        className="py-3.5 px-4 text-slate-600 text-[11px]"
-                      >
-                        {p.constraint_result.relaxed_constraints.length ===
-                        0 ? (
-                          <span className="text-slate-400">None</span>
-                        ) : (
-                          <ul className="list-disc pl-3 space-y-0.5">
-                            {p.constraint_result.relaxed_constraints.map(
-                              (rc, i) => (
-                                <li key={i}>{rc.description}</li>
-                              ),
-                            )}
-                          </ul>
-                        )}
-                      </td>
-                    ))}
+                    {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3.5 px-5 text-ink-muted text-[11px] border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
+                        >
+                          {p.constraint_result.relaxed_constraints.length ===
+                          0 ? (
+                            <span className="text-ink-faint">None</span>
+                          ) : (
+                            <ul className="list-disc pl-3 space-y-0.5">
+                              {p.constraint_result.relaxed_constraints.map(
+                                (rc, i) => (
+                                  <li key={i}>{rc.description}</li>
+                                ),
+                              )}
+                            </ul>
+                          )}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Key Trade-offs */}
-                  <tr className="hover:bg-slate-50/50">
-                    <td className="py-3.5 px-4 font-bold text-slate-700">
+                  <tr className="hover:bg-paper-inset/20 transition-colors">
+                    <td className="py-3.5 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
                       Key Trade-offs
                     </td>
-                    {plans.map((p) => (
-                      <td
-                        key={p.plan_id}
-                        className="py-3.5 px-4 text-slate-700 leading-snug text-[11px]"
-                      >
-                        {p.tradeoffs.length > 0
-                          ? p.tradeoffs.join("; ")
-                          : "Balanced allocation"}
-                      </td>
-                    ))}
+                    {plans.map((p) => {
+                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3.5 px-5 text-ink-muted leading-snug text-[11px] border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/30" : ""
+                          }`}
+                        >
+                          {p.tradeoffs.length > 0
+                            ? p.tradeoffs.join("; ")
+                            : "Balanced allocation"}
+                        </td>
+                      );
+                    })}
                   </tr>
 
                   {/* Row: Selection Action */}
-                  <tr>
-                    <td className="py-4 px-4 font-bold text-slate-700">
+                  <tr className="bg-paper-inset/30 border-t-2 border-line">
+                    <td className="py-4 px-5 font-bold text-ink border-r border-line bg-paper-inset/20">
                       Organiser Selection
                     </td>
                     {plans.map((p) => {
@@ -385,15 +480,17 @@ export const PlanComparisonPage: React.FC = () => {
                       return (
                         <td
                           key={p.plan_id}
-                          className={`py-4 px-4 ${isSel ? "bg-emerald-50/60 rounded-b-2xl" : ""}`}
+                          className={`py-4 px-5 border-r border-line last:border-r-0 ${
+                            isSel ? "bg-moss-50/60" : ""
+                          }`}
                         >
                           <button
                             type="button"
                             onClick={() => handleSelect(p)}
-                            className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all focus:outline-none ${
+                            className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all focus:outline-none ${
                               isSel
-                                ? "bg-emerald-600 text-white shadow-emerald-500/20 shadow-md"
-                                : "bg-slate-900 hover:bg-slate-800 text-white"
+                                ? "bg-moss-700 text-paper-raised shadow-notebook hover:bg-moss-800"
+                                : "btn-ghost w-full hover:bg-moss-50"
                             }`}
                           >
                             {isSel ? "Selected Plan" : "Select Plan"}
@@ -406,44 +503,48 @@ export const PlanComparisonPage: React.FC = () => {
               </table>
             </div>
 
-            {/* Mobile / Narrow Screen View (stacked cards per Requirement 18) */}
+            {/* Mobile / Narrow Screen View (stacked notebook cards) */}
             <div className="md:hidden space-y-6">
               {plans.map((p) => {
                 const isSel = selectedPlan?.plan_id === p.plan_id;
                 return (
                   <div
                     key={p.plan_id}
-                    className={`p-5 rounded-2xl border ${
+                    className={`p-5 rounded-sheet border transition-all ${
                       isSel
-                        ? "border-2 border-emerald-600 bg-emerald-50/20"
-                        : "border-slate-200 bg-white"
+                        ? "border-2 border-moss-700 bg-moss-50/30 shadow-notebook-lg"
+                        : "border-line bg-paper-raised shadow-notebook"
                     }`}
                   >
                     <div className="flex justify-between items-center mb-3">
-                      <span className="text-xs uppercase font-extrabold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-800">
+                      <span
+                        className={`text-xs uppercase font-bold px-2.5 py-0.5 rounded-full border ${getObjectiveBadgeClass(
+                          p.planning_objective,
+                        )}`}
+                      >
                         {p.planning_objective.replace("_", " ")}
                       </span>
                       {isSel && (
-                        <span className="text-xs font-bold text-emerald-700 flex items-center space-x-1">
+                        <span className="text-xs font-bold text-moss-700 flex items-center space-x-1">
                           <Check className="w-3.5 h-3.5" />
                           <span>Active Selected</span>
                         </span>
                       )}
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">
+                    <h3 className="font-serif text-lg font-bold text-ink mb-2">
                       {p.name}
                     </h3>
 
-                    <div className="space-y-2 text-xs divide-y divide-slate-100">
+                    <div className="space-y-2 text-xs divide-y divide-line">
                       <div className="flex justify-between py-1.5">
-                        <span className="text-slate-500">Estimated Cost:</span>
-                        <span className="font-extrabold text-slate-900">
+                        <span className="text-ink-muted">Estimated Cost:</span>
+                        <span className="font-mono font-bold text-ink">
                           {formatCost(p.estimated_cost)}
                         </span>
                       </div>
                       <div className="flex justify-between py-1.5">
-                        <span className="text-slate-500">Food Waste:</span>
-                        <span className="font-bold text-slate-800">
+                        <span className="text-ink-muted">Food Waste:</span>
+                        <span className="font-mono font-bold text-ink">
                           {p.food_metrics?.estimated_waste_kg !== null &&
                           p.food_metrics?.estimated_waste_kg !== undefined
                             ? formatMetric(
@@ -457,10 +558,10 @@ export const PlanComparisonPage: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex justify-between py-1.5">
-                        <span className="text-slate-500">
+                        <span className="text-ink-muted">
                           Single-use Items:
                         </span>
-                        <span className="font-bold text-slate-800">
+                        <span className="font-mono font-bold text-ink">
                           {formatMetric(
                             p.waste_metrics?.single_use_packaging_items,
                             "items",
@@ -468,8 +569,8 @@ export const PlanComparisonPage: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex justify-between py-1.5">
-                        <span className="text-slate-500">Reusable Items:</span>
-                        <span className="font-bold text-emerald-800">
+                        <span className="text-ink-muted">Reusable Items:</span>
+                        <span className="font-mono font-bold text-moss-700">
                           {formatMetric(
                             p.waste_metrics?.reusable_packaging_items,
                             "items",
@@ -477,8 +578,8 @@ export const PlanComparisonPage: React.FC = () => {
                         </span>
                       </div>
                       <div className="flex justify-between py-1.5">
-                        <span className="text-slate-500">Plastic Items:</span>
-                        <span className="font-bold text-slate-800">
+                        <span className="text-ink-muted">Plastic Items:</span>
+                        <span className="font-mono font-bold text-ink">
                           {formatMetric(
                             p.waste_metrics?.total_plastic_items,
                             "items",
@@ -491,10 +592,10 @@ export const PlanComparisonPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleSelect(p)}
-                        className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all ${
+                        className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all ${
                           isSel
-                            ? "bg-emerald-600 text-white"
-                            : "bg-slate-900 text-white"
+                            ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
+                            : "btn-ghost w-full"
                         }`}
                       >
                         {isSel ? "Selected Plan" : "Select Plan"}

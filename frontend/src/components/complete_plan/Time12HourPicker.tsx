@@ -81,16 +81,16 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
       <div className="flex items-center justify-between">
         <label
           htmlFor={`${id}-hour`}
-          className="block text-xs font-bold text-slate-700 uppercase tracking-wider"
+          className="label-kicker text-[11px] block"
         >
-          {label} {required && <span className="text-rose-500">*</span>}
+          {label} {required && <span className="text-clay-600">*</span>}
         </label>
         {/* Railway-style 12-hour badge preview */}
         <span
           data-testid={`${id}-preview`}
-          className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-extrabold tracking-wide"
+          className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-paper-inset/70 text-moss-800 border border-line text-xs font-mono font-bold tracking-wide"
         >
-          <Clock className="w-3 h-3 text-emerald-600 mr-0.5" />
+          <Clock className="w-3 h-3 text-moss-600 mr-0.5" />
           <span>{format12Hour(value)}</span>
         </span>
       </div>
@@ -104,7 +104,7 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
             aria-label={`${label} Hour`}
             value={hour12}
             onChange={handleHourChange}
-            className="w-full px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors"
+            className="w-full px-2.5 py-2 rounded-xl border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600 transition-colors cursor-pointer"
           >
             {HOURS.map((h) => (
               <option key={h} value={h}>
@@ -114,7 +114,7 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
           </select>
         </div>
 
-        <span className="text-slate-400 font-extrabold text-sm">:</span>
+        <span className="text-ink-faint font-extrabold text-sm">:</span>
 
         {/* Minute Select */}
         <div className="flex-1">
@@ -123,7 +123,7 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
             aria-label={`${label} Minute`}
             value={minute}
             onChange={handleMinuteChange}
-            className="w-full px-2.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold text-slate-900 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 transition-colors"
+            className="w-full px-2.5 py-2 rounded-xl border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600 transition-colors cursor-pointer"
           >
             {minuteOptions.map((m) => (
               <option key={m} value={m}>
@@ -134,17 +134,17 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
         </div>
 
         {/* AM / PM Segment Buttons */}
-        <div className="flex rounded-xl p-0.5 bg-slate-100 border border-slate-200">
+        <div className="flex rounded-xl p-0.5 bg-paper-inset/50 border border-line">
           <button
             type="button"
             id={`${id}-am-btn`}
             aria-label={`${label} AM`}
             aria-pressed={period === "AM"}
             onClick={() => handlePeriodChange("AM")}
-            className={`px-3 py-2 rounded-lg text-xs font-extrabold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
               period === "AM"
-                ? "bg-emerald-600 text-white shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-moss-700 text-paper-raised shadow-xs"
+                : "text-ink-muted hover:text-ink"
             }`}
           >
             AM
@@ -155,10 +155,10 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
             aria-label={`${label} PM`}
             aria-pressed={period === "PM"}
             onClick={() => handlePeriodChange("PM")}
-            className={`px-3 py-2 rounded-lg text-xs font-extrabold transition-all ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
               period === "PM"
-                ? "bg-emerald-600 text-white shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
+                ? "bg-moss-700 text-paper-raised shadow-xs"
+                : "text-ink-muted hover:text-ink"
             }`}
           >
             PM
@@ -169,7 +169,7 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
       {/* Hidden input to maintain id-based selectors if needed */}
       <input type="hidden" id={id} value={value} readOnly />
 
-      {helpText && <p className="text-[11px] text-slate-400">{helpText}</p>}
+      {helpText && <p className="text-[11px] text-ink-muted">{helpText}</p>}
     </div>
   );
 };

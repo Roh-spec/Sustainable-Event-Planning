@@ -12,52 +12,50 @@ export const Header: React.FC = () => {
     <header
       className={`sticky top-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md border-b border-emerald-100/60 shadow-md shadow-emerald-950/5"
-          : "bg-white border-b border-slate-200 shadow-xs"
+          ? "bg-paper-raised/85 backdrop-blur-md border-b border-line shadow-notebook"
+          : "bg-paper/80 border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo & Brand */}
+        <div className="flex justify-between items-center h-[4.25rem]">
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-green-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
-              <Leaf className="w-5 h-5" />
+            <div className="w-10 h-10 rounded-lg bg-moss-700 flex items-center justify-center text-paper-raised shadow-notebook group-hover:bg-moss-600 transition-colors">
+              <Leaf className="w-5 h-5" strokeWidth={1.75} />
             </div>
             <div>
-              <div className="flex items-center space-x-2">
-                <span className="font-extrabold text-slate-900 tracking-tight text-lg">
+              <div className="flex items-baseline space-x-2">
+                <span className="font-display text-xl text-ink tracking-tight">
                   EcoPlan
                 </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                  SUSTAINABLE
+                <span className="hidden sm:inline text-[10px] font-semibold uppercase tracking-[0.14em] text-moss-700">
+                  Field notes
                 </span>
               </div>
-              <p className="text-xs text-slate-500 hidden sm:block">
-                AI-Based Sustainable Event Planning Assistant
+              <p className="text-xs text-ink-muted hidden sm:block">
+                Budget-aware, low-waste events
               </p>
             </div>
           </Link>
 
-          {/* Navigation Links */}
-          <nav className="flex items-center space-x-3 sm:space-x-4">
+          <nav className="flex items-center space-x-1.5 sm:space-x-2">
             <Link
               to="/events/new"
-              className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-sm font-semibold transition-colors ${
+              className={`inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-sm font-semibold transition-colors ${
                 location.pathname.startsWith("/events/new")
-                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "bg-moss-700 text-paper-raised"
+                  : "text-ink-muted hover:text-ink hover:bg-paper-inset"
               }`}
             >
-              <Sparkles className="w-4 h-4 text-emerald-600" />
+              <Sparkles className="w-4 h-4" />
               <span>Plan Event</span>
             </Link>
 
             <Link
               to="/events"
-              className={`inline-flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+              className={`inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                 location.pathname === "/events"
-                  ? "bg-slate-100 text-slate-900"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                  ? "bg-paper-inset text-ink"
+                  : "text-ink-muted hover:text-ink hover:bg-paper-inset"
               }`}
             >
               <Calendar className="w-4 h-4" />
