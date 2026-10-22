@@ -36,6 +36,8 @@ import {
 } from "../types/food";
 import { foodApi } from "../api/food";
 import { AnimatedCounter } from "../components/common/AnimatedCounter";
+import { useFoodLiveEstimates } from "../hooks/useFoodLiveEstimates";
+import { FoodLiveReceipt } from "../components/planning/food/FoodLiveReceipt";
 
 interface MealOptionMeta {
   type: MealType;
@@ -389,12 +391,26 @@ export const FoodPlanningPage: React.FC = () => {
     });
   };
 
+  const liveEstimates = useFoodLiveEstimates({
+    event,
+    meals: foodConfig.meals,
+    dietaryPreference: foodConfig.default_dietary_preference,
+    vegetarianRatio: foodConfig.vegetarian_ratio || "0.70",
+    costApproach: foodConfig.costApproach,
+    knownUnitCost: foodConfig.known_unit_cost || "",
+    knownTotalCost: foodConfig.known_total_cost || "",
+    budgetCeiling:
+      budget?.total_budget?.toString() || foodConfig.known_total_cost || "",
+    foodPlanResponse,
+  });
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-20 lg:pb-6">
       <WizardProgress currentStep={4} eventId={event?.id || Number(eventId)} />
       <EventSummaryBanner event={event} budget={budget} />
 
-      <div className="surface-sheet p-6 sm:p-10">
+      <div className="flex flex-col lg:flex-row gap-8 items-start mt-4">
+        <div className="flex-1 w-full min-w-0 surface-sheet p-6 sm:p-10">
         {/* Page Heading & Introduction */}
         <div className="border-b border-line pb-6 mb-8">
           <p className="label-kicker mb-2">Step 04 / Food Planning</p>
@@ -408,7 +424,7 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* Event Details Context */}
           {event && (
-            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted bg-paper-inset/40 border border-line rounded-xl px-4 py-2.5">
+            <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-ink-muted bg-paper-inset/40 border border-line rounded-control px-4 py-2.5">
               <span className="font-semibold text-ink flex items-center gap-1.5">
                 <Users className="w-3.5 h-3.5 text-ink-muted" />
                 {event.expected_attendees} Expected Attendees
@@ -426,7 +442,7 @@ export const FoodPlanningPage: React.FC = () => {
         {validationError && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
+            className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
             <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
             <span>{validationError}</span>
@@ -436,7 +452,7 @@ export const FoodPlanningPage: React.FC = () => {
         {apiError && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
+            className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
             <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
             <span>{apiError}</span>
@@ -459,7 +475,7 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* Multi-Day Selector Tabs */}
           {durationDays > 1 && (
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-paper-inset/40 p-2 rounded-2xl border border-line">
+            <div className="mb-5 flex flex-wrap items-center justify-between gap-3 bg-paper-inset/40 p-2 rounded-sheet border border-line">
               <div className="flex flex-wrap gap-1.5">
                 {Array.from({ length: durationDays }, (_, i) => i + 1).map(
                   (dayNum) => {
@@ -472,7 +488,7 @@ export const FoodPlanningPage: React.FC = () => {
                         key={dayNum}
                         type="button"
                         onClick={() => setSelectedDay(dayNum)}
-                        className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all focus:outline-none ${
+                        className={`px-3.5 py-1.5 rounded-control text-xs font-semibold transition-all focus:outline-none ${
                           isActive
                             ? "bg-paper-raised text-moss-800 shadow-sm border border-moss-300"
                             : "text-ink-muted hover:text-ink hover:bg-paper-inset/60"
@@ -512,14 +528,14 @@ export const FoodPlanningPage: React.FC = () => {
                   type="button"
                   onClick={() => handleToggleMeal(meal.type, selectedDay)}
                   aria-pressed={isSelected}
-                  className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
+                  className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                     isSelected
                       ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
                       : "border-line bg-paper-raised hover:border-line-strong text-ink"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
+                    <div className="p-2 rounded-control bg-paper-inset/60 border border-line">
                       {meal.icon}
                     </div>
                     <div
@@ -613,14 +629,14 @@ export const FoodPlanningPage: React.FC = () => {
                   type="button"
                   onClick={() => handleDietaryChange(opt.id)}
                   aria-pressed={isSelected}
-                  className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
+                  className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                     isSelected
                       ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
                       : "border-line bg-paper-raised hover:border-line-strong text-ink"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
+                    <div className="p-2 rounded-control bg-paper-inset/60 border border-line">
                       {opt.icon}
                     </div>
                     <div
@@ -650,7 +666,7 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* If "Both options" is selected: Configurable Vegetarian Ratio */}
           {foodConfig.default_dietary_preference === "MIXED" && (
-            <div className="mt-4 p-5 rounded-2xl bg-paper-inset/40 border border-line">
+            <div className="mt-4 p-5 rounded-sheet bg-paper-inset/40 border border-line">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                 <label
                   htmlFor="veg-split-slider"
@@ -658,7 +674,7 @@ export const FoodPlanningPage: React.FC = () => {
                 >
                   Vegetarian Portion Ratio
                 </label>
-                <span className="text-xs font-bold text-moss-800 bg-moss-100 px-2.5 py-1 rounded-full border border-moss-200">
+                <span className="text-xs font-bold text-moss-800 bg-moss-100 px-2.5 py-1 rounded-full border border-moss-200 font-mono tabular-nums">
                   {Math.round(Number(foodConfig.vegetarian_ratio || 0.7) * 100)}
                   % Vegetarian •{" "}
                   {100 -
@@ -682,7 +698,7 @@ export const FoodPlanningPage: React.FC = () => {
                     vegetarian_ratio: e.target.value,
                   }))
                 }
-                className="w-full accent-moss-700 cursor-pointer"
+                className="w-full accent-moss-700 cursor-pointer h-2 bg-paper-inset border border-line-strong rounded-control"
               />
 
               <div className="flex items-center justify-between text-[11px] text-ink-faint mt-1.5">
@@ -718,14 +734,14 @@ export const FoodPlanningPage: React.FC = () => {
               type="button"
               onClick={() => handleBudgetModeChange("ESTIMATE")}
               aria-pressed={foodConfig.budgetMode !== "ENTER"}
-              className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
+              className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                 foodConfig.budgetMode !== "ENTER"
                   ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
                   : "border-line bg-paper-raised hover:border-line-strong text-ink"
               }`}
             >
               <div className="flex items-start justify-between gap-2 mb-3">
-                <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
+                <div className="p-2 rounded-control bg-paper-inset/60 border border-line">
                   <Calculator className="w-5 h-5 text-moss-700" />
                 </div>
                 <div
@@ -760,14 +776,14 @@ export const FoodPlanningPage: React.FC = () => {
               type="button"
               onClick={() => handleBudgetModeChange("ENTER")}
               aria-pressed={foodConfig.budgetMode === "ENTER"}
-              className={`text-left p-4 rounded-2xl border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
+              className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                 foodConfig.budgetMode === "ENTER"
                   ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
                   : "border-line bg-paper-raised hover:border-line-strong text-ink"
               }`}
             >
               <div className="flex items-start justify-between gap-2 mb-3">
-                <div className="p-2 rounded-xl bg-paper-inset/60 border border-line">
+                <div className="p-2 rounded-control bg-paper-inset/60 border border-line">
                   <Wallet className="w-5 h-5 text-ink-muted" />
                 </div>
                 <div
@@ -795,7 +811,7 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* If user chooses to enter food budget */}
           {foodConfig.budgetMode === "ENTER" && (
-            <div className="p-5 rounded-2xl bg-paper-inset/40 border border-line space-y-2">
+            <div className="p-5 rounded-sheet bg-paper-inset/40 border border-line space-y-2">
               <label
                 htmlFor="food-budget-input"
                 className="block text-xs font-mono uppercase tracking-wider text-ink-muted"
@@ -819,7 +835,7 @@ export const FoodPlanningPage: React.FC = () => {
                       food_budget: e.target.value,
                     }))
                   }
-                  className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600"
+                  className="w-full pl-9 pr-3.5 py-2.5 rounded-control border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600"
                 />
               </div>
               <p className="text-xs text-ink-muted mt-1">
@@ -837,7 +853,7 @@ export const FoodPlanningPage: React.FC = () => {
           <button
             type="button"
             onClick={() => setIsCustomizationOpen(!isCustomizationOpen)}
-            className="w-full flex items-center justify-between p-4 rounded-2xl bg-paper-inset/30 hover:bg-paper-inset/60 border border-line transition-colors focus:outline-none cursor-pointer"
+            className="w-full flex items-center justify-between p-4 rounded-sheet bg-paper-inset/30 hover:bg-paper-inset/60 border border-line transition-colors focus:outline-none cursor-pointer"
             aria-expanded={isCustomizationOpen}
           >
             <div className="text-left">
@@ -848,7 +864,7 @@ export const FoodPlanningPage: React.FC = () => {
                 Only change these settings if you have more information.
               </p>
             </div>
-            <div className="p-1 rounded-lg text-ink-muted">
+            <div className="p-1 rounded-control text-ink-muted">
               {isCustomizationOpen ? (
                 <ChevronUp className="w-5 h-5 text-ink" />
               ) : (
@@ -858,7 +874,7 @@ export const FoodPlanningPage: React.FC = () => {
           </button>
 
           {isCustomizationOpen && (
-            <div className="mt-4 p-5 rounded-2xl bg-paper-inset/20 border border-line space-y-6">
+            <div className="mt-4 p-5 rounded-sheet bg-paper-inset/20 border border-line space-y-6">
               {/* Subsection 1: How many people will eat? */}
               {foodConfig.meals.length > 0 && (
                 <div>
@@ -888,7 +904,7 @@ export const FoodPlanningPage: React.FC = () => {
                       return (
                         <div
                           key={index}
-                          className="p-3.5 bg-paper-raised rounded-xl border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                          className="p-3.5 bg-paper-raised rounded-control border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
                         >
                           <div className="font-semibold text-ink">
                             {durationDays > 1 ? `Day ${meal.day} • ` : ""}
@@ -920,7 +936,7 @@ export const FoodPlanningPage: React.FC = () => {
                                       : undefined,
                                   )
                                 }
-                                className="w-24 px-2.5 py-1.5 rounded-lg border border-line text-xs text-ink bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
+                                className="w-24 px-2.5 py-1.5 rounded-control border border-line text-xs text-ink bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                               />
                             </div>
 
@@ -958,7 +974,7 @@ export const FoodPlanningPage: React.FC = () => {
                                       );
                                     }
                                   }}
-                                  className="w-20 pl-2.5 pr-6 py-1.5 rounded-lg border border-line text-xs text-ink bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
+                                  className="w-20 pl-2.5 pr-6 py-1.5 rounded-control border border-line text-xs text-ink bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                                 />
                                 <span className="absolute right-2 text-ink-faint font-bold text-xs pointer-events-none">
                                   %
@@ -1010,7 +1026,7 @@ export const FoodPlanningPage: React.FC = () => {
                           costApproach: opt.id as any,
                         }))
                       }
-                      className={`text-left p-3 rounded-xl border text-xs transition-all focus:outline-none cursor-pointer ${
+                      className={`text-left p-3 rounded-control border text-xs transition-all focus:outline-none cursor-pointer ${
                         foodConfig.costApproach === opt.id
                           ? "border-moss-600 bg-moss-50 text-moss-950 font-bold shadow-sm"
                           : "border-line bg-paper-raised text-ink hover:border-line-strong"
@@ -1026,7 +1042,7 @@ export const FoodPlanningPage: React.FC = () => {
 
                 {/* Price per person or serving: amount and unit selector */}
                 {foodConfig.costApproach === "UNIT" && (
-                  <div className="mt-3 p-4 rounded-xl bg-paper-raised border border-line max-w-md space-y-2">
+                  <div className="mt-3 p-4 rounded-sheet bg-paper-raised border border-line max-w-md space-y-2">
                     <label
                       htmlFor="known-unit-cost-input"
                       className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted"
@@ -1050,7 +1066,7 @@ export const FoodPlanningPage: React.FC = () => {
                               known_unit_cost: e.target.value,
                             }))
                           }
-                          className="w-full pl-7 pr-3 py-2 rounded-lg border border-line text-xs font-semibold bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
+                          className="w-full pl-7 pr-3 py-2 rounded-control border border-line text-xs font-semibold bg-paper-raised focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                         />
                       </div>
                       <select
@@ -1063,7 +1079,7 @@ export const FoodPlanningPage: React.FC = () => {
                               .value as FoodPricingUnit,
                           }))
                         }
-                        className="px-3 py-2 rounded-lg border border-line text-xs font-semibold bg-paper-raised text-ink focus:outline-none focus:ring-1 focus:ring-moss-600"
+                        className="px-3 py-2 rounded-control border border-line text-xs font-semibold bg-paper-raised text-ink focus:outline-none focus:ring-1 focus:ring-moss-600"
                       >
                         <option value="PER_PERSON">per person</option>
                         <option value="PER_SERVING">per serving</option>
@@ -1074,7 +1090,7 @@ export const FoodPlanningPage: React.FC = () => {
 
                 {/* Total catering price: single total amount field */}
                 {foodConfig.costApproach === "TOTAL" && (
-                  <div className="mt-3 p-4 rounded-xl bg-paper-raised border border-line max-w-md space-y-2">
+                  <div className="mt-3 p-4 rounded-sheet bg-paper-raised border border-line max-w-md space-y-2">
                     <label
                       htmlFor="known-total-cost-input"
                       className="block text-[11px] font-mono uppercase tracking-wider text-ink-muted"
@@ -1097,7 +1113,7 @@ export const FoodPlanningPage: React.FC = () => {
                             known_total_cost: e.target.value,
                           }))
                         }
-                        className="w-full pl-7 pr-3 py-2 rounded-lg border border-line text-xs font-semibold bg-paper-raised text-ink focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
+                        className="w-full pl-7 pr-3 py-2 rounded-control border border-line text-xs font-semibold bg-paper-raised text-ink focus:outline-none focus:ring-1 focus:ring-moss-600 focus:border-moss-600"
                       />
                     </div>
                   </div>
@@ -1126,7 +1142,7 @@ export const FoodPlanningPage: React.FC = () => {
               type="button"
               onClick={handleCalculateFoodEstimates}
               disabled={isCalculating}
-              className="inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-2xl bg-moss-700 hover:bg-moss-800 disabled:bg-moss-300 text-paper-raised font-bold text-sm shadow-sm transition-all focus:outline-none cursor-pointer"
+              className="btn-primary px-6 py-3 font-bold text-sm"
             >
               {isCalculating ? (
                 <>
@@ -1144,7 +1160,7 @@ export const FoodPlanningPage: React.FC = () => {
 
           {/* State Before Calculation */}
           {!foodPlanResponse && !isCalculating && (
-            <div className="p-8 rounded-2xl border border-dashed border-line bg-paper-inset/30 text-center">
+            <div className="p-8 rounded-sheet border border-dashed border-line bg-paper-inset/30 text-center">
               <Utensils className="w-8 h-8 text-ink-faint mx-auto mb-2" />
               <p className="text-sm font-semibold text-ink">
                 Select your meals and calculate to see your food estimates.
@@ -1162,7 +1178,7 @@ export const FoodPlanningPage: React.FC = () => {
               {/* Primary Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* 1. Servings Card */}
-                <div className="bg-paper-raised border border-line rounded-2xl p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Estimated Servings
@@ -1183,7 +1199,7 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.total_veg_servings != null &&
                     foodPlanResponse.total_non_veg_servings != null &&
                     foodPlanResponse.total_non_veg_servings > 0 && (
-                      <div className="text-xs text-ink-muted mt-1.5 flex items-center gap-1.5">
+                      <div className="text-xs text-ink-muted mt-1.5 flex items-center gap-1.5 font-mono tabular-nums">
                         <span className="text-moss-700 font-semibold">
                           <AnimatedCounter
                             value={foodPlanResponse.total_veg_servings}
@@ -1206,14 +1222,14 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 2. Food Cost Card */}
-                <div className="bg-paper-raised border border-line rounded-2xl p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Estimated Food Cost
                     </span>
                     <Wallet className="w-4 h-4 text-ink-muted" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink">
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink font-mono tabular-nums">
                     {foodPlanResponse.cost_summary.estimated_total_cost !==
                       null &&
                     foodPlanResponse.cost_summary.estimated_total_cost !==
@@ -1231,7 +1247,7 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.cost_summary.cost_per_attendee !== null &&
                     foodPlanResponse.cost_summary.cost_per_attendee !==
                       undefined && (
-                      <div className="text-xs text-ink-muted mt-1.5 font-medium">
+                      <div className="text-xs text-ink-muted mt-1.5 font-medium font-mono tabular-nums">
                         <AnimatedCounter
                           value={
                             foodPlanResponse.cost_summary.cost_per_attendee
@@ -1269,14 +1285,14 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 3. Food Waste Card */}
-                <div className="bg-paper-raised border border-line rounded-2xl p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-sm">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Expected Food Waste
                     </span>
                     <Leaf className="w-4 h-4 text-moss-700" />
                   </div>
-                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink">
+                  <div className="text-2xl sm:text-3xl font-display font-bold text-ink font-mono tabular-nums">
                     {foodPlanResponse.waste_summary.estimated_waste_servings !==
                       null &&
                     foodPlanResponse.waste_summary.estimated_waste_servings !==
@@ -1298,7 +1314,7 @@ export const FoodPlanningPage: React.FC = () => {
                   {foodPlanResponse.waste_summary.estimated_waste_kg !== null &&
                   foodPlanResponse.waste_summary.estimated_waste_kg !==
                     undefined ? (
-                    <div className="text-xs font-bold text-moss-800 mt-1.5">
+                    <div className="text-xs font-bold text-moss-800 mt-1.5 font-mono tabular-nums">
                       <AnimatedCounter
                         prefix="~"
                         value={
@@ -1309,7 +1325,7 @@ export const FoodPlanningPage: React.FC = () => {
                       />
                     </div>
                   ) : (
-                    <div className="text-[11px] text-clay-700 mt-1.5 bg-clay-50 px-2 py-1 rounded-lg border border-clay-200">
+                    <div className="text-[11px] text-clay-700 mt-1.5 bg-clay-50 px-2 py-1 rounded-control border border-clay-200">
                       Food waste in kilograms hasn't been estimated because a
                       serving-weight assumption is unavailable.
                     </div>
@@ -1323,7 +1339,7 @@ export const FoodPlanningPage: React.FC = () => {
 
               {/* Actionable Recommendations (if any) */}
               {foodPlanResponse.recommendations.length > 0 && (
-                <div className="bg-paper-inset/40 border border-line rounded-2xl p-4 space-y-2">
+                <div className="bg-paper-inset/40 border border-line rounded-sheet p-4 space-y-2">
                   <span className="text-xs font-mono uppercase tracking-wider text-ink-muted block">
                     Food Waste & Cost Recommendations
                   </span>
@@ -1347,7 +1363,7 @@ export const FoodPlanningPage: React.FC = () => {
                 foodPlanResponse.constraints_evaluation.filter(
                   (c) => c.status === "VIOLATED" || c.status === "WARNING",
                 ).length > 0 && (
-                  <div className="p-4 rounded-2xl bg-clay-50 border border-clay-300 text-xs text-clay-900 space-y-1">
+                  <div className="p-4 rounded-sheet bg-clay-50 border border-clay-300 text-xs text-clay-900 space-y-1">
                     <span className="font-bold flex items-center gap-1.5 text-clay-800">
                       <AlertTriangle className="w-4 h-4 text-clay-600" />
                       Preference & Constraint Notices:
@@ -1397,7 +1413,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </p>
 
                 {/* 1. Estimated food servings */}
-                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
+                <div className="p-4 rounded-sheet bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
                   <div className="flex items-center space-x-2">
                     <Utensils className="w-4 h-4 text-moss-700" />
                     <h4 className="font-semibold text-ink text-sm">
@@ -1410,7 +1426,7 @@ export const FoodPlanningPage: React.FC = () => {
                     meal.
                   </p>
 
-                  <div className="bg-paper-raised rounded-xl p-3 border border-line space-y-1.5">
+                  <div className="bg-paper-raised rounded-control p-3 border border-line space-y-1.5">
                     {foodPlanResponse.meal_plans.map((meal, idx) => {
                       const attendees = meal.attendee_count;
                       const partRate =
@@ -1461,7 +1477,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 2. Estimated food cost */}
-                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
+                <div className="p-4 rounded-sheet bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
                   <div className="flex items-center space-x-2">
                     <Wallet className="w-4 h-4 text-ink-muted" />
                     <h4 className="font-semibold text-ink text-sm">
@@ -1488,7 +1504,7 @@ export const FoodPlanningPage: React.FC = () => {
                       <p className="text-ink-muted">
                         Cost is calculated from your entered rate per portion:
                       </p>
-                      <div className="bg-paper-raised rounded-xl p-3 border border-line font-mono text-ink text-xs">
+                      <div className="bg-paper-raised rounded-control p-3 border border-line font-mono text-ink text-xs">
                         {foodPlanResponse.total_estimated_servings} portions × ₹
                         {Number(foodConfig.known_unit_cost || 0)} per portion =
                         ₹
@@ -1504,7 +1520,7 @@ export const FoodPlanningPage: React.FC = () => {
                         Cost is estimated using reference catering rates for
                         campus events:
                       </p>
-                      <div className="bg-paper-raised rounded-xl p-3 border border-line space-y-1.5">
+                      <div className="bg-paper-raised rounded-control p-3 border border-line space-y-1.5">
                         {foodPlanResponse.meal_plans.map((meal, idx) => (
                           <div
                             key={idx}
@@ -1532,7 +1548,7 @@ export const FoodPlanningPage: React.FC = () => {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-clay-800 bg-clay-50 p-2.5 rounded-xl border border-clay-200">
+                    <p className="text-clay-800 bg-clay-50 p-2.5 rounded-control border border-clay-200">
                       Cost could not be calculated because reference pricing
                       assumptions are unavailable.
                     </p>
@@ -1540,7 +1556,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 3. Expected food waste */}
-                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
+                <div className="p-4 rounded-sheet bg-paper-inset/30 border border-line text-xs text-ink space-y-2">
                   <div className="flex items-center space-x-2">
                     <Leaf className="w-4 h-4 text-moss-700" />
                     <h4 className="font-semibold text-ink text-sm">
@@ -1573,7 +1589,7 @@ export const FoodPlanningPage: React.FC = () => {
                         of prepared portions is expected to remain unconsumed.
                       </p>
 
-                      <div className="bg-paper-raised rounded-xl p-3 border border-line font-mono text-ink text-xs space-y-1">
+                      <div className="bg-paper-raised rounded-control p-3 border border-line font-mono text-ink text-xs space-y-1">
                         <div>
                           {foodPlanResponse.total_estimated_servings} portions ×{" "}
                           {Math.round(
@@ -1633,7 +1649,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* Note below Expected Food Waste calculation */}
-                <div className="p-3 sm:p-3.5 rounded-xl bg-paper-inset/40 border border-line text-ink-muted flex items-start space-x-2.5">
+                <div className="p-3 sm:p-3.5 rounded-control bg-paper-inset/40 border border-line text-ink-muted flex items-start space-x-2.5">
                   <Info className="w-4 h-4 text-ink-faint flex-shrink-0 mt-0.5" />
                   <p className="text-[11px] sm:text-xs text-ink-muted leading-relaxed">
                     These figures are estimates based on configured assumptions.
@@ -1643,7 +1659,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 4. Assumptions and data sources */}
-                <div className="p-4 rounded-2xl bg-paper-inset/30 border border-line text-xs text-ink space-y-3">
+                <div className="p-4 rounded-sheet bg-paper-inset/30 border border-line text-xs text-ink space-y-3">
                   <div>
                     <h4 className="font-semibold text-ink text-sm">
                       Assumptions and data sources
@@ -1670,7 +1686,7 @@ export const FoodPlanningPage: React.FC = () => {
                         return (
                           <div
                             key={idx}
-                            className="p-3 bg-paper-raised rounded-xl border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                            className="p-3 bg-paper-raised rounded-control border border-line flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                           >
                             <div>
                               <span className="font-semibold text-ink text-xs block">
@@ -1719,7 +1735,7 @@ export const FoodPlanningPage: React.FC = () => {
                             (m, idx) => (
                               <span
                                 key={idx}
-                                className="px-2 py-0.5 bg-paper-inset text-ink-muted rounded-md text-[10px] border border-line"
+                                className="px-2 py-0.5 bg-paper-inset text-ink-muted rounded-control text-[10px] border border-line"
                               >
                                 {getHumanReadableParameter(m)}
                               </span>
@@ -1741,7 +1757,7 @@ export const FoodPlanningPage: React.FC = () => {
           <button
             type="button"
             onClick={handleBack}
-            className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3 rounded-xl border border-line hover:bg-paper-inset/60 text-ink font-semibold text-sm transition-colors focus:outline-none cursor-pointer"
+            className="btn-ghost px-6 py-3 font-semibold text-sm"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to Constraints</span>
@@ -1751,7 +1767,7 @@ export const FoodPlanningPage: React.FC = () => {
             <button
               type="button"
               onClick={handleNext}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-8 py-3.5 rounded-xl bg-moss-700 hover:bg-moss-800 text-paper-raised font-bold text-sm shadow-sm transition-all focus:outline-none cursor-pointer"
+              className="btn-primary px-8 py-3.5 font-bold text-sm"
             >
               <span>Continue to Waste Planning</span>
               <ArrowRight className="w-4 h-4" />
@@ -1764,6 +1780,19 @@ export const FoodPlanningPage: React.FC = () => {
             )}
           </div>
         </div>
+      </div>
+
+      <FoodLiveReceipt
+        totalCost={liveEstimates.totalCost}
+        surplusKg={liveEstimates.surplusKg}
+        surplusServings={liveEstimates.surplusServings}
+        remainingBudget={liveEstimates.remainingBudget}
+        isOverBudget={liveEstimates.isOverBudget}
+        mealCount={foodConfig.meals.length}
+        attendees={event?.expected_attendees || 100}
+        currency={budget?.currency || "INR"}
+        isCalculated={liveEstimates.isCalculated}
+      />
       </div>
     </div>
   );

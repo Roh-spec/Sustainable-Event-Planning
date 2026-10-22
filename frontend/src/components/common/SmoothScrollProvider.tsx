@@ -43,21 +43,35 @@ export const SmoothScrollProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     // Check if user prefers reduced motion
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     if (prefersReducedMotion) {
-      return;
+      const handleNativeScroll = () => {
+        const top = window.scrollY || document.documentElement.scrollTop;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        setScrollY(top);
+        setScrollProgress(max > 0 ? top / max : 0);
+      };
+      window.addEventListener("scroll", handleNativeScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleNativeScroll);
     }
 
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 0.95,
       touchMultiplier: 1.5,
+      prevent: (node) => {
+        if (!node) return false;
+        const tag = (node as HTMLElement).tagName;
+        if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return true;
+        return Boolean((node as HTMLElement).closest?.("[data-lenis-prevent], [role='dialog']"));
+      },
     });
 
     setLenisInstance(lenis);

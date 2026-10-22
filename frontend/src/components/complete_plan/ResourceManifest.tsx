@@ -177,7 +177,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
           </span>
         </div>
 
-        <div className="mb-4 p-3.5 rounded-xl bg-clay-50 border border-clay-300 text-xs text-clay-950 flex items-start space-x-2.5">
+        <div className="mb-4 p-3.5 rounded-control bg-clay-50 border border-clay-300 text-xs text-clay-950 flex items-start space-x-2.5">
           <ShieldAlert className="w-4 h-4 text-clay-600 flex-shrink-0 mt-0.5" />
           <div>
             <strong className="font-semibold text-clay-900">
@@ -199,17 +199,17 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
             {equipment.map((eq, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-xl border border-line bg-paper-raised hover:border-moss-400 transition-all text-xs space-y-1.5 shadow-xs card-hover"
+                className="p-4 rounded-sheet border border-line bg-paper-raised hover:border-moss-400 transition-all text-xs space-y-1.5 shadow-subtle card-hover"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h4 className="font-serif font-bold text-ink text-sm">
                     {eq.name}
                   </h4>
-                  <span className="px-2 py-0.5 rounded-md bg-paper-inset text-ink-muted font-bold text-[10px] uppercase tracking-wider flex-shrink-0 border border-line">
+                  <span className="px-2 py-0.5 rounded-control bg-paper-inset text-ink-muted font-bold text-[10px] uppercase tracking-wider flex-shrink-0 border border-line">
                     {eq.category.replace(/_/g, " ")}
                   </span>
                 </div>
-                <div className="text-moss-700 font-mono font-bold">
+                <div className="text-moss-700 font-mono font-bold tabular-nums">
                   Quantity: {eq.suggested_quantity}
                 </div>
                 {eq.notes && (
@@ -217,7 +217,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
                     {eq.notes}
                   </p>
                 )}
-                <div className="pt-1 flex items-center space-x-1 text-[10px] text-clay-700 font-semibold">
+                <div className="pt-1 flex items-center space-x-1 text-[10px] text-clay-700 font-semibold font-mono">
                   <span>• Unconfirmed suggestion</span>
                 </div>
               </div>

@@ -3,7 +3,6 @@ import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
   Columns3,
-  Check,
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
@@ -26,6 +25,10 @@ export const PlanComparisonPage: React.FC = () => {
   } = usePlanningWizard();
 
   const [selectionNotice, setSelectionNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    document.title = "Compare Plans · EcoPlan";
+  }, []);
 
   useEffect(() => {
     if (eventId && (!event || event.id !== Number(eventId))) {
@@ -119,7 +122,7 @@ export const PlanComparisonPage: React.FC = () => {
         </div>
 
         {selectionNotice && (
-          <div className="mb-6 p-4 rounded-xl bg-moss-50 border border-moss-300 text-moss-900 text-xs flex items-center justify-between shadow-notebook">
+          <div className="mb-6 p-4 rounded-control bg-moss-50 border border-moss-300 text-moss-900 text-xs flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-4 h-4 text-moss-600 flex-shrink-0" />
               <span>{selectionNotice}</span>
@@ -142,7 +145,7 @@ export const PlanComparisonPage: React.FC = () => {
         ) : (
           <>
             {/* Desktop / Tablet Ledger Table View */}
-            <div className="hidden md:block overflow-x-auto rounded-sheet border border-line bg-paper-raised shadow-xs">
+            <div className="hidden md:block overflow-x-auto rounded-sheet border border-line bg-paper-raised">
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b-2 border-line">
@@ -155,7 +158,7 @@ export const PlanComparisonPage: React.FC = () => {
                         <th
                           key={p.plan_id}
                           className={`py-4 px-5 border-r border-line last:border-r-0 transition-colors ${
-                            isSel ? "bg-moss-50/70 border-b-2 border-moss-600" : "bg-paper-inset/20"
+                            isSel ? "bg-moss-50/70 border-t-4 border-t-moss-800 border-b-2 border-moss-600" : "bg-paper-inset/20"
                           }`}
                         >
                           <div className="flex items-center justify-between gap-2">
@@ -167,8 +170,7 @@ export const PlanComparisonPage: React.FC = () => {
                               {p.planning_objective.replace("_", " ")}
                             </span>
                             {isSel && (
-                              <span className="text-[10px] font-bold text-moss-700 flex items-center space-x-0.5">
-                                <Check className="w-3 h-3" />
+                              <span className="stamp-moss text-[9px] py-0.5 px-1.5 flex items-center space-x-0.5">
                                 <span>Selected</span>
                               </span>
                             )}
@@ -487,9 +489,9 @@ export const PlanComparisonPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handleSelect(p)}
-                            className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all focus:outline-none ${
+                            className={`w-full py-2.5 px-4 rounded-control text-xs font-semibold transition-all focus:outline-none ${
                               isSel
-                                ? "bg-moss-700 text-paper-raised shadow-notebook hover:bg-moss-800"
+                                ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
                                 : "btn-ghost w-full hover:bg-moss-50"
                             }`}
                           >
@@ -512,8 +514,8 @@ export const PlanComparisonPage: React.FC = () => {
                     key={p.plan_id}
                     className={`p-5 rounded-sheet border transition-all ${
                       isSel
-                        ? "border-2 border-moss-700 bg-moss-50/30 shadow-notebook-lg"
-                        : "border-line bg-paper-raised shadow-notebook"
+                        ? "border border-line border-t-4 border-t-moss-800 bg-moss-50/30"
+                        : "border-line bg-paper-raised"
                     }`}
                   >
                     <div className="flex justify-between items-center mb-3">
@@ -525,9 +527,8 @@ export const PlanComparisonPage: React.FC = () => {
                         {p.planning_objective.replace("_", " ")}
                       </span>
                       {isSel && (
-                        <span className="text-xs font-bold text-moss-700 flex items-center space-x-1">
-                          <Check className="w-3.5 h-3.5" />
-                          <span>Active Selected</span>
+                        <span className="stamp-moss">
+                          Active Selected
                         </span>
                       )}
                     </div>
@@ -538,13 +539,13 @@ export const PlanComparisonPage: React.FC = () => {
                     <div className="space-y-2 text-xs divide-y divide-line">
                       <div className="flex justify-between py-1.5">
                         <span className="text-ink-muted">Estimated Cost:</span>
-                        <span className="font-mono font-bold text-ink">
+                        <span className="font-mono font-bold text-ink tabular-nums">
                           {formatCost(p.estimated_cost)}
                         </span>
                       </div>
                       <div className="flex justify-between py-1.5">
                         <span className="text-ink-muted">Food Waste:</span>
-                        <span className="font-mono font-bold text-ink">
+                        <span className="font-mono font-bold text-ink tabular-nums">
                           {p.food_metrics?.estimated_waste_kg !== null &&
                           p.food_metrics?.estimated_waste_kg !== undefined
                             ? formatMetric(
@@ -561,7 +562,7 @@ export const PlanComparisonPage: React.FC = () => {
                         <span className="text-ink-muted">
                           Single-use Items:
                         </span>
-                        <span className="font-mono font-bold text-ink">
+                        <span className="font-mono font-bold text-ink tabular-nums">
                           {formatMetric(
                             p.waste_metrics?.single_use_packaging_items,
                             "items",
@@ -570,7 +571,7 @@ export const PlanComparisonPage: React.FC = () => {
                       </div>
                       <div className="flex justify-between py-1.5">
                         <span className="text-ink-muted">Reusable Items:</span>
-                        <span className="font-mono font-bold text-moss-700">
+                        <span className="font-mono font-bold text-moss-700 tabular-nums">
                           {formatMetric(
                             p.waste_metrics?.reusable_packaging_items,
                             "items",
@@ -579,7 +580,7 @@ export const PlanComparisonPage: React.FC = () => {
                       </div>
                       <div className="flex justify-between py-1.5">
                         <span className="text-ink-muted">Plastic Items:</span>
-                        <span className="font-mono font-bold text-ink">
+                        <span className="font-mono font-bold text-ink tabular-nums">
                           {formatMetric(
                             p.waste_metrics?.total_plastic_items,
                             "items",
@@ -592,7 +593,7 @@ export const PlanComparisonPage: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleSelect(p)}
-                        className={`w-full py-2.5 px-4 rounded-xl text-xs font-semibold transition-all ${
+                        className={`w-full py-2.5 px-4 rounded-control text-xs font-semibold transition-all ${
                           isSel
                             ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
                             : "btn-ghost w-full"

@@ -79,14 +79,14 @@ export const SustainabilityActionsList: React.FC<
               </p>
 
               {act.target_metric && (
-                <div className="mt-2.5 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-moss-50 text-moss-900 text-xs font-bold border border-moss-200">
+                <div className="mt-2.5 inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-control bg-moss-50 text-moss-900 text-xs font-bold border border-moss-200">
                   <Target className="w-3.5 h-3.5 text-moss-600 flex-shrink-0" />
                   <span>Target: {act.target_metric}</span>
                 </div>
               )}
             </div>
 
-            <div className="pt-3 border-t border-line text-xs bg-paper-inset/40 p-3 rounded-xl border border-line/60">
+            <div className="pt-3 border-t border-line text-xs bg-paper-inset/40 p-3 rounded-control border border-line/60">
               <div className="flex items-center space-x-1.5 text-ink font-bold mb-1">
                 <ShieldCheck className="w-3.5 h-3.5 text-moss-600" />
                 <span>Verification Step:</span>

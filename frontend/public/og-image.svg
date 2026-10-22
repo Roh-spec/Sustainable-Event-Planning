@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#F3EEE4"/>
+  <line x1="80" y1="80" x2="1120" y2="80" stroke="#DDD4C6" stroke-width="2"/>
+  <line x1="80" y1="550" x2="1120" y2="550" stroke="#DDD4C6" stroke-width="2"/>
+  <text x="80" y="160" font-family="'JetBrains Mono', monospace" font-size="20" font-weight="600" fill="#344C3D" letter-spacing="4">FIELD NOTEBOOK · WORKING LEDGER</text>
+  <text x="80" y="270" font-family="'Newsreader', Georgia, serif" font-size="76" font-weight="600" fill="#1C1917">EcoPlan</text>
+  <text x="80" y="340" font-family="'DM Sans', sans-serif" font-size="32" font-weight="400" fill="#57534E">Low-waste, budget-aware college event planning.</text>
+  <text x="80" y="420" font-family="'JetBrains Mono', monospace" font-size="24" font-weight="500" fill="#1C1917">Physical units only: kg food waste · item counts · ₹</text>
+  <text x="80" y="460" font-family="'Newsreader', serif" font-style="italic" font-size="22" fill="#8B4A26">"No invented 87/100 sustainability scores."</text>
+  <path d="M1020 320V260M1020 260C1020 240 1000 225 975 230C975 255 990 270 1020 260ZM1020 260C1020 240 1040 225 1065 230C1065 255 1050 270 1020 260Z" stroke="#344C3D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

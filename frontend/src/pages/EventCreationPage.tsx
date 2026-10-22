@@ -7,73 +7,73 @@ import {
   MapPin,
   ArrowRight,
   AlertCircle,
-  Laptop,
-  Music,
-  Terminal,
-  BookOpen,
-  Presentation,
-  Trophy,
-  GraduationCap,
-  Building2,
 } from "lucide-react";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { eventsApi } from "../api/events";
 import { EVENT_TYPE_OPTIONS, EventType } from "../types/events";
+import {
+  HackathonMark,
+  WorkshopMark,
+  CulturalMark,
+  SportsMark,
+  ConferenceMark,
+  SocialMark,
+} from "../components/icons";
 
 const EVENT_TYPE_TILES: {
   value: EventType;
   label: string;
   desc: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: React.ComponentType<{ className?: string; size?: number }>;
 }[] = [
   {
     value: "TECH_FEST",
     label: "Tech Fest",
     desc: "Coding fairs & tech demos",
-    icon: Laptop,
+    icon: HackathonMark,
   },
   {
     value: "CULTURAL_FEST",
     label: "Cultural Fest",
     desc: "Performances, drama & arts",
-    icon: Music,
+    icon: CulturalMark,
   },
   {
     value: "HACKATHON",
     label: "Hackathon",
     desc: "Intensive 24-48h sprints",
-    icon: Terminal,
+    icon: HackathonMark,
   },
   {
     value: "WORKSHOP",
     label: "Workshop",
     desc: "Hands-on labs & seminars",
-    icon: BookOpen,
+    icon: WorkshopMark,
   },
   {
     value: "CONFERENCE",
     label: "Conference",
     desc: "Keynotes & symposiums",
-    icon: Presentation,
+    icon: ConferenceMark,
   },
   {
     value: "SPORTS_EVENT",
     label: "Sports Event",
     desc: "Tournaments & athletic meets",
-    icon: Trophy,
+    icon: SportsMark,
   },
   {
     value: "FAREWELL",
     label: "Farewell",
     desc: "Graduation & batch send-offs",
-    icon: GraduationCap,
+    icon: SocialMark,
   },
   {
     value: "DEPARTMENT_EVENT",
     label: "Department",
     desc: "Club meets & symposiums",
-    icon: Building2,
+    icon: WorkshopMark,
   },
 ];
 
@@ -99,7 +99,6 @@ export const EventCreationPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // If editing an existing event ID from route
   useEffect(() => {
     if (eventId) {
       loadEvent(Number(eventId))
@@ -120,7 +119,6 @@ export const EventCreationPage: React.FC = () => {
     e.preventDefault();
     setError(null);
 
-    // Frontend validation
     if (!name.trim()) {
       setError("Event Name is required.");
       return;
@@ -140,7 +138,6 @@ export const EventCreationPage: React.FC = () => {
 
     try {
       if (event?.id && eventId) {
-        // Event already exists, update context and advance
         setEvent({
           ...event,
           name,
@@ -151,7 +148,6 @@ export const EventCreationPage: React.FC = () => {
         });
         navigate(`/events/${event.id}/budget`);
       } else {
-        // Create new event in backend
         const createdEvent = await eventsApi.create({
           name: name.trim(),
           event_type: eventType,
@@ -191,236 +187,247 @@ export const EventCreationPage: React.FC = () => {
 
       <div className="surface-sheet p-6 sm:p-10">
         <div className="border-b border-line pb-6 mb-8">
-          <p className="label-kicker mb-2">Step 01 / Event details</p>
-          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight">
+          <span className="label-kicker mb-1 block">Step 01 · Registry</span>
+          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight font-semibold">
             {eventId ? "Edit Event Details" : "Create Your Sustainable Event"}
           </h1>
-          <p className="text-ink-muted text-sm mt-1.5 max-w-2xl leading-relaxed">
-            Provide the basic event footprint parameters. These form the
-            foundation for domain food calculations, waste stream evaluations,
-            and multi-objective planning alternatives.
+          <p className="text-ink-muted text-sm mt-1 max-w-2xl leading-relaxed">
+            Record the basic physical parameters: head count, duration, and format. These govern food portion algorithms and waste projections.
           </p>
         </div>
 
         {error && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-3"
+            className="mb-8 p-4 rounded-control bg-clay-50 border-l-2 border-clay-700 text-clay-900 text-xs font-mono flex items-start space-x-3"
           >
-            <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-clay-700 flex-shrink-0 mt-0.5" />
             <div>
-              <span className="font-bold">Validation Error: </span>
+              <span className="font-bold uppercase tracking-wider">Validation Error: </span>
               <span>{error}</span>
             </div>
           </div>
         )}
 
         <form onSubmit={handleSubmit} noValidate className="space-y-8">
-          {/* Event Name */}
-          <div>
-            <label
-              htmlFor="event-name"
-              className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
-            >
-              Event Name <span className="text-clay-600">*</span>
-            </label>
-            <input
-              type="text"
-              id="event-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Annual College Tech Fest 2026"
-              className="w-full px-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
-              required
-            />
-          </div>
+          {/* Section 1: Identification & Gathering Format */}
+          <section className="border-b border-line pb-8 space-y-6">
+            <span className="label-kicker">Section A · Identity & Format</span>
 
-          {/* Event Type as Illustrated Tiles */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label
-                htmlFor="event-type"
-                className="block text-xs font-bold uppercase tracking-wider text-ink"
-              >
-                Event Type <span className="text-clay-600">*</span>
-              </label>
-              <span className="text-xs text-ink-muted">
-                Select gathering format
-              </span>
-            </div>
-
-            {/* Hidden native select keeps full accessibility and test compatibility */}
-            <select
-              id="event-type"
-              aria-label="Event Type"
-              value={eventType}
-              onChange={(e) => setEventType(e.target.value)}
-              className="sr-only"
-            >
-              {EVENT_TYPE_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-
-            {/* Illustrated tile selection grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {EVENT_TYPE_TILES.map((tile) => {
-                const isSelected = eventType === tile.value;
-                const TileIcon = tile.icon;
-                return (
-                  <button
-                    key={tile.value}
-                    type="button"
-                    onClick={() => setEventType(tile.value)}
-                    className={`p-3.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                      isSelected
-                        ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-600/30 text-ink shadow-sm"
-                        : "border-line bg-paper-inset/40 hover:bg-paper-inset hover:border-line-strong text-ink-muted"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between w-full mb-2">
-                      <div
-                        className={`p-2 rounded-lg ${
-                          isSelected
-                            ? "bg-moss-600 text-paper-raised"
-                            : "bg-paper-raised text-ink-muted border border-line"
-                        }`}
-                      >
-                        <TileIcon className="w-4 h-4" />
-                      </div>
-                      {isSelected && (
-                        <span className="w-2 h-2 rounded-full bg-moss-600" />
-                      )}
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-ink block">
-                        {tile.label}
-                      </span>
-                      <span className="text-[11px] text-ink-muted line-clamp-1 mt-0.5">
-                        {tile.desc}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Expected Attendees & Duration */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Event Name */}
             <div>
               <label
-                htmlFor="expected-attendees"
-                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
+                htmlFor="event-name"
+                className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
               >
-                Expected Attendees <span className="text-clay-600">*</span>
+                Event Name <span className="text-clay-700">*</span>
               </label>
-              <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
-                  <Users className="w-4 h-4" />
-                </div>
-                <input
-                  type="number"
-                  id="expected-attendees"
-                  min="1"
-                  step="1"
-                  value={expectedAttendees}
-                  onChange={(e) => setExpectedAttendees(e.target.value)}
-                  placeholder="e.g. 150"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
-                  required
-                />
-              </div>
-              <p className="text-xs text-ink-muted mt-1.5">
-                Directly drives meal servings and packaging estimations.
-              </p>
+              <input
+                type="text"
+                id="event-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g. Annual College Tech Fest 2026"
+                className="w-full px-3.5 py-2.5 rounded-control border border-line bg-paper text-ink text-sm font-medium focus:border-moss-700 focus:outline-none placeholder:text-ink-muted/50"
+                required
+              />
             </div>
 
+            {/* Event Type as Line Illustration Tiles */}
             <div>
-              <label
-                htmlFor="duration-days"
-                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
-              >
-                Duration (Days) <span className="text-clay-600">*</span>
-              </label>
-              <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
-                  <Clock className="w-4 h-4" />
-                </div>
-                <input
-                  type="number"
-                  id="duration-days"
-                  min="1"
-                  max="30"
-                  value={durationDays}
-                  onChange={(e) => setDurationDays(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
-                  required
-                />
-              </div>
-              <p className="text-xs text-ink-muted mt-1.5">
-                Multi-day schedules allow customized per-day meal planning.
-              </p>
-            </div>
-          </div>
-
-          {/* Location & Optional Event Date */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <label
-                htmlFor="event-location"
-                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
-              >
-                Location / Venue
-              </label>
-              <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <input
-                  type="text"
-                  id="event-location"
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="e.g. Main Auditorium, Block C"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor="event-date"
-                className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5"
-              >
-                Event Date{" "}
-                <span className="text-xs font-normal text-ink-faint lowercase">
-                  (optional)
+              <div className="flex items-center justify-between mb-2">
+                <label
+                  htmlFor="event-type"
+                  className="block text-xs font-mono font-bold uppercase tracking-wider text-ink"
+                >
+                  Event Type <span className="text-clay-700">*</span>
+                </label>
+                <span className="text-[11px] font-mono text-ink-muted">
+                  format template
                 </span>
-              </label>
-              <div className="relative rounded-xl">
-                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-ink-faint">
-                  <Calendar className="w-4 h-4" />
-                </div>
-                <input
-                  type="date"
-                  id="event-date"
-                  value={eventDate}
-                  onChange={(e) => setEventDate(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-line bg-paper text-ink text-sm font-medium focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors"
-                />
+              </div>
+
+              {/* Accessible native select */}
+              <select
+                id="event-type"
+                aria-label="Event Type"
+                value={eventType}
+                onChange={(e) => setEventType(e.target.value)}
+                className="sr-only"
+              >
+                {EVENT_TYPE_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* Illustrated tile selection grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                {EVENT_TYPE_TILES.map((tile) => {
+                  const isSelected = eventType === tile.value;
+                  const TileIcon = tile.icon;
+                  return (
+                    <button
+                      key={tile.value}
+                      type="button"
+                      onClick={() => setEventType(tile.value)}
+                      className={`p-3 rounded-control border text-left transition-colors flex flex-col justify-between min-h-[92px] ${
+                        isSelected
+                          ? "border-moss-800 border-b-4 bg-moss-50/80 text-ink"
+                          : "border-line bg-paper-inset/30 hover:bg-paper-inset/70 hover:border-line-strong text-ink-muted"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between w-full mb-2">
+                        <span className={isSelected ? "text-moss-800" : "text-ink-muted"}>
+                          <TileIcon size={22} />
+                        </span>
+                        {isSelected && (
+                          <span className="w-2 h-2 rounded-full bg-moss-800" />
+                        )}
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold text-ink block font-display">
+                          {tile.label}
+                        </span>
+                        <span className="text-[10px] text-ink-muted line-clamp-1 mt-0.5 font-sans">
+                          {tile.desc}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-          </div>
+          </section>
 
-          {/* Action Button */}
+          {/* Section 2: Scale & Duration */}
+          <section className="border-b border-line pb-8 space-y-6">
+            <span className="label-kicker">Section B · Scale & Attendance</span>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="expected-attendees"
+                  className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
+                >
+                  Expected Attendees <span className="text-clay-700">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="number"
+                    id="expected-attendees"
+                    min="1"
+                    step="1"
+                    value={expectedAttendees}
+                    onChange={(e) => setExpectedAttendees(e.target.value)}
+                    placeholder="e.g. 150"
+                    className="w-full pl-9 pr-14 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
+                    required
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-mono text-ink-muted">
+                    people
+                  </div>
+                </div>
+                <p className="text-[11px] text-ink-muted mt-1 font-sans">
+                  Directly sets meal count and single-use packaging multiplier.
+                </p>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="duration-days"
+                  className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
+                >
+                  Duration (Days) <span className="text-clay-700">*</span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
+                    <Clock className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="number"
+                    id="duration-days"
+                    min="1"
+                    max="30"
+                    value={durationDays}
+                    onChange={(e) => setDurationDays(e.target.value)}
+                    className="w-full pl-9 pr-14 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
+                    required
+                  />
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-mono text-ink-muted">
+                    days
+                  </div>
+                </div>
+                <p className="text-[11px] text-ink-muted mt-1 font-sans">
+                  Multi-day schedules allow customized per-day meal planning.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 3: Venue & Optional Date */}
+          <section className="space-y-6">
+            <span className="label-kicker">Section C · Venue & Logistics</span>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="event-location"
+                  className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
+                >
+                  Location / Venue
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="text"
+                    id="event-location"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="e.g. Main Auditorium, Block C"
+                    className="w-full pl-9 pr-3.5 py-2.5 rounded-control border border-line bg-paper text-ink text-sm font-medium focus:border-moss-700 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="event-date"
+                  className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
+                >
+                  Event Date{" "}
+                  <span className="text-[10px] font-normal text-ink-muted lowercase">
+                    (optional)
+                  </span>
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
+                    <Calendar className="w-4 h-4" />
+                  </div>
+                  <input
+                    type="date"
+                    id="event-date"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                    className="w-full pl-9 pr-3.5 py-2.5 rounded-control border border-line bg-paper text-ink text-sm font-medium focus:border-moss-700 focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Action Row */}
           <div className="pt-6 border-t border-line flex justify-end">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="btn-primary px-8 py-3.5 text-sm"
+              className="btn-primary px-7 py-3 text-sm"
             >
               <span>
                 {isSubmitting ? "Saving Event..." : "Continue to Budget Step"}

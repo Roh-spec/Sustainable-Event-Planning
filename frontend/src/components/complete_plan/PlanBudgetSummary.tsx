@@ -60,15 +60,14 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
         <div
           role="alert"
           aria-label="Budget deficit alert"
-          className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-950 text-xs space-y-2"
+          className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-950 text-xs space-y-2"
         >
           <div className="flex items-center space-x-2 font-bold text-sm text-clay-900">
-            <AlertTriangle className="w-4 h-4 text-clay-600 flex-shrink-0" />
-            <span>Budget Ceiling Exceeded</span>
+            <span className="stamp-clay">Budget Ceiling Exceeded</span>
           </div>
           <p className="text-clay-800">
             The estimated cost for this plan exceeds your allocated budget by{" "}
-            <strong className="font-extrabold text-clay-950 font-mono">
+            <strong className="font-extrabold text-clay-950 font-mono tabular-nums">
               {formatCurrency(deficit, currency)}
             </strong>
             . You may need to request an approved budget adjustment or review
@@ -85,7 +84,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
             <span>Allocated Budget</span>
             <Coins className="w-4 h-4 text-ink-muted" />
           </div>
-          <div className="text-xl font-mono font-bold text-ink">
+          <div className="text-xl font-mono font-bold text-ink tabular-nums">
             {formatCurrency(budgetSummary?.total_budget, currency)}
           </div>
           <p className="text-[11px] text-ink-muted mt-0.5">
@@ -99,7 +98,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
             <span>Estimated Plan Cost</span>
             <Receipt className="w-4 h-4 text-ink-muted" />
           </div>
-          <div className="text-xl font-mono font-bold text-ink">
+          <div className="text-xl font-mono font-bold text-ink tabular-nums">
             {formatCurrency(budgetSummary?.estimated_plan_cost, currency)}
           </div>
           <p className="text-[11px] text-ink-muted mt-0.5">
@@ -121,7 +120,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
             </span>
             <PieChart className="w-4 h-4" />
           </div>
-          <div className="text-xl font-mono font-bold">
+          <div className="text-xl font-mono font-bold tabular-nums">
             {isFeasible
               ? formatCurrency(contingency, currency)
               : formatCurrency(deficit, currency)}
@@ -135,20 +134,20 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
       </div>
 
       {/* Available Subtotals Breakdown */}
-      <div className="p-4 rounded-xl bg-paper-inset/30 border border-line text-xs space-y-2">
+      <div className="p-4 rounded-control bg-paper-inset/30 border border-line text-xs space-y-2">
         <h4 className="font-bold text-ink uppercase tracking-wider text-[11px]">
           Identified Cost Breakdown
         </h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
           <div className="flex justify-between items-center py-1.5 border-b border-line/60">
             <span className="text-ink-muted">Catering & Food:</span>
-            <span className="font-mono font-bold text-ink">
+            <span className="font-mono font-bold text-ink tabular-nums">
               {formatCurrency(budgetSummary?.food_cost, currency)}
             </span>
           </div>
           <div className="flex justify-between items-center py-1.5 border-b border-line/60">
             <span className="text-ink-muted">Tableware & Packaging:</span>
-            <span className="font-mono font-bold text-ink">
+            <span className="font-mono font-bold text-ink tabular-nums">
               {formatCurrency(budgetSummary?.packaging_cost, currency)}
             </span>
           </div>

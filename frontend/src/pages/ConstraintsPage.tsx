@@ -10,12 +10,14 @@ import {
   Scale,
   Leaf,
   X,
+  AlertCircle,
 } from "lucide-react";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 import { ConstraintType } from "../types/constraints";
 import { MainPriority } from "../types/planning";
+import { PreferenceTag } from "../components/common/PreferenceTag";
 
 const inferCategory = (desc: string): string => {
   const d = desc.toLowerCase();
@@ -65,36 +67,6 @@ const inferValue = (desc: string, type: ConstraintType): string | undefined => {
   if (d.includes("REUSABLE") && (type === "PREFERRED" || type === "REQUIRED"))
     return "REUSABLE_PACKAGING";
   return undefined;
-};
-
-const getPreferenceBadge = (type: ConstraintType) => {
-  switch (type) {
-    case "REQUIRED":
-      return {
-        label: "Must Have",
-        badgeColor: "bg-moss-100 text-moss-800 border-moss-300",
-      };
-    case "NOT_ALLOWED":
-      return {
-        label: "Avoid",
-        badgeColor: "bg-clay-100 text-clay-800 border-clay-300",
-      };
-    case "PREFERRED":
-      return {
-        label: "Would Be Nice",
-        badgeColor: "bg-paper-inset text-ink border-line-strong",
-      };
-    case "FLEXIBLE":
-      return {
-        label: "Flexible",
-        badgeColor: "bg-moss-50 text-moss-700 border-moss-200",
-      };
-    default:
-      return {
-        label: type,
-        badgeColor: "bg-paper-inset text-ink border-line",
-      };
-  }
 };
 
 export const ConstraintsPage: React.FC = () => {
@@ -189,36 +161,34 @@ export const ConstraintsPage: React.FC = () => {
       <div className="surface-sheet p-6 sm:p-10">
         {/* Header */}
         <div className="border-b border-line pb-6 mb-8">
-          <p className="label-kicker mb-2">Step 03 / Limits & Preferences</p>
-          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight">
+          <span className="label-kicker mb-1 block">Step 03 · Limits & Directives</span>
+          <h1 className="font-display text-2xl sm:text-3xl text-ink tracking-tight font-semibold">
             Event Preferences
           </h1>
-          <p className="text-ink-muted text-sm mt-1.5 max-w-2xl leading-relaxed">
+          <p className="text-ink-muted text-sm mt-1 max-w-2xl leading-relaxed">
             Tell us what matters most. We'll use your preferences to create
             suitable event plans.
           </p>
         </div>
 
-        {/* Section 1: What's your main priority? */}
-        <section aria-labelledby="priority-heading" className="mb-10">
-          <div className="mb-4">
+        {/* Section 1: Priority Focus */}
+        <section aria-labelledby="priority-heading" className="border-b border-line pb-8 mb-8 space-y-4">
+          <div>
             <h2
               id="priority-heading"
-              className="block text-xs font-bold uppercase tracking-wider text-ink"
+              className="block text-xs font-mono font-bold uppercase tracking-wider text-ink"
             >
-              What's your main priority?{" "}
-              <span className="text-clay-600">*</span>
+              What's your main priority? <span className="text-clay-700">*</span>
             </h2>
             <p className="text-xs text-ink-muted mt-0.5">
-              Choose the primary focus for your event plans. You can select one
-              priority.
+              Choose the primary optimization focus for candidate plans.
             </p>
           </div>
 
           <div
             role="radiogroup"
             aria-labelledby="priority-heading"
-            className="grid grid-cols-1 md:grid-cols-3 gap-4"
+            className="grid grid-cols-1 md:grid-cols-3 gap-3"
           >
             {priorityOptions.map((opt) => {
               const isSelected = priority === opt.id;
@@ -230,38 +200,32 @@ export const ConstraintsPage: React.FC = () => {
                   role="radio"
                   aria-checked={isSelected}
                   onClick={() => setPriority(opt.id)}
-                  className={`text-left p-5 rounded-2xl border transition-all relative focus:outline-none ${
+                  className={`text-left p-4 rounded-control border transition-colors relative focus:outline-none ${
                     isSelected
-                      ? "border-moss-600 bg-moss-50/70 shadow-sm ring-2 ring-moss-600/30 text-ink"
-                      : "border-line bg-paper-inset/40 hover:bg-paper-inset hover:border-line-strong text-ink"
+                      ? "border-moss-800 border-b-4 bg-moss-50/80 text-ink"
+                      : "border-line bg-paper-inset/30 hover:bg-paper-inset hover:border-line-strong text-ink"
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div
-                      className={`p-2.5 rounded-xl ${
-                        isSelected
-                          ? "bg-moss-600 text-paper-raised"
-                          : "bg-paper-raised text-ink-muted border border-line"
-                      }`}
-                    >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className={isSelected ? "text-moss-800" : "text-ink-muted"}>
                       <Icon className="w-5 h-5" />
-                    </div>
-                    <div
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
+                    </span>
+                    <span
+                      className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                         isSelected
-                          ? "border-moss-600 bg-moss-600"
-                          : "border-line bg-paper-raised"
+                          ? "border-moss-800 bg-moss-800"
+                          : "border-line-strong bg-paper-raised"
                       }`}
                     >
                       {isSelected && (
-                        <Check className="w-3 h-3 text-paper-raised stroke-[3]" />
+                        <Check className="w-2.5 h-2.5 text-paper-raised stroke-[3]" />
                       )}
-                    </div>
+                    </span>
                   </div>
-                  <h3 className="font-extrabold text-base text-ink mb-1">
+                  <h3 className="font-display font-semibold text-base text-ink mb-0.5">
                     {opt.title}
                   </h3>
-                  <p className="text-xs text-ink-muted leading-relaxed">
+                  <p className="text-xs text-ink-muted leading-relaxed font-sans">
                     {opt.description}
                   </p>
                 </button>
@@ -270,16 +234,16 @@ export const ConstraintsPage: React.FC = () => {
           </div>
         </section>
 
-        {/* Section 2: Any special requirements? */}
-        <section aria-labelledby="requirements-heading" className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+        {/* Section 2: Special Requirements as Ruled Rows */}
+        <section aria-labelledby="requirements-heading" className="space-y-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
               <h2
                 id="requirements-heading"
-                className="block text-xs font-bold uppercase tracking-wider text-ink flex items-center gap-2"
+                className="block text-xs font-mono font-bold uppercase tracking-wider text-ink flex items-center gap-2"
               >
                 <span>Any special requirements?</span>
-                <span className="text-ink-faint font-normal text-xs normal-case">
+                <span className="text-ink-muted font-normal text-xs normal-case">
                   (Optional)
                 </span>
               </h2>
@@ -303,19 +267,16 @@ export const ConstraintsPage: React.FC = () => {
 
           {/* Add Preference Form Card */}
           {isAdding && (
-            <div className="bg-paper-inset/50 border border-line p-5 sm:p-6 rounded-2xl mb-6 shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <Plus className="w-4 h-4 text-moss-700" />
-                  <span className="label-kicker">New Preference</span>
-                </div>
+            <div className="bg-paper border border-line p-5 rounded-control mb-4">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-line">
+                <span className="label-kicker">New Rule Directive</span>
                 <button
                   type="button"
                   onClick={() => {
                     setIsAdding(false);
                     setError(null);
                   }}
-                  className="text-ink-faint hover:text-ink p-1 rounded-lg focus:outline-none"
+                  className="text-ink-muted hover:text-ink p-1 rounded-control focus:outline-none"
                   aria-label="Close form"
                 >
                   <X className="w-4 h-4" />
@@ -325,9 +286,10 @@ export const ConstraintsPage: React.FC = () => {
               {error && (
                 <div
                   role="alert"
-                  className="mb-4 p-3 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-xs font-semibold"
+                  className="mb-4 p-3 rounded-control bg-clay-50 border-l-2 border-clay-700 text-clay-900 text-xs font-mono flex items-center space-x-2"
                 >
-                  {error}
+                  <AlertCircle className="w-4 h-4 text-clay-700" />
+                  <span>{error}</span>
                 </div>
               )}
 
@@ -335,9 +297,9 @@ export const ConstraintsPage: React.FC = () => {
                 <div>
                   <label
                     htmlFor="preference-desc-input"
-                    className="block text-xs font-bold uppercase tracking-wider text-ink mb-1"
+                    className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1"
                   >
-                    Short Description <span className="text-clay-600">*</span>
+                    Short Description <span className="text-clay-700">*</span>
                   </label>
                   <input
                     type="text"
@@ -345,14 +307,14 @@ export const ConstraintsPage: React.FC = () => {
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="e.g., Only vegetarian food, or No single-use plastic bottles"
-                    className="w-full px-4 py-2.5 rounded-xl border border-line text-xs font-medium text-ink bg-paper focus:ring-2 focus:ring-moss-600 focus:border-moss-600 focus:bg-paper-raised transition-colors placeholder:text-ink-faint"
+                    className="w-full px-3.5 py-2 rounded-control border border-line text-sm text-ink bg-paper-raised focus:border-moss-700 focus:outline-none"
                     autoFocus
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-ink mb-1.5">
+                  <label className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5">
                     How strictly should this be followed?
                   </label>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
@@ -361,16 +323,19 @@ export const ConstraintsPage: React.FC = () => {
                         type: "REQUIRED" as ConstraintType,
                         label: "Must Have",
                         sub: "Non-negotiable requirement",
+                        borderPattern: "border-solid",
                       },
                       {
                         type: "NOT_ALLOWED" as ConstraintType,
                         label: "Avoid",
                         sub: "Must never be included",
+                        borderPattern: "border-solid",
                       },
                       {
                         type: "PREFERRED" as ConstraintType,
                         label: "Would Be Nice",
                         sub: "Preferred when feasible",
+                        borderPattern: "border-dashed",
                       },
                     ].map((opt) => {
                       const isOptionSelected = preferenceType === opt.type;
@@ -379,21 +344,21 @@ export const ConstraintsPage: React.FC = () => {
                           key={opt.type}
                           type="button"
                           onClick={() => setPreferenceType(opt.type)}
-                          className={`p-3 rounded-xl border text-left transition-all ${
+                          className={`p-3 rounded-control border text-left transition-colors ${opt.borderPattern} ${
                             isOptionSelected
-                              ? "border-moss-600 bg-moss-50/80 ring-2 ring-moss-600/30 text-ink font-bold"
-                              : "border-line bg-paper hover:bg-paper-inset text-ink-muted"
+                              ? "border-moss-800 bg-moss-50 font-bold text-ink"
+                              : "border-line bg-paper-raised hover:bg-paper-inset text-ink-muted"
                           }`}
                         >
                           <div className="flex items-center justify-between mb-0.5">
-                            <span className="text-xs font-bold">
+                            <span className="text-xs font-bold font-mono uppercase">
                               {opt.label}
                             </span>
                             <span
                               className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
                                 isOptionSelected
-                                  ? "border-moss-600 bg-moss-600"
-                                  : "border-line bg-paper-raised"
+                                  ? "border-moss-800 bg-moss-800"
+                                  : "border-line bg-paper"
                               }`}
                             >
                               {isOptionSelected && (
@@ -401,7 +366,7 @@ export const ConstraintsPage: React.FC = () => {
                               )}
                             </span>
                           </div>
-                          <span className="text-[11px] text-ink-muted block">
+                          <span className="text-[11px] text-ink-muted block font-sans">
                             {opt.sub}
                           </span>
                         </button>
@@ -410,20 +375,20 @@ export const ConstraintsPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-2.5 pt-2">
+                <div className="flex justify-end gap-2 pt-2">
                   <button
                     type="button"
                     onClick={() => {
                       setIsAdding(false);
                       setError(null);
                     }}
-                    className="btn-ghost px-4 py-2 text-xs"
+                    className="btn-ghost px-3.5 py-1.5 text-xs"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="btn-primary px-5 py-2 text-xs"
+                    className="btn-primary px-4 py-1.5 text-xs"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Save Preference</span>
@@ -433,29 +398,22 @@ export const ConstraintsPage: React.FC = () => {
             </div>
           )}
 
-          {/* Active Preferences List */}
+          {/* Active Requirements List as Ruled Rows */}
           {constraints.length === 0 ? (
-            <div className="p-8 text-center border-2 border-dashed border-line rounded-2xl text-ink-faint text-xs">
-              No special requirements added yet. Click &ldquo;Add
-              Preference&rdquo; above if you have specific rules, or continue
-              without any.
+            <div className="p-8 text-center border border-dashed border-line rounded-control text-ink-muted text-xs font-mono">
+              No special requirements added yet. Click &ldquo;Add Preference&rdquo; above if you have specific rules, or continue without any.
             </div>
           ) : (
-            <div className="space-y-2.5">
+            <div className="border-t border-b border-line divide-y divide-line/60">
               {constraints.map((c, index) => {
-                const badge = getPreferenceBadge(c.constraint_type);
                 return (
                   <div
                     key={index}
-                    className="p-4 rounded-xl border border-line bg-paper flex items-center justify-between gap-4 shadow-sm hover:border-line-strong transition-colors"
+                    className="py-3 px-2 flex items-center justify-between gap-4 hover:bg-paper-inset/40 transition-colors"
                   >
                     <div className="flex items-center space-x-3 min-w-0">
-                      <span
-                        className={`text-[11px] font-bold px-2.5 py-1 rounded-full border whitespace-nowrap ${badge.badgeColor}`}
-                      >
-                        {badge.label}
-                      </span>
-                      <span className="text-xs font-semibold text-ink truncate">
+                      <PreferenceTag priority={c.constraint_type} />
+                      <span className="text-sm font-medium text-ink truncate">
                         {c.description}
                       </span>
                     </div>
@@ -463,7 +421,7 @@ export const ConstraintsPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removeConstraint(index)}
-                      className="text-ink-faint hover:text-clay-600 p-1.5 rounded-lg hover:bg-clay-50 transition-colors focus:outline-none flex-shrink-0"
+                      className="text-ink-muted hover:text-clay-700 p-1 rounded-control hover:bg-clay-50 transition-colors focus:outline-none flex-shrink-0"
                       aria-label="Remove preference"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -475,7 +433,7 @@ export const ConstraintsPage: React.FC = () => {
           )}
         </section>
 
-        {/* Navigation buttons */}
+        {/* Navigation Buttons */}
         <div className="pt-6 border-t border-line flex justify-between items-center">
           <button type="button" onClick={handleBack} className="btn-ghost">
             <ArrowLeft className="w-4 h-4" />
@@ -485,7 +443,7 @@ export const ConstraintsPage: React.FC = () => {
           <button
             type="button"
             onClick={handleNext}
-            className="btn-primary px-8 py-3.5 text-sm"
+            className="btn-primary px-7 py-3 text-sm"
           >
             <span>Continue to Food Planning</span>
             <ArrowRight className="w-4 h-4" />

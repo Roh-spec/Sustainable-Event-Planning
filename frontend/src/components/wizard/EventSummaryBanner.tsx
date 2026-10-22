@@ -23,11 +23,11 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
     : null;
 
   return (
-    <div className="mb-8 rounded-sheet bg-moss-950 text-paper-raised p-5 sm:p-6 shadow-notebook-lg">
+    <div className="mb-8 rounded-sheet bg-moss-950 text-paper-raised p-5 sm:p-6 border border-moss-900">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <div className="flex items-center space-x-2 flex-wrap gap-y-1">
-            <span className="text-[11px] uppercase font-semibold tracking-[0.14em] px-2.5 py-0.5 rounded-full bg-moss-800 text-moss-100">
+            <span className="text-[11px] uppercase font-semibold tracking-[0.14em] px-2.5 py-0.5 rounded-full bg-moss-800 text-moss-100 font-mono">
               {event.event_type?.replace("_", " ") || "EVENT"}
             </span>
             <span className="text-xs text-moss-300 font-mono">
@@ -40,7 +40,7 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap text-sm text-moss-100">
-          <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+          <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-control border border-white/10 font-mono text-xs tabular-nums">
             <Users className="w-4 h-4 text-moss-300" />
             <span>
               <strong className="text-paper-raised font-semibold">
@@ -50,7 +50,7 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
             </span>
           </div>
 
-          <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+          <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-control border border-white/10 font-mono text-xs tabular-nums">
             <Clock className="w-4 h-4 text-moss-300" />
             <span>
               <strong className="text-paper-raised font-semibold">
@@ -61,14 +61,14 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
           </div>
 
           {event.location && (
-            <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+            <div className="flex items-center space-x-1.5 bg-white/5 px-3 py-1.5 rounded-control border border-white/10 text-xs">
               <MapPin className="w-4 h-4 text-moss-300" />
               <span className="max-w-[140px] truncate">{event.location}</span>
             </div>
           )}
 
           {formattedBudget && (
-            <div className="flex items-center space-x-1.5 bg-clay-500/20 px-3 py-1.5 rounded-lg border border-clay-400/30 text-clay-100 font-semibold">
+            <div className="flex items-center space-x-1.5 bg-clay-500/20 px-3 py-1.5 rounded-control border border-clay-400/30 text-clay-100 font-semibold font-mono text-xs tabular-nums">
               <Wallet className="w-4 h-4 text-clay-400" />
               <span>Budget: {formattedBudget}</span>
             </div>

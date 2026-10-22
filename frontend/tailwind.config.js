@@ -12,7 +12,7 @@ export default {
         ink: {
           DEFAULT: "#1C1917",
           muted: "#57534E",
-          faint: "#A8A29E",
+          faint: "#78716C",
         },
         line: {
           DEFAULT: "#DDD4C6",
@@ -38,24 +38,13 @@ export default {
           500: "#C46B3A",
           600: "#A85A2E",
           700: "#8B4A26",
-        },
-        eco: {
-          50: "#F4F6F1",
-          100: "#E4EBE0",
-          200: "#C9D6C2",
-          300: "#A3B896",
-          400: "#7A9670",
-          500: "#5C7A54",
-          600: "#3F5D4A",
-          700: "#344C3D",
-          800: "#2A3D32",
-          900: "#1F2E26",
-          950: "#141F1A",
+          800: "#713718",
+          stamp: "#8B4A26",
         },
       },
       fontFamily: {
         sans: [
-          '"Plus Jakarta Sans"',
+          '"DM Sans"',
           "system-ui",
           "-apple-system",
           "BlinkMacSystemFont",
@@ -63,7 +52,7 @@ export default {
           "Roboto",
           "sans-serif",
         ],
-        display: ['"Fraunces"', "Georgia", "Times New Roman", "serif"],
+        display: ['"Newsreader"', "Georgia", "Times New Roman", "serif"],
         mono: [
           '"JetBrains Mono"',
           "ui-monospace",
@@ -71,27 +60,36 @@ export default {
           "Menlo",
           "monospace",
         ],
+        handwriting: ['"Caveat"', "cursive"],
       },
       fontSize: {
+        "display-xl": [
+          "clamp(3.5rem, 7vw, 6.5rem)",
+          { lineHeight: "1.0", letterSpacing: "-0.03em", fontWeight: "600" },
+        ],
         "display-lg": [
-          "3.25rem",
-          { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "600" },
+          "2.75rem",
+          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "600" },
         ],
         "display-md": [
-          "2.25rem",
-          { lineHeight: "1.15", letterSpacing: "-0.025em", fontWeight: "600" },
+          "2rem",
+          { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "600" },
         ],
       },
+      borderWidth: {
+        rule: "1px",
+        "rule-strong": "2px",
+      },
       boxShadow: {
-        notebook:
-          "0 1px 1px rgba(28, 25, 23, 0.04), 0 8px 24px -12px rgba(28, 25, 23, 0.12)",
-        "notebook-lg":
-          "0 2px 4px rgba(28, 25, 23, 0.04), 0 18px 40px -20px rgba(28, 25, 23, 0.18)",
+        subtle: "0 1px 2px rgba(28, 25, 23, 0.05)",
+        notebook: "0 1px 2px rgba(28, 25, 23, 0.05)",
       },
       borderRadius: {
-        sheet: "1.25rem",
+        control: "4px",
+        sheet: "6px",
       },
     },
   },
   plugins: [],
 };
+

@@ -52,7 +52,7 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
   const provenance = formatProvenanceLabel(sourceType);
 
   return (
-    <div className="bg-paper-inset/40 border border-line rounded-xl p-3 sm:p-3.5 shadow-xs hover:border-moss-400 transition-colors flex flex-col justify-between">
+    <div className="bg-paper-inset/40 border border-line rounded-control p-3 sm:p-3.5 shadow-xs hover:border-moss-400 transition-colors flex flex-col justify-between">
       <div>
         <div className="flex items-center justify-between gap-1.5">
           <div className="flex items-center space-x-1.5 min-w-0">
@@ -134,7 +134,7 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
 
       {/* Collapsible Explainability Drawer */}
       {isOpen && (
-        <div className="mt-3 pt-3 border-t border-line text-xs text-ink-muted space-y-2 bg-paper-inset/70 -mx-3 sm:-mx-3.5 -mb-3 sm:-mb-3.5 p-3 rounded-b-xl">
+        <div className="mt-3 pt-3 border-t border-line text-xs text-ink-muted space-y-2 bg-paper-inset/70 -mx-3 sm:-mx-3.5 -mb-3 sm:-mb-3.5 p-3 rounded-b-control">
           <div className="flex items-start space-x-1.5 text-ink leading-relaxed">
             <Info className="w-3.5 h-3.5 text-moss-700 mt-0.5 flex-shrink-0" />
             <span className="font-medium">

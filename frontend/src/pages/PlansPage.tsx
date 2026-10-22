@@ -294,6 +294,10 @@ export const PlansPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = "Plans · EcoPlan";
+  }, []);
+
   const isInfeasible = planningResponse?.status === "INFEASIBLE_BUDGET";
 
   // Dynamic grid configuration based on plan count to prevent narrow cards & excessive empty space
@@ -339,7 +343,7 @@ export const PlansPage: React.FC = () => {
         {error && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm"
+            className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm"
           >
             {error}
           </div>
@@ -361,7 +365,7 @@ export const PlansPage: React.FC = () => {
         {selectedPlan && (
           <div className="mb-6 py-3.5 px-5 rounded-sheet bg-moss-50 border border-moss-300 text-moss-950 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-notebook">
             <div className="flex items-center space-x-2.5">
-              <div className="p-1 rounded-md bg-moss-700 text-paper-raised flex-shrink-0">
+              <div className="p-1 rounded-control bg-moss-700 text-paper-raised flex-shrink-0">
                 <Check className="w-3.5 h-3.5" />
               </div>
               <span className="text-ink">
@@ -506,7 +510,7 @@ export const PlansPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSelectionModalPlan(null)}
-                className="text-ink-muted hover:text-ink p-1.5 rounded-lg hover:bg-paper-inset transition-colors"
+                className="text-ink-muted hover:text-ink p-1.5 rounded-control hover:bg-paper-inset transition-colors"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -522,7 +526,7 @@ export const PlansPage: React.FC = () => {
               <em className="text-ink">{event?.name}</em>).
             </p>
 
-            <div className="p-4 bg-paper-inset/40 border border-line rounded-xl text-xs space-y-2">
+            <div className="p-4 bg-paper-inset/40 border border-line rounded-control text-xs space-y-2">
               <div className="flex justify-between">
                 <span className="text-ink-muted">Estimated Total Cost:</span>
                 <span className="font-mono font-bold text-ink">
@@ -559,7 +563,7 @@ export const PlansPage: React.FC = () => {
             </div>
 
             {selectionResult ? (
-              <div className="p-4 rounded-xl bg-moss-50 border border-moss-300 text-xs text-moss-950 space-y-3">
+              <div className="p-4 rounded-control bg-moss-50 border border-moss-300 text-xs text-moss-950 space-y-3">
                 <div className="flex items-center space-x-2 font-bold text-moss-900">
                   <CheckCircle className="w-4 h-4 text-moss-600" />
                   <span>Plan Selection Confirmed</span>

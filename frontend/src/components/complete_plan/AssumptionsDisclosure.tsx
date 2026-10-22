@@ -58,7 +58,7 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
             {confirmations.map((item, idx) => (
               <li
                 key={idx}
-                className="flex items-start space-x-2.5 text-xs text-ink bg-paper-raised p-2.5 rounded-xl border border-clay-200/60 shadow-xs"
+                className="flex items-start space-x-2.5 text-xs text-ink bg-paper-raised p-2.5 rounded-control border border-clay-200/60 shadow-xs"
               >
                 <CheckCircle className="w-4 h-4 text-clay-600 flex-shrink-0 mt-0.5" />
                 <span className="font-medium leading-relaxed">{item}</span>
@@ -69,7 +69,7 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
       )}
 
       {/* Assumptions Accordion */}
-      <div className="border border-line rounded-xl overflow-hidden">
+      <div className="border border-line rounded-control overflow-hidden">
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
@@ -121,13 +121,13 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
                 return (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-xl border border-line bg-paper-inset/30 space-y-1 text-xs"
+                    className="p-3.5 rounded-control border border-line bg-paper-inset/30 space-y-1 text-xs"
                   >
                     <div className="flex items-start justify-between gap-2">
                       <span className="font-semibold text-ink">
                         {friendlyTitle}
                       </span>
-                      <span className="font-mono font-bold text-moss-800 bg-moss-50 px-2 py-0.5 rounded border border-moss-200 flex-shrink-0">
+                      <span className="font-mono font-bold text-moss-800 bg-moss-50 px-2 py-0.5 rounded-control border border-moss-200 flex-shrink-0 tabular-nums">
                         {friendlyValue}
                       </span>
                     </div>

@@ -46,6 +46,7 @@ export const CompletePlanPage: React.FC = () => {
 
   // Initialize event if not loaded
   useEffect(() => {
+    document.title = "Complete Plan · EcoPlan";
     if (eventId && (!event || event.id !== Number(eventId))) {
       loadEvent(Number(eventId)).catch((err) =>
         setError(`Failed to load event details: ${err.message}`),
@@ -523,7 +524,7 @@ export const CompletePlanPage: React.FC = () => {
       {/* Empty State: No Plan Selected in Step 6 */}
       {!selectedPlan && !completePlan ? (
         <div className="surface-sheet p-12 text-center max-w-2xl mx-auto my-8 border border-line">
-          <div className="w-12 h-12 rounded-2xl bg-clay-50 border border-clay-300 text-clay-700 flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-control bg-clay-50 border border-clay-300 text-clay-700 flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-6 h-6" />
           </div>
           <h3 className="font-serif text-lg font-bold text-ink mb-2">
@@ -562,7 +563,7 @@ export const CompletePlanPage: React.FC = () => {
           {error && (
             <div
               role="alert"
-              className="mb-8 p-4 rounded-xl bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-3 print:hidden"
+              className="mb-8 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-3 print:hidden"
             >
               <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
@@ -622,34 +623,34 @@ export const CompletePlanPage: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-                  <div className="p-3.5 rounded-xl bg-paper-inset/40 border border-line">
+                  <div className="p-3.5 rounded-control bg-paper-inset/40 border border-line">
                     <div className="flex items-center space-x-1.5 text-ink-muted mb-1">
                       <Users className="w-4 h-4 text-ink-muted" />
                       <span className="label-kicker text-[10px]">Attendees</span>
                     </div>
-                    <div className="font-mono font-bold text-sm text-ink">
+                    <div className="font-mono font-bold text-sm text-ink tabular-nums">
                       {overview?.expected_attendees ||
                         event?.expected_attendees}{" "}
                       participants
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-paper-inset/40 border border-line">
+                  <div className="p-3.5 rounded-control bg-paper-inset/40 border border-line">
                     <div className="flex items-center space-x-1.5 text-ink-muted mb-1">
                       <Calendar className="w-4 h-4 text-ink-muted" />
                       <span className="label-kicker text-[10px]">Event Date</span>
                     </div>
-                    <div className="font-mono font-bold text-sm text-ink">
+                    <div className="font-mono font-bold text-sm text-ink tabular-nums">
                       {overview?.event_date || timingConfig.eventDate}
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-paper-inset/40 border border-line">
+                  <div className="p-3.5 rounded-control bg-paper-inset/40 border border-line">
                     <div className="flex items-center space-x-1.5 text-ink-muted mb-1">
                       <Clock className="w-4 h-4 text-ink-muted" />
                       <span className="label-kicker text-[10px]">Daily Hours</span>
                     </div>
-                    <div className="font-mono font-bold text-sm text-ink">
+                    <div className="font-mono font-bold text-sm text-ink tabular-nums">
                       {formatTimeWindow12Hour(
                         overview?.start_time || timingConfig.startTime,
                         overview?.end_time || timingConfig.endTime,
@@ -657,12 +658,12 @@ export const CompletePlanPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="p-3.5 rounded-xl bg-paper-inset/40 border border-line">
+                  <div className="p-3.5 rounded-control bg-paper-inset/40 border border-line">
                     <div className="flex items-center space-x-1.5 text-ink-muted mb-1">
                       <Layers className="w-4 h-4 text-ink-muted" />
                       <span className="label-kicker text-[10px]">Duration</span>
                     </div>
-                    <div className="font-mono font-bold text-sm text-ink">
+                    <div className="font-mono font-bold text-sm text-ink tabular-nums">
                       {overview?.duration_days || event?.duration_days || 1}{" "}
                       day(s)
                     </div>
@@ -699,7 +700,7 @@ export const CompletePlanPage: React.FC = () => {
           ) : !isGenerating ? (
             /* Empty State: Ready to Generate */
             <div className="surface-sheet p-12 text-center max-w-2xl mx-auto my-8 border border-line">
-              <div className="w-12 h-12 rounded-2xl bg-paper-inset text-moss-700 flex items-center justify-center mx-auto mb-4 border border-line">
+              <div className="w-12 h-12 rounded-control bg-paper-inset text-moss-700 flex items-center justify-center mx-auto mb-4 border border-line">
                 <Sparkles className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-lg font-bold text-ink mb-2">

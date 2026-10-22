@@ -80,8 +80,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     if (isSelected) {
       return {
         cardClass:
-          "border-2 border-moss-700 ring-4 ring-moss-200/70 shadow-notebook-lg bg-paper-raised",
-        topAccent: "bg-moss-700",
+          "border border-line border-t-4 border-t-moss-800 bg-paper-raised",
+        topAccent: "bg-moss-800",
         tagClass: "bg-moss-700 text-paper-raised border-moss-800",
         iconBoxClass: "bg-moss-800 text-moss-100 border border-moss-900",
         kicker: "Selected Alternative",
@@ -244,7 +244,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         <div className="flex items-start justify-between gap-2 mb-3">
           <div className="flex items-start space-x-3">
             <div
-              className={`p-2.5 rounded-xl flex-shrink-0 mt-0.5 shadow-xs ${personality.iconBoxClass}`}
+              className={`p-2.5 rounded-control flex-shrink-0 mt-0.5 border ${personality.iconBoxClass}`}
             >
               {getObjectiveIcon()}
             </div>
@@ -269,20 +269,19 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           </div>
 
           {isSelected && (
-            <span className="inline-flex items-center space-x-1 text-xs font-bold px-2.5 py-1 rounded-full bg-moss-700 text-paper-raised shadow-notebook flex-shrink-0">
-              <Check className="w-3.5 h-3.5" />
-              <span>Selected</span>
+            <span className="stamp-moss flex-shrink-0">
+              Selected
             </span>
           )}
         </div>
 
         {/* Cost & Budget Status */}
-        <div className="bg-paper-inset/40 border border-line rounded-xl p-4 mb-4">
+        <div className="bg-paper-inset/40 border border-line rounded-control p-4 mb-4">
           <div className="flex justify-between items-baseline gap-2">
             <span className="text-[11px] font-semibold text-ink-muted uppercase tracking-wider">
               Estimated Total Cost
             </span>
-            <span className="font-mono text-2xl font-bold text-ink tracking-tight">
+            <span className="font-mono text-2xl font-bold text-ink tracking-tight tabular-nums">
               {formattedCost}
             </span>
           </div>
@@ -291,7 +290,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <div className="mt-2 pt-2 border-t border-line/70 flex items-center justify-between text-xs">
               <span className="text-ink-muted">Budget Limit:</span>
               {isOverBudget ? (
-                <span className="text-clay-600 font-semibold flex items-center space-x-1">
+                <span className="text-clay-600 font-semibold flex items-center space-x-1 font-mono">
                   <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>
                     Deficit of ₹
@@ -299,7 +298,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   </span>
                 </span>
               ) : (
-                <span className="text-moss-700 font-semibold flex items-center space-x-1">
+                <span className="text-moss-700 font-semibold flex items-center space-x-1 font-mono">
                   <CheckCircle className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>
                     Remaining: ₹{(budgetDifference || 0).toLocaleString()}
@@ -310,65 +309,85 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           )}
         </div>
 
-        {/* Visual Spend-vs-Waste Trade-Off Meter */}
-        <div className="bg-paper-inset/40 border border-line rounded-xl p-3.5 mb-4 space-y-2.5">
+        {/* Visual Spend-vs-Waste Trade-Off Dumbbell Chart */}
+        <div className="bg-paper-inset/40 border border-line rounded-control p-3.5 mb-4 space-y-2">
           <div className="flex items-center justify-between">
             <span className="label-kicker text-[10px]">
-              Spend vs. Waste Diversion
+              Spend vs. Circularity Trade-Off
             </span>
             <span className="text-[10px] font-mono text-ink-muted font-semibold">
-              Index: {spendRatio}% cost / {diversionRatio}% eco
+              {isOverBudget ? "Over Ceiling" : "Within Budget"}
             </span>
           </div>
 
-          <div className="space-y-2">
-            <div>
-              <div className="flex justify-between items-center text-[11px] mb-1">
-                <span className="text-ink-muted flex items-center gap-1 font-medium">
-                  <Wallet className="w-3 h-3 text-ink-muted" />
-                  Budget Absorption
-                </span>
-                <span
-                  className={`font-mono font-bold ${
-                    isOverBudget ? "text-clay-600" : "text-ink"
-                  }`}
-                >
-                  {spendRatio}% allocation
-                </span>
-              </div>
-              <div className="w-full bg-paper rounded-full h-1.5 overflow-hidden border border-line/60">
-                <div
-                  className={`h-full rounded-full transition-all duration-300 ${
-                    isOverBudget
-                      ? "bg-clay-500"
-                      : plan.planning_objective === "BUDGET_FOCUSED"
-                        ? "bg-clay-500"
-                        : plan.planning_objective === "BALANCED"
-                          ? "bg-moss-500"
-                          : "bg-moss-600"
-                  }`}
-                  style={{ width: `${Math.min(spendRatio, 100)}%` }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <div className="flex justify-between items-center text-[11px] mb-1">
-                <span className="text-ink-muted flex items-center gap-1 font-medium">
-                  <Leaf className="w-3 h-3 text-moss-600" />
-                  Waste Diversion
-                </span>
-                <span className="font-mono font-bold text-moss-700">
-                  {diversionRatio}% diversion{isZeroPlastic ? " • Zero Plastic" : ""}
-                </span>
-              </div>
-              <div className="w-full bg-paper rounded-full h-1.5 overflow-hidden border border-line/60">
-                <div
-                  className="h-full rounded-full bg-moss-600 transition-all duration-300"
-                  style={{ width: `${Math.min(diversionRatio, 100)}%` }}
-                />
-              </div>
-            </div>
+          <div className="pt-2 pb-1">
+            <svg
+              viewBox="0 0 300 42"
+              className="w-full h-10 overflow-visible"
+              aria-label="Trade-off dumbbell chart"
+            >
+              {/* Axis line */}
+              <line
+                x1="20"
+                y1="14"
+                x2="280"
+                y2="14"
+                stroke="#DDD4C6"
+                strokeWidth="1.5"
+                strokeDasharray="3 3"
+              />
+              {/* Connecting dumbbell line */}
+              <line
+                x1={Math.max(30, Math.min(130, spendRatio * 2.2))}
+                y1="14"
+                x2={Math.min(270, Math.max(170, diversionRatio * 2.6))}
+                y2="14"
+                stroke="#78716C"
+                strokeWidth="2"
+              />
+              {/* Spend point (Clay = costs more) */}
+              <circle
+                cx={Math.max(30, Math.min(130, spendRatio * 2.2))}
+                cy="14"
+                r="5"
+                fill="#8B4A26"
+                stroke="#FAF6EF"
+                strokeWidth="2"
+              />
+              {/* Waste diversion point (Moss = less waste) */}
+              <circle
+                cx={Math.min(270, Math.max(170, diversionRatio * 2.6))}
+                cy="14"
+                r="5"
+                fill="#344C3D"
+                stroke="#FAF6EF"
+                strokeWidth="2"
+              />
+              {/* Delta label on the dumbbell axis line */}
+              <text
+                x="150"
+                y="32"
+                textAnchor="middle"
+                fontSize="9"
+                fontFamily="JetBrains Mono, monospace"
+                fill="#57534E"
+                fontWeight="600"
+              >
+                {budgetDifference !== null
+                  ? `${isOverBudget ? `+₹${Math.abs(budgetDifference).toLocaleString()} over ceiling` : `₹${budgetDifference.toLocaleString()} under ceiling`} for ${plan.waste_metrics?.single_use_packaging_items ?? 0} disposables`
+                  : `Trade-off: ${spendRatio}% ceiling vs ${diversionRatio}% circular`}
+              </text>
+            </svg>
+          </div>
+          <div className="flex justify-between items-center text-[10px] font-mono text-ink-muted pt-1 border-t border-line/50">
+            <span className="flex items-center gap-1">
+              <span className="inline-block w-2 h-2 rounded-full bg-clay-700" />
+              Clay = Spend ({spendRatio}%)
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="inline-block w-2 h-2 rounded-full bg-moss-700" />
+              Moss = Circularity ({diversionRatio}%)
+            </span>
           </div>
         </div>
 
@@ -424,7 +443,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
         {/* Why this plan? */}
         {plan.explanations && plan.explanations.length > 0 && (
-          <div className="p-3 rounded-xl bg-moss-50/80 border border-moss-200/80 mb-3 text-xs text-moss-900">
+          <div className="p-3 rounded-control bg-moss-50/80 border border-moss-200/80 mb-3 text-xs text-moss-900">
             <span className="font-bold block text-moss-950 mb-0.5">
               Why this plan?
             </span>
@@ -436,7 +455,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
         {/* Trade-offs */}
         {plan.tradeoffs && plan.tradeoffs.length > 0 && (
-          <div className="p-3 rounded-xl bg-clay-50/80 border border-clay-200/80 mb-3 text-xs text-clay-950">
+          <div className="p-3 rounded-control bg-clay-50/80 border border-clay-200/80 mb-3 text-xs text-clay-950">
             <span className="font-bold block text-clay-900 mb-0.5">
               Important Trade-off:
             </span>
@@ -473,7 +492,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             {/* A preference we couldn't fully meet (Section C) */}
             {plan.constraint_result.relaxed_constraints &&
               plan.constraint_result.relaxed_constraints.length > 0 && (
-                <div className="bg-clay-50/90 border border-clay-200/80 rounded-xl p-3 text-xs text-clay-950 space-y-2">
+                <div className="bg-clay-50/90 border border-clay-200/80 rounded-control p-3 text-xs text-clay-950 space-y-2">
                   <div className="flex items-center space-x-1.5 font-bold text-clay-900">
                     <AlertTriangle className="w-3.5 h-3.5 text-clay-600 flex-shrink-0" />
                     <span>A preference we couldn't fully meet</span>
@@ -483,7 +502,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                       (r, idx) => (
                         <li
                           key={idx}
-                          className="bg-paper-raised p-2.5 rounded-lg border border-clay-200/60 leading-relaxed"
+                          className="bg-paper-raised p-2.5 rounded-control border border-clay-200/60 leading-relaxed"
                         >
                           <p className="font-semibold text-ink">
                             You preferred:{" "}
@@ -508,7 +527,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
             {/* What we based this estimate on (Section B) */}
             {plan.assumptions_used && plan.assumptions_used.length > 0 && (
-              <div className="bg-paper-inset/40 border border-line rounded-xl p-3 space-y-2 text-xs">
+              <div className="bg-paper-inset/40 border border-line rounded-control p-3 space-y-2 text-xs">
                 <h5 className="font-bold text-ink">
                   What we based this estimate on:
                 </h5>
@@ -516,7 +535,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                   {plan.assumptions_used.map((a, idx) => (
                     <div
                       key={idx}
-                      className="bg-paper-raised p-2.5 rounded-lg border border-line/70 flex items-center justify-between text-xs gap-2"
+                      className="bg-paper-raised p-2.5 rounded-control border border-line/70 flex items-center justify-between text-xs gap-2"
                     >
                       <div className="min-w-0">
                         <span className="font-medium text-ink block truncate">
@@ -526,7 +545,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                           {formatProvenanceLabel(a.source_type)}
                         </span>
                       </div>
-                      <span className="font-mono font-bold text-ink text-right whitespace-nowrap">
+                      <span className="font-mono font-bold text-ink text-right whitespace-nowrap tabular-nums">
                         {formatAssumptionValue(a.value, a.unit, a.parameter)}
                       </span>
                     </div>
@@ -538,7 +557,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             {/* All Sustainability Indicators */}
             {plan.sustainability_metrics &&
               plan.sustainability_metrics.length > 0 && (
-                <div className="bg-paper-inset/40 border border-line rounded-xl p-3 space-y-2 text-xs">
+                <div className="bg-paper-inset/40 border border-line rounded-control p-3 space-y-2 text-xs">
                   <h5 className="font-bold text-ink">
                     All sustainability indicators:
                   </h5>
@@ -546,7 +565,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                     {plan.sustainability_metrics.map((m, idx) => (
                       <li
                         key={idx}
-                        className="bg-paper-raised p-2.5 rounded-lg border border-line/70 flex justify-between items-center text-xs text-ink-muted gap-2"
+                        className="bg-paper-raised p-2.5 rounded-control border border-line/70 flex justify-between items-center text-xs text-ink-muted gap-2"
                       >
                         <div className="min-w-0">
                           <span className="font-medium text-ink block truncate">
@@ -556,7 +575,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                             {formatProvenanceLabel(m.source_type)}
                           </span>
                         </div>
-                        <span className="font-mono font-bold text-ink whitespace-nowrap">
+                        <span className="font-mono font-bold text-ink whitespace-nowrap tabular-nums">
                           {m.value} {m.unit}
                         </span>
                       </li>
@@ -573,7 +592,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         <button
           type="button"
           onClick={() => setShowDetails(!showDetails)}
-          className="inline-flex items-center space-x-1 text-xs font-semibold text-ink-muted hover:text-ink py-2 px-3 rounded-lg hover:bg-paper-inset transition-colors focus:outline-none"
+          className="inline-flex items-center space-x-1 text-xs font-semibold text-ink-muted hover:text-ink py-2 px-3 rounded-control hover:bg-paper-inset transition-colors focus:outline-none"
         >
           <span>{showDetails ? "Hide Details" : "View Details"}</span>
           {showDetails ? (
@@ -586,9 +605,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
         <button
           type="button"
           onClick={() => onSelect(plan)}
-          className={`inline-flex items-center space-x-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all focus:outline-none shadow-xs ${
+          className={`inline-flex items-center space-x-1.5 px-4 py-2.5 rounded-control text-xs sm:text-sm font-semibold transition-all focus:outline-none ${
             isSelected
-              ? "bg-moss-700 text-paper-raised hover:bg-moss-800 shadow-notebook"
+              ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
               : "btn-primary bg-moss-600 hover:bg-moss-700 text-paper-raised"
           }`}
         >

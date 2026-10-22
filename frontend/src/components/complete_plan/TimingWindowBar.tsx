@@ -154,7 +154,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
                 type="date"
                 value={localDate}
                 onChange={(e) => handleDateChange(e.target.value)}
-                className="w-full px-3.5 py-2 rounded-xl border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600 transition-colors"
+                className="w-full px-3.5 py-2 rounded-control border border-line text-sm font-semibold text-ink bg-paper-raised focus:outline-none focus:ring-2 focus:ring-moss-500/20 focus:border-moss-600 transition-colors"
                 required
               />
             </div>
@@ -190,7 +190,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
 
         {/* Multi-day Notice */}
         {durationDays > 1 && (
-          <div className="p-3.5 rounded-xl bg-paper-inset/40 border border-line text-xs text-ink-muted flex items-start space-x-2.5">
+          <div className="p-3.5 rounded-control bg-paper-inset/40 border border-line text-xs text-ink-muted flex items-start space-x-2.5">
             <Info className="w-4 h-4 text-moss-600 flex-shrink-0 mt-0.5" />
             <div>
               <strong className="font-semibold text-ink">
@@ -207,7 +207,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
         {validationError && (
           <div
             role="alert"
-            className="p-3.5 rounded-xl bg-clay-50 border border-clay-300 text-xs text-clay-900 flex items-center space-x-2.5"
+            className="p-3.5 rounded-control bg-clay-50 border border-clay-300 text-xs text-clay-900 flex items-center space-x-2.5"
           >
             <AlertCircle className="w-4 h-4 text-clay-600 flex-shrink-0" />
             <span className="font-medium">{validationError}</span>
