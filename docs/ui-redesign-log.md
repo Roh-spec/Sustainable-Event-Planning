@@ -369,6 +369,49 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 7: Hardening and Handoff Report
+
+### 1. Deliverables Completed
+- **Route-Level Code Splitting via `React.lazy` + `Suspense`**:
+  - Dynamically import all 11 routed pages (`HomePage`, `EventsListPage`, `EventCreationPage`, `BudgetPage`, `ConstraintsPage`, `FoodPlanningPage`, `WastePlanningPage`, `PlansPage`, `PlanComparisonPage`, `CompletePlanPage`, `NotFoundPage`) in `src/routes/index.tsx`.
+  - Configured `RouteFallback` rendering `SkeletonLines` (`variant="card"` with gentle opacity pulse) preventing layout shifts.
+  - **Drastic bundle size reduction**: Main JS chunk plummeted from **532.26 kB** to **218.97 kB raw** (gzip: 68.91 kB), outperforming the budget limit of <= 350 kB by 131 kB (-37%).
+- **CSS Bundle Budget Compliance**:
+  - Total production CSS bundle is **61.71 kB** (gzip: 15.56 kB), strictly beneath the <= 70 kB budget.
+  - Zero dead CSS classes remain; dead shadow classes and full-viewport filters completely removed.
+- **Accessibility & Contrast Verification**:
+  - `npm run check:contrast` executed cleanly: **33 / 33 text/background pairs pass WCAG AA** across Palettes A, B, and C.
+  - Verified keyboard-only focus navigation through wizard inputs, notched sliders, segmented toggles, and plan selectors.
+- **Multi-Palette Full-Suite Verification**:
+  - Verified Palettes A ("Sage Dawn"), B ("Tidepool Night"), and C ("Kiln & Lagoon") across all 11 routes.
+  - Dev-only palette switcher verified via URL query param (`?palette=a|b|c`) and floating interactive toggle.
+- **Fallbacks & Resilience**:
+  - Verified `@supports not (backdrop-filter: blur(1px))` and `@media (prefers-reduced-transparency: reduce)` fallbacks gracefully render solid `--c-surface` with clean borders.
+  - Verified `@media (prefers-reduced-motion: reduce)` halts all backdrop blob drift, contour parallax, and entrance reveals.
+  - Verified `@media print` eliminates backdrop layers, glass blurs, and paper grain, rendering crisp black-on-white documents.
+- **Documentation Updated**:
+  - Updated `docs/frontend.md` with palette tokens, glass architecture rules, motion rules, step-by-step instructions for adding a palette, and complete component catalogue (14 shared components).
+
+### 2. Measured Post-Phase 7 Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5a | Phase 5b | Phase 6 | Phase 7 Final | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | 104 passed | 104 passed | 104 passed | 104 passed | 104 passed | 104 passed | **104 passed (9 files)** | **0 regressions** |
+| **`tsc --noEmit`** | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | **0 errors** | **Clean** |
+| **`check:contrast`** | N/A | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | **33 / 33 passed** | **100% AA compliant** |
+| **Main JS Chunk (Raw)** | 513.94 kB | 513.72 kB | 518.50 kB | 518.32 kB | 522.43 kB | 526.10 kB | 527.76 kB | 532.26 kB | **218.97 kB** | **-294.97 kB (-57%)** [Budget <= 350 kB] |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | 56.57 kB | 59.41 kB | 60.02 kB | 60.02 kB | 60.17 kB | 61.71 kB | **61.71 kB** | **+15.75 kB** [Budget <= 70 kB] |
+| **Gradients in Codebase** | 3 | 2 | 2 | 2 | 2 | 2 | 2 | 2 | **2 (CSS definitions only)** | **-1 (PlanCard removed)** |
+| **Icon-in-Box Anti-Patterns** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | 0 | **0 (Eliminated)** | **-2 (100% eliminated)** |
+| **Sparkles Icons** | 8 | 8 | 7 | 0 | 0 | 0 | 0 | 0 | **0 (Eliminated)** | **-8 (100% eliminated)** |
+| **Page Title Coverage** | 5 / 11 (45%) | 5 / 11 | 11 / 11 | 11 / 11 | 11 / 11 | 11 / 11 | 11 / 11 | 11 / 11 | **11 / 11 (100%)** | **+6 pages (100%)** |
+| **Runtime Dependencies** | Baseline | Baseline | Baseline | Baseline | Baseline | Baseline | Baseline | Baseline | **Baseline (0 added)** | **Unchanged** |
+
+### 3. Decisions Log (Phase 7)
+- **D022**: Implemented dynamic code splitting on `AppRoutes` using `React.lazy` with `.then(m => ({ default: m.Component }))` wrapping. This reduced the initial JS bundle from 532.26 kB to 218.97 kB raw (a 57% reduction), easily satisfying the <= 350 kB budget without needing manual rollup chunking configurations.
+- **D023**: Designed `RouteFallback` using `SkeletonLines` (`variant="card"` with pulsing opacity) within a centered sheet container to avoid layout shifts during route transitions while respecting `prefers-reduced-motion`.
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.

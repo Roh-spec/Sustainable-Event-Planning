@@ -347,3 +347,151 @@ The interface is styled as a **glass field-station over a living landscape**, ba
   </Reveal>
   ```
 
+#### 13. `DumbbellChart`
+- **Location:** `src/components/comparison/DumbbellChart.tsx`
+- **Purpose:** Inline SVG dumbbell chart plotting physical spend versus waste / circularity trade-offs. Clay node indicates cost burden (costs more); moss node indicates circularity (less waste). Monospace delta label shows exact budget headroom or deficit and disposable item counts.
+- **Usage Example:**
+  ```tsx
+  import { DumbbellChart } from "../components/comparison/DumbbellChart";
+
+  <DumbbellChart
+    spendRatio={75}
+    diversionRatio={85}
+    isOverBudget={false}
+    deltaLabel="₹5,000 under ceiling • 50 disposables"
+  />
+  ```
+
+#### 14. `Backdrop`
+- **Location:** `src/components/layout/Backdrop.tsx`
+- **Purpose:** Fixed, inert living landscape layer mounted once in `MainLayout`. Features three organic SVG color shapes drifting slowly (40-70s) and fine topographic contour lines (0.15x parallax). Frozen under `prefers-reduced-motion` and hidden in print.
+
+---
+
+## 9. Design System Architecture & Guidelines
+
+### A. The Core Concept
+The EcoPlan design system balances two distinct layers with complementary roles:
+1. **Backdrop Layer (`z-index: -1`):** A calm, living landscape with slowly drifting organic color shapes and fine topographic contour lines that give glass panels something physical to refract.
+2. **Content Layer (`z-index: 0`):** Ledgers, rules, large serif numerals, and tables sit on **solid or near-solid surfaces** for maximum readability. Glass is reserved exclusively for floating, summary, or navigational layers.
+
+---
+
+### B. Palette Tokens & Swappable Palettes
+
+Palettes are defined in `src/styles/palettes.css` using space-separated RGB channel variables mapped to Tailwind as `rgb(var(--c-x) / <alpha-value>)`:
+- `--c-canvas`: Main page canvas background.
+- `--c-canvas-2`: Secondary background / subtle contrast.
+- `--c-surface`: Solid cards, tables, and form sections.
+- `--c-surface-inset`: Subtle table headers and input wells.
+- `--c-ink`: Primary text and high-contrast lines.
+- `--c-ink-muted`: Secondary explanatory text and kickers.
+- `--c-ink-faint`: De-emphasized metadata (strictly WCAG AA compliant >= 4.5:1).
+- `--c-line` / `--c-line-strong`: 1px hairline rules and double ledger rules.
+- `--c-primary` / `--c-primary-deep`: Moss brand color and deep accessible text.
+- `--c-accent` / `--c-accent-deep`: Clay accent color and deep accessible text.
+- `--glass-bg`, `--glass-border`, `--glass-shadow`: Calibrated glass tokens.
+
+#### The Three Built-in Palettes:
+- **Palette A: "Sage Dawn" (Default, Light):**
+  - Canvas: `#F2EFE6`, Surface: `#FFFFFF`, Ink: `#1E2A23`, Moss: `#2F4A3A`, Clay: `#8F4A2C`.
+  - Contrast ratios: Ink on canvas = 12.95:1, Primary on surface = 9.02:1, Accent on canvas = 5.74:1.
+- **Palette B: "Tidepool Night" (Dark Glass):**
+  - Canvas: `#0E1B1A`, Surface: `#16302D`, Ink: `#E8F2EC`, Mint: `#86D1B2`, Amber: `#F0B27A`.
+  - Contrast ratios: Ink on canvas = 15.41:1, Primary on surface = 7.88:1.
+- **Palette C: "Kiln & Lagoon" (Warm Earth Light):**
+  - Canvas: `#F1ECE2`, Surface: `#FFFFFF`, Ink: `#1B2523`, Teal: `#2C6E6A`, Terracotta: `#9A4524`.
+  - Contrast ratios: Ink on canvas = 13.36:1, Primary on surface = 8.50:1.
+
+#### Dev-Only Palette Switcher:
+During development (`import.meta.env.DEV`), append `?palette=a`, `?palette=b`, or `?palette=c` to any URL or click the floating bottom-right switcher to toggle palettes in real time.
+
+---
+
+### C. How to Add a New Palette
+
+1. **Open `src/styles/palettes.css`**:
+   Add a new selector block with calibrated RGB tokens:
+   ```css
+   [data-palette="d"] {
+     --c-canvas: 240 242 238;
+     --c-canvas-2: 230 234 228;
+     --c-surface: 255 255 255;
+     --c-surface-inset: 245 247 243;
+     --c-ink: 24 32 28;
+     --c-ink-muted: 72 84 78;
+     --c-ink-faint: 98 110 104;
+     --c-line: 220 226 218;
+     --c-line-strong: 180 190 178;
+     --c-primary: 46 80 60;
+     --c-primary-deep: 34 60 45;
+     --c-accent: 140 70 40;
+     --c-accent-deep: 120 55 30;
+     --c-highlight: 215 140 90;
+     --glass-bg: rgba(255, 255, 255, 0.65);
+     --glass-border: rgba(46, 80, 60, 0.16);
+     --glass-shadow: 0 4px 20px -2px rgba(24, 32, 28, 0.05);
+   }
+   ```
+2. **Add to Contrast Checker**:
+   Open `frontend/scripts/check-contrast.mjs` and add the new palette definitions to the verification suite. Run:
+   ```bash
+   npm run check:contrast
+   ```
+   Ensure all 11 required text and background pairs achieve >= 4.5:1.
+3. **Add Option to Dev Switcher**:
+   Open `src/components/common/DevPaletteSwitcher.tsx` and add `{ id: "d", label: "Palette D" }`.
+
+---
+
+### D. Glass Architecture & Rules
+
+- **Allowed on:** Header navigation, live receipts (Food, Waste), selected-plan summary banner, modals, Home hero worked example, mobile bottom summary sheet, stamps/toasts.
+- **Strictly FORBIDDEN on:** Ledger tables, form inputs, long lists, plan-comparison cells, checklist rows, timetable rows (these MUST sit on solid `--c-surface` with 1px hairline rules).
+- **Rule of 3:** No more than 3 `backdrop-filter` layers visible simultaneously on any viewport.
+- **No Nesting:** Never nest glass inside glass.
+- **No Scrolling Glass:** Never place glass on items inside a scrolling list.
+- **Fallbacks:** Handled automatically in `index.css`:
+  ```css
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass, .glass-strong {
+      background: rgb(var(--c-surface));
+      border: 1px solid rgb(var(--c-line));
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .glass, .glass-strong {
+      background: rgb(var(--c-surface));
+      backdrop-filter: none;
+    }
+  }
+  ```
+
+---
+
+### E. Motion System & Accessibility
+
+- **Run-Once Semantics:** Scroll reveals use `IntersectionObserver` with threshold 0.15, firing only once per mount.
+- **Transform & Opacity Only:** Animations manipulate only `transform` and `opacity` (with a single-frame `filter: blur` on entrance). Zero layout shifts or height reflows.
+- **Respects User Preferences:**
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  ```
+- **Lenis Smooth Scroll:** Excludes text inputs, textareas, and select elements to ensure standard form input behavior.
+
+---
+
+### F. Performance & Production Budgets
+
+- **Route-Level Code Splitting:** All 11 routes are lazy-loaded via `React.lazy` and wrapped in `<Suspense fallback={<RouteFallback />}>`.
+- **Main JS Chunk:** **218.97 kB raw** (gzip: 68.91 kB) — strictly under the **350 kB raw** budget.
+- **CSS Bundle:** **61.71 kB** (gzip: 15.56 kB) — strictly under the **70 kB** budget.
+- **Runtime Dependencies:** Zero new packages added; all functionality built with React 18, Vite 5, Tailwind 3.4, and native Web APIs.
+- **Print Optimization:** `@media print` rules strip backdrops, glass blurs, and paper grain, rendering crisp black-on-white printable schedules and checklists.
+
+
