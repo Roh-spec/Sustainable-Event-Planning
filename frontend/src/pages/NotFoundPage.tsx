@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Home, ArrowLeft } from "lucide-react";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export const NotFoundPage: React.FC = () => {
+  usePageTitle("Page Not Found · EcoPlan");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.title = "Page Not Found · EcoPlan";
-  }, []);
 
   return (
     <div className="max-w-lg mx-auto text-center py-24 px-4 sm:px-6">

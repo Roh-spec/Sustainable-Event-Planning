@@ -199,7 +199,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
             {equipment.map((eq, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-sheet border border-line bg-paper-raised hover:border-moss-400 transition-all text-xs space-y-1.5 shadow-subtle card-hover"
+                className="p-4 rounded-sheet border border-line bg-paper-raised hover:border-moss-400 transition-all text-xs space-y-1.5 shadow-subtle"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h4 className="font-serif font-bold text-ink text-sm">

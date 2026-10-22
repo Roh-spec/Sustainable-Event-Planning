@@ -20,8 +20,10 @@ import { PlanAlternative, PlanningResponse } from "../types/planning";
 import { PlanSelectionResult } from "../api/planning";
 import { formatCurrency } from "../utils/metricFormatting";
 import { staggerEntrance } from "../utils/animations";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export const PlansPage: React.FC = () => {
+  usePageTitle("Plans · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const {
@@ -293,10 +295,6 @@ export const PlansPage: React.FC = () => {
       setIsSelecting(false);
     }
   };
-
-  useEffect(() => {
-    document.title = "Plans · EcoPlan";
-  }, []);
 
   const isInfeasible = planningResponse?.status === "INFEASIBLE_BUDGET";
 

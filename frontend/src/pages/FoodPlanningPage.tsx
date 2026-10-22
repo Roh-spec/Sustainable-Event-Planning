@@ -38,6 +38,7 @@ import { foodApi } from "../api/food";
 import { AnimatedCounter } from "../components/common/AnimatedCounter";
 import { useFoodLiveEstimates } from "../hooks/useFoodLiveEstimates";
 import { FoodLiveReceipt } from "../components/planning/food/FoodLiveReceipt";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 interface MealOptionMeta {
   type: MealType;
@@ -170,6 +171,7 @@ const formatAssumptionValue = (
 };
 
 export const FoodPlanningPage: React.FC = () => {
+  usePageTitle("Food & Catering · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const {

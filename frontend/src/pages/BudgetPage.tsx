@@ -5,8 +5,10 @@ import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 import { LedgerRow } from "../components/common/LedgerTable";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export const BudgetPage: React.FC = () => {
+  usePageTitle("Budget & Scale · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const { event, loadEvent, budget, setBudget, foodPlanResponse } =

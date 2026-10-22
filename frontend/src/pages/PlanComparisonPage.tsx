@@ -10,8 +10,10 @@ import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 import { PlanAlternative } from "../types/planning";
 import { formatReusablePercentage } from "../utils/metricFormatting";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export const PlanComparisonPage: React.FC = () => {
+  usePageTitle("Compare Plans · EcoPlan");
   const { eventId } = useParams<{ eventId: string }>();
   const {
     event,
@@ -25,10 +27,6 @@ export const PlanComparisonPage: React.FC = () => {
   } = usePlanningWizard();
 
   const [selectionNotice, setSelectionNotice] = useState<string | null>(null);
-
-  useEffect(() => {
-    document.title = "Compare Plans · EcoPlan";
-  }, []);
 
   useEffect(() => {
     if (eventId && (!event || event.id !== Number(eventId))) {

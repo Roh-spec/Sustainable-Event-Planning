@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { Plus, Users, Clock, MapPin, ArrowRight, Search } from "lucide-react";
 import { eventsApi } from "../api/events";
 import { EventResponse } from "../types/events";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export const EventsListPage: React.FC = () => {
+  usePageTitle("Events Directory · EcoPlan");
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = "Events Directory · EcoPlan";
     setIsLoading(true);
     eventsApi
       .list(0, 100)
@@ -92,7 +93,7 @@ export const EventsListPage: React.FC = () => {
           {filteredEvents.map((ev) => (
             <div
               key={ev.id}
-              className="surface-sheet p-5 transition-all flex flex-col justify-between card-hover"
+              className="surface-sheet p-5 transition-all flex flex-col justify-between"
             >
               <div>
                 <div className="flex justify-between items-start mb-2">

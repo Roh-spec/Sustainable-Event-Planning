@@ -20,6 +20,7 @@ import {
   HackathonMark,
 } from "../components/icons";
 import { AnimatedCounter } from "../components/common/AnimatedCounter";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const WORKFLOW_STEPS = [
   { step: "01", label: "Event", desc: "Type, count & duration", icon: HackathonMark },
@@ -31,6 +32,7 @@ const WORKFLOW_STEPS = [
 ];
 
 export const HomePage: React.FC = () => {
+  usePageTitle("Sustainable Event Planning · EcoPlan");
   const [events, setEvents] = useState<EventResponse[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);

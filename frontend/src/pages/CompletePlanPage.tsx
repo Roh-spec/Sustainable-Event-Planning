@@ -23,9 +23,11 @@ import { SustainabilityActionsList } from "../components/complete_plan/Sustainab
 import { AssumptionsDisclosure } from "../components/complete_plan/AssumptionsDisclosure";
 import { planningApi } from "../api/planning";
 import { CompletePlanRequest } from "../types/completePlan";
+import { usePageTitle } from "../hooks/usePageTitle";
 import { formatTimeWindow12Hour } from "../utils/timeFormatting";
 
 export const CompletePlanPage: React.FC = () => {
+  usePageTitle("Complete Plan · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const {
@@ -46,7 +48,6 @@ export const CompletePlanPage: React.FC = () => {
 
   // Initialize event if not loaded
   useEffect(() => {
-    document.title = "Complete Plan · EcoPlan";
     if (eventId && (!event || event.id !== Number(eventId))) {
       loadEvent(Number(eventId)).catch((err) =>
         setError(`Failed to load event details: ${err.message}`),

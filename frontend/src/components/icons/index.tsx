@@ -275,3 +275,41 @@ export const SocialMark: React.FC<IconProps> = ({ className = "w-6 h-6", size = 
     <path d="M16 24C16 24 7 18 7 12C7 8.5 9.5 6 13 6C15 6 16 7 16 7C16 7 17 6 19 6C22.5 6 25 8.5 25 12C25 18 16 24 16 24Z" />
   </svg>
 );
+
+export const WaypointIcon: React.FC<IconProps> = ({ className = "w-4 h-4", size = 18, ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...props}
+  >
+    <polygon points="12 2 20 12 12 22 4 12" />
+    <circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const ContourPinIcon: React.FC<IconProps> = ({ className = "w-4 h-4", size = 18, ...props }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...props}
+  >
+    <path d="M12 2C8.5 2 6 4.5 6 8C6 12.5 12 19 12 19C12 19 18 12.5 18 8C18 4.5 15.5 2 12 2Z" />
+    <circle cx="12" cy="8" r="2" />
+    <path d="M3 21C6 19.5 10 20 12 20C14 20 18 19.5 21 21" strokeDasharray="1.5 2" />
+  </svg>
+);
+

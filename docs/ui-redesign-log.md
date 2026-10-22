@@ -78,6 +78,67 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 2: Shell, Backdrop and Motion Engine Report
+
+### 1. Deliverables Completed
+- **`Backdrop.tsx` (Living Landscape)**:
+  - Created `frontend/src/components/layout/Backdrop.tsx` mounted once at `MainLayout.tsx`.
+  - Implemented 3 organic inline SVG paths (bezier curves, never geometric circles) tinted with palette tokens (`--c-primary`, `--c-accent`, `--c-canvas-2`), blurred 60-85px at 58-65% opacity.
+  - Slow transform-only drift keyframe animations (`blobDrift1`, `blobDrift2`, `blobDrift3`) cycling over 48-68s without layout reflows.
+  - Overlay: Original set of 8 nested wavy topographic contour paths with 1px stroke at 7% opacity (`rgb(var(--c-ink))`), featuring micro tabular mono elevation labels (100m, 140m, 180m, 220m).
+  - Mobile handling: Viewports < 768px hide the third blob, use static blur, and disable scroll parallax.
+  - Motion safeguards: Completely frozen under `prefers-reduced-motion: reduce`; hidden in print.
+- **Tiled Grain Overlay**:
+  - Replaced full-viewport SVG `feTurbulence` filter with a deterministic, lightweight 64x64 tiled PNG data-URI at 3% opacity at `var(--z-grain, 5)`.
+  - Zero SVG filter re-rasterization during scrolling; disabled in print (`display: none !important`).
+- **Glass Header & Progress Line**:
+  - Updated `Header.tsx` to elevate to `glass-strong` (`backdrop-filter: blur(20px)`) after 20px scroll.
+  - Replaced Lucide `Sparkles` in the header with custom `WaypointIcon`.
+  - Removed top gradient reading beam from `SmoothScrollProvider.tsx`.
+  - Added a 2px solid primary reading progress line (`bg-moss-700`) along the bottom edge of `Header.tsx` linked to `scrollProgress`.
+- **Universal Page Titles (`usePageTitle.ts`)**:
+  - Created `frontend/src/hooks/usePageTitle.ts` enforcing consistent branding.
+  - Applied across all 11 pages (100% coverage, up from 45% baseline):
+    - `HomePage`: "Sustainable Event Planning · EcoPlan"
+    - `EventCreationPage`: "New Event · EcoPlan"
+    - `BudgetPage`: "Budget & Scale · EcoPlan"
+    - `ConstraintsPage`: "Constraints & Rules · EcoPlan"
+    - `FoodPlanningPage`: "Food & Catering · EcoPlan"
+    - `WastePlanningPage`: "Materials & Waste · EcoPlan"
+    - `PlansPage`: "Plans · EcoPlan"
+    - `PlanComparisonPage`: "Compare Plans · EcoPlan"
+    - `CompletePlanPage`: "Complete Plan · EcoPlan"
+    - `EventsListPage`: "Events Directory · EcoPlan"
+    - `NotFoundPage`: "Page Not Found · EcoPlan"
+- **Motion System Foundation**:
+  - Created `frontend/src/utils/motion.ts` exporting `prefersReducedMotion()`, timing constants, easing curves (`outExpo`, `outCubic`, `stampSpring`), and micro-moment helpers (`triggerStampThump`).
+  - Created `frontend/src/components/common/Reveal.tsx` implementing run-once IntersectionObserver (threshold 0.15) fade-up (20px) with 6px to 0 blur transition (550ms outExpo) and 60ms optional stagger.
+- **Generic Motion Pruning**:
+  - Removed `card-hover` lift from `EventsListPage.tsx`, `ExecutionChecklist.tsx`, `ResourceManifest.tsx`, and `SustainabilityActionsList.tsx`.
+  - `card-hover` is now strictly isolated to `PlanCard.tsx`.
+- **Extended Icons**:
+  - Added `WaypointIcon` (diamond waypoint mark) and `ContourPinIcon` (elevation pin) to `frontend/src/components/icons/index.tsx`.
+
+### 2. Measured Post-Phase 2 Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 Result | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | **104 passed (9 files)** | 0 regressions |
+| **`tsc --noEmit`** | 0 errors | 0 errors | **0 errors** | Clean |
+| **`check:contrast`** | N/A | 33 / 33 passed | **33 / 33 passed** | 100% AA compliant |
+| **Page Title Coverage** | 5 / 11 (45%) | 5 / 11 (45%) | **11 / 11 (100%)** | +6 pages (Full coverage) |
+| **`card-hover` Usages** | 5 files | 5 files | **1 file (`PlanCard.tsx`)** | -4 files (Pruned generic lift) |
+| **`Sparkles` Imports** | 8 | 8 | **7** | -1 (Replaced in Header) |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | **518.50 kB** | +4.56 kB (Backdrop & Motion) |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | **56.57 kB** | +10.61 kB (within <= 70 KB budget) |
+
+### 3. Decisions Log (Phase 2)
+- **D005**: Implemented Backdrop organic shapes as pure inline SVG with cubic bezier paths (`d="M... C..."`) rather than CSS circles or radial gradients to give the living landscape an authentic topographical feel.
+- **D006**: Generated a self-contained 64x64 grayscale PNG noise data-URI directly in `index.css`, eliminating SVG filter turbulence recalculation on mobile and low-powered GPUs during high-frequency scrolling.
+- **D007**: Relocated the reading progress bar from a standalone top-of-window gradient element in `SmoothScrollProvider` to a 2px solid primary bar on the bottom edge of `Header.tsx`, resolving the anti-AI gradient ban and reinforcing the physical ledger edge aesthetic.
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.
+

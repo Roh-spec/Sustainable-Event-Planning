@@ -18,6 +18,7 @@ import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 import { ConstraintType } from "../types/constraints";
 import { MainPriority } from "../types/planning";
 import { PreferenceTag } from "../components/common/PreferenceTag";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const inferCategory = (desc: string): string => {
   const d = desc.toLowerCase();
@@ -70,6 +71,7 @@ const inferValue = (desc: string, type: ConstraintType): string | undefined => {
 };
 
 export const ConstraintsPage: React.FC = () => {
+  usePageTitle("Constraints & Rules · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const {

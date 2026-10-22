@@ -20,6 +20,7 @@ import {
   ConferenceMark,
   SocialMark,
 } from "../components/icons";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const EVENT_TYPE_TILES: {
   value: EventType;
@@ -78,6 +79,7 @@ const EVENT_TYPE_TILES: {
 ];
 
 export const EventCreationPage: React.FC = () => {
+  usePageTitle("New Event · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId?: string }>();
   const { event, setEvent, loadEvent, budget, setBudget } = usePlanningWizard();

@@ -196,7 +196,7 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
                     <div
                       key={item.task_id}
                       onClick={() => toggleTask(item.task_id)}
-                      className={`p-4 rounded-sheet border transition-all cursor-pointer flex items-start space-x-3.5 card-hover ${
+                      className={`p-4 rounded-sheet border transition-all cursor-pointer flex items-start space-x-3.5 ${
                         isChecked
                           ? "bg-paper-inset/30 border-line/60 text-ink-faint"
                           : "bg-paper-raised border-line hover:border-moss-400 text-ink shadow-subtle"

@@ -31,6 +31,7 @@ import { AnimatedCounter } from "../components/common/AnimatedCounter";
 import { useWasteLiveEstimates } from "../hooks/useWasteLiveEstimates";
 import { WasteLiveReceipt } from "../components/planning/waste/WasteLiveReceipt";
 import { WasteItemRow } from "../components/planning/waste/WasteItemRow";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 // Human-readable labels for backend assumption parameters
 const PARAMETER_LABEL_MAP: Record<string, string> = {
@@ -153,6 +154,7 @@ const DEFAULT_OTHER_ITEMS: OtherWasteItemInput[] = [
 ];
 
 export const WastePlanningPage: React.FC = () => {
+  usePageTitle("Materials & Waste · EcoPlan");
   const navigate = useNavigate();
   const { eventId } = useParams<{ eventId: string }>();
   const {
