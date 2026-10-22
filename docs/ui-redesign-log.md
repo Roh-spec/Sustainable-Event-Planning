@@ -236,6 +236,47 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 5a: Page Split (Pure Refactor) Report
+
+### 1. Deliverables Completed
+- **`FoodPlanningPage.tsx` Modularization** (shrunk from 78.48 KB / 1,496 lines to 8.83 KB / 212 lines):
+  - **`foodPlanningHelpers.tsx`**: Static meal definitions, parameter label mappings, and formatting helpers.
+  - **`MealSelectionSection.tsx`**: Multi-day tabs, meal card selection with visual indicators, and scheduled meal tags.
+  - **`DietaryPreferenceSection.tsx`**: Strict dietary radio options, custom dietary tags, and vegetarian proportion slider.
+  - **`FoodBudgetSection.tsx`**: Catering budget mode toggles (calculated estimates vs explicit budget caps).
+  - **`FoodCustomizationSection.tsx`**: Accordion customization section for meal attendance and meal-specific pricing.
+  - **`FoodCalculationSection.tsx`**: Calculation trigger, 3 primary physical unit metric cards (Total Food kg, Food Waste kg, Catering Budget ₹), domain recommendations, and constraint alerts.
+  - **`FoodExplainableSection.tsx`**: Accordion explainable drawer detailing formulas, per-person rates, safety buffers, and estimation assumptions.
+  - **`useFoodPlanningState.ts`**: Pure custom hook managing local state, calculations, API sync, wizard state preservation, and navigation.
+- **`WastePlanningPage.tsx` Modularization** (shrunk from 41.58 KB / 816 lines to 6.98 KB / 174 lines):
+  - **`wastePlanningHelpers.ts`**: Waste category definitions, default items, unit formatters, and parameter mappings.
+  - **`WasteCategorySelector.tsx`**: Waste streams selector (Food, Disposable, Plastic, Other) with attendance summary and estimate CTA.
+  - **`WasteResultsSection.tsx`**: 4 primary physical unit metric cards (Total Waste kg, Landfill kg, Recycled kg, Compost kg), itemized waste category ledgers with physical unit rates, and domain recommendations.
+  - **`WasteExplainableSection.tsx`**: Field methodology accordion with event benchmark baselines, calculation methods, and transparency notes.
+  - **`useWastePlanningState.ts`**: Pure custom hook managing category selections, calculation requests, wizard synchronization, and step navigation.
+- **Strict Invariants Maintained**:
+  - **0 test modifications**: All 104 Vitest unit/integration tests pass unmodified (`food_planning.test.tsx` 21/21, `waste_planning.test.tsx` 14/14).
+  - **0 DOM/visual deviations**: All IDs, ARIA labels, roles, and text nodes remain strictly identical.
+  - **Strict size targets achieved**: Both pages are well under the 15 KB target (< 9 KB each).
+
+### 2. Measured Post-Phase 5a Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5a Result | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | 104 passed | 104 passed | 104 passed | **104 passed (9 files)** | **0 regressions** |
+| **`tsc --noEmit`** | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | **0 errors** | **Clean** |
+| **`check:contrast`** | N/A | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | **33 / 33 passed** | **100% AA compliant** |
+| **FoodPlanningPage Size** | 78.48 KB (1,496 lines) | 78.48 KB | 78.48 KB | 78.48 KB | 78.48 KB | **8.83 KB (212 lines)** | **-69.65 KB (-89%)** |
+| **WastePlanningPage Size** | 41.58 KB (816 lines) | 41.58 KB | 41.58 KB | 41.58 KB | 41.58 KB | **6.98 KB (174 lines)** | **-34.60 KB (-83%)** |
+| **Page Size Target (< 15 KB)** | 0 / 2 passed | 0 / 2 | 0 / 2 | 0 / 2 | 0 / 2 | **2 / 2 passed (100%)** | **Both < 9 KB** |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | 518.50 kB | 518.32 kB | 522.43 kB | **526.10 kB** | +12.16 kB |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | 56.57 kB | 59.41 kB | 60.02 kB | **60.02 kB** | +14.06 kB (budget <= 70 KB) |
+
+### 3. Decisions Log (Phase 5a)
+- **D013**: Separated logic and presentation for both wizard pages into dedicated custom hooks (`useFoodPlanningState`, `useWastePlanningState`) and step section subcomponents under `components/planning/food/` and `components/planning/waste/`. This isolates business logic for calculation workflows from UI markup, making Phase 5b's restyling targeted and safe.
+- **D014**: Retained 100% of existing ARIA role attributes, test IDs, and form field bindings without modification, ensuring zero test churn and total backward compatibility with the existing test suite.
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.
