@@ -5,6 +5,8 @@ import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 import { LedgerRow } from "../components/common/LedgerTable";
+import { Stamp } from "../components/common/Stamp";
+import { SegmentedToggle } from "../components/common/SegmentedToggle";
 import { usePageTitle } from "../hooks/usePageTitle";
 
 export const BudgetPage: React.FC = () => {
@@ -117,19 +119,24 @@ export const BudgetPage: React.FC = () => {
                 </p>
               </div>
 
-              {/* Currency Selector */}
+              {/* Currency Segmented Toggle */}
               <div className="flex items-center space-x-2">
-                <label
-                  htmlFor="currency-select"
-                  className="text-xs font-mono font-semibold text-ink-muted uppercase"
-                >
-                  Currency:
-                </label>
+                <SegmentedToggle
+                  label="Currency"
+                  value={currency}
+                  onChange={(val) => setCurrency(String(val))}
+                  options={[
+                    { value: "INR", label: "INR (₹)" },
+                    { value: "USD", label: "USD ($)" },
+                    { value: "EUR", label: "EUR (€)" },
+                  ]}
+                />
                 <select
                   id="currency-select"
+                  aria-label="Currency"
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="px-2.5 py-1 rounded-control border border-line text-xs font-mono font-bold text-ink bg-paper-raised focus:border-moss-700 focus:outline-none"
+                  className="sr-only"
                 >
                   <option value="INR">INR (₹)</option>
                   <option value="USD">USD ($)</option>
@@ -161,13 +168,13 @@ export const BudgetPage: React.FC = () => {
             <div className="flex items-center justify-between pb-3 mb-2 border-b border-line">
               <span className="label-kicker">Budget Variance Ledger</span>
               {isDeficit && (
-                <span className="stamp-clay">
+                <Stamp variant="clay" thump>
                   {formatCurrency(deficitAmount)} over ceiling
-                </span>
+                </Stamp>
               )}
             </div>
 
-            <div className="space-y-0.5">
+            <div aria-live="polite" className="space-y-0.5">
               <LedgerRow
                 label="Total Ceiling Allowance"
                 sublabel="Organiser maximum expenditure limit"
@@ -186,8 +193,8 @@ export const BudgetPage: React.FC = () => {
                 isTotal
                 label="Remaining Ledger Balance"
                 sublabel={isDeficit ? "Exceeds approved budget ceiling" : "Available unallocated budget"}
-                value={formatCurrency(remaining)}
-                delta={isDeficit ? `Deficit +${formatCurrency(deficitAmount)}` : `Surplus ${formatCurrency(remaining)}`}
+                value={isDeficit ? `\u2212${formatCurrency(deficitAmount)}` : formatCurrency(remaining)}
+                delta={isDeficit ? `Deficit +\u2212${formatCurrency(deficitAmount)}` : `Surplus ${formatCurrency(remaining)}`}
                 deltaType={isDeficit ? "clay" : "moss"}
               />
             </div>

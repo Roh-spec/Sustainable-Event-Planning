@@ -277,6 +277,50 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 5b: Budget, Constraints, Food, Waste Report
+
+### 1. Deliverables Completed
+- **`BudgetPage.tsx` Restyle**:
+  - Integrated `Stamp` (`variant="clay"` with authentic thump entrance) for over-ceiling deficit indicators.
+  - Connected `SegmentedToggle` for currency selection (INR, USD, EUR) while maintaining accessible fallbacks.
+  - Implemented mathematical minus sign (`−`, `\u2212`) across remaining budget and deficit indicators.
+  - Added live regions (`aria-live="polite"`) to announce real-time variance and remaining balance changes.
+- **`ConstraintsPage.tsx` Pattern-Coded Rule Directives**:
+  - Distinct border pattern hierarchy: Must Have (solid, moss), Avoid (thick solid, clay), Would Be Nice (dashed, moss-muted), Flexible (dotted, ink-muted).
+  - Special requirements ledger on solid surface with 1px hairline rules (`divide-y divide-line/60`).
+  - Optimization priority cards (Save Money, Balanced, Reduce Waste) with keyboard radio-group semantics and visible focus rings.
+- **`FoodPlanningPage.tsx` & `FoodLiveReceipt.tsx` Glass Restyle**:
+  - Desktop sticky live receipt upgraded to `GlassPanel` (`variant="strong"`), sitting at `top-20` on desktop.
+  - Mobile bottom live receipt upgraded to expanding glass bottom sheet with smooth accordion details drawer.
+  - Added bottom padding (`pb-28 sm:pb-32 lg:pb-8`) ensuring **zero overlap** with form inputs and navigation buttons at any viewport width from 360px to 1440px.
+  - Integrated `RangeSlider` into `DietaryPreferenceSection.tsx` with calibrated ticks and real-time vegetarian ratio readout.
+  - Added live regions (`aria-live="polite"`) on updating cost and surplus totals.
+- **`WastePlanningPage.tsx` & `WasteLiveReceipt.tsx` Glass Restyle**:
+  - Upgraded desktop sticky live receipt with `GlassPanel` and mobile expanding glass bottom bar with zero form overlap.
+  - Replaced generic icons in `WasteCategorySelector.tsx` with handcrafted domain marks (`PlateIcon`, `TrayIcon`, `BottleIcon`, `BagIcon`).
+  - Added live regions (`aria-live="polite"`) on total planned items and reusable percentage tallies.
+  - Verified responsive rendering down to 360px via browser subagent (`waste_page_mobile_1792650622784.png`).
+
+### 2. Measured Post-Phase 5b Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5a | Phase 5b Result | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | 104 passed | 104 passed | 104 passed | 104 passed | **104 passed (9 files)** | **0 regressions** |
+| **`tsc --noEmit`** | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | **0 errors** | **Clean** |
+| **`check:contrast`** | N/A | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | **33 / 33 passed** | **100% AA compliant** |
+| **Receipt Overlap** | N/A | N/A | N/A | N/A | N/A | N/A | **0 overlap (360-1440px)** | **Verified** |
+| **Custom Marks in Waste** | 0 | 0 | 0 | 0 | 0 | 0 | **4 / 4 categories** | **Custom marks** |
+| **RangeSlider in Use** | 0 | 0 | 0 | 1 | 1 | 1 | **2 (Food & Common)** | **Integrated** |
+| **SegmentedToggle in Use** | 0 | 0 | 0 | 1 | 1 | 1 | **2 (Budget & Common)** | **Integrated** |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | 518.50 kB | 518.32 kB | 522.43 kB | 526.10 kB | **527.76 kB** | +13.82 kB |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | 56.57 kB | 59.41 kB | 60.02 kB | 60.02 kB | **60.17 kB** | +14.21 kB (budget <= 70 KB) |
+
+### 3. Decisions Log (Phase 5b)
+- **D015**: Styled mobile live receipts as expandable bottom glass bars (`glass-strong` with backdrop blur) and added generous page bottom clearance (`pb-28 sm:pb-32 lg:pb-8`) across wizard steps 4 and 5 so the fixed mobile receipt never covers form fields or navigation buttons on any mobile screen.
+- **D016**: Replaced generic Lucide icons in the waste stream selector with handcrafted domain marks (`PlateIcon` for food waste, `TrayIcon` for disposables, `BottleIcon` for plastic, `BagIcon` for other materials) to maintain the field-station ledger identity.
+- **D017**: Extended `RangeSlider` with `customReadout` and `tickLabels` to allow rich composite labels (e.g. `80% Vegetarian • 20% Non-Vegetarian`) while preserving standard range input semantics for testing and accessibility.
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.

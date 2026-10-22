@@ -46,7 +46,7 @@ export const WastePlanningPage: React.FC = () => {
   } = useWastePlanningState();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-20 lg:pb-6 space-y-6">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-32 lg:pb-8 space-y-6">
       <WizardProgress currentStep={5} eventId={event?.id || Number(eventId)} />
       <EventSummaryBanner event={event} budget={budget} />
 

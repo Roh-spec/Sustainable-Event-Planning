@@ -1,6 +1,7 @@
 import React from "react";
 import { Leaf, Flame, Users, Check } from "lucide-react";
 import { DietaryPreference } from "../../../types/food";
+import { RangeSlider } from "../../common/RangeSlider";
 
 export interface DietaryPreferenceSectionProps {
   preference: DietaryPreference;
@@ -89,43 +90,31 @@ export const DietaryPreferenceSection: React.FC<DietaryPreferenceSectionProps> =
         })}
       </div>
 
-      {/* If "Both options" is selected: Configurable Vegetarian Ratio */}
+      {/* If "Both options" is selected: Configurable Vegetarian Ratio using RangeSlider */}
       {preference === "MIXED" && (
         <div className="mt-4 p-5 rounded-sheet bg-paper-inset/40 border border-line">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-            <label
-              htmlFor="veg-split-slider"
-              className="text-xs font-mono uppercase tracking-wider text-ink-muted"
-            >
-              Vegetarian Portion Ratio
-            </label>
-            <span className="text-xs font-bold text-moss-800 bg-moss-100 px-2.5 py-1 rounded-full border border-moss-200 font-mono tabular-nums">
-              {Math.round(Number(vegRatio || 0.7) * 100)}% Vegetarian •{" "}
-              {100 - Math.round(Number(vegRatio || 0.7) * 100)}% Non-Vegetarian
-            </span>
-          </div>
-
-          <input
-            type="range"
+          <RangeSlider
             id="veg-split-slider"
-            min="0"
-            max="1"
-            step="0.05"
-            value={vegRatio || "0.70"}
-            onChange={(e) => onVegRatioChange(e.target.value)}
-            className="w-full accent-moss-700 cursor-pointer h-2 bg-paper-inset border border-line-strong rounded-control"
+            label="Vegetarian Portion Ratio"
+            value={Number(vegRatio || 0.7)}
+            min={0}
+            max={1}
+            step={0.05}
+            ticks={[0, 0.7, 1]}
+            tickLabels={{
+              0: "All Non-Veg (0%)",
+              0.7: "Standard Benchmark (70%)",
+              1: "All Veg (100%)",
+            }}
+            customReadout={
+              <span className="text-xs font-bold text-moss-800 bg-moss-100 px-2.5 py-1 rounded-full border border-moss-200 font-mono tabular-nums">
+                {Math.round(Number(vegRatio || 0.7) * 100)}% Vegetarian •{" "}
+                {100 - Math.round(Number(vegRatio || 0.7) * 100)}% Non-Vegetarian
+              </span>
+            }
+            onChange={(val) => onVegRatioChange(val.toFixed(2))}
+            helperText="We use this ratio to calculate portion requirements for vegetarian and non-vegetarian catering."
           />
-
-          <div className="flex items-center justify-between text-[11px] text-ink-faint mt-1.5">
-            <span>All Non-Veg (0%)</span>
-            <span>Standard Campus Benchmark (70%)</span>
-            <span>All Veg (100%)</span>
-          </div>
-
-          <p className="text-xs text-ink-muted mt-3">
-            We use this ratio to calculate portion requirements for
-            vegetarian and non-vegetarian catering.
-          </p>
         </div>
       )}
     </section>

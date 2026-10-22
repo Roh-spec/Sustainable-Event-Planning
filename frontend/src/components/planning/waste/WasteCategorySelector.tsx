@@ -1,6 +1,6 @@
 import React from "react";
-import { Utensils, Package, Trash2, Layers, Check, Loader2 } from "lucide-react";
-import { BinIcon } from "../../icons";
+import { Check, Loader2 } from "lucide-react";
+import { BinIcon, PlateIcon, TrayIcon, BottleIcon, BagIcon } from "../../icons";
 
 export interface WasteCategorySelectorProps {
   isFoodSelected: boolean;
@@ -65,7 +65,7 @@ export const WasteCategorySelector: React.FC<WasteCategorySelectorProps> = ({
                     : "bg-paper-inset/60 text-ink-muted border border-line"
                 }`}
               >
-                <Utensils className="w-5 h-5" />
+                <PlateIcon className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-semibold text-ink text-sm sm:text-base">
@@ -115,7 +115,7 @@ export const WasteCategorySelector: React.FC<WasteCategorySelectorProps> = ({
                     : "bg-paper-inset/60 text-ink-muted border border-line"
                 }`}
               >
-                <Package className="w-5 h-5" />
+                <TrayIcon className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-semibold text-ink text-sm sm:text-base">
@@ -162,7 +162,7 @@ export const WasteCategorySelector: React.FC<WasteCategorySelectorProps> = ({
                     : "bg-paper-inset/60 text-ink-muted border border-line"
                 }`}
               >
-                <Trash2 className="w-5 h-5" />
+                <BottleIcon className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-semibold text-ink text-sm sm:text-base">
@@ -209,7 +209,7 @@ export const WasteCategorySelector: React.FC<WasteCategorySelectorProps> = ({
                     : "bg-paper-inset/60 text-ink-muted border border-line"
                 }`}
               >
-                <Layers className="w-5 h-5" />
+                <BagIcon className="w-5 h-5" />
               </div>
               <div>
                 <h3 className="font-semibold text-ink text-sm sm:text-base">
