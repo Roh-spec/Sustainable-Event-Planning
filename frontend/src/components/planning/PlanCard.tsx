@@ -7,9 +7,9 @@ import {
   AlertTriangle,
   ChevronDown,
   ChevronUp,
-  Sparkles,
   Check,
 } from "lucide-react";
+import { WaypointIcon } from "../icons";
 import { PlanAlternative, PLANNING_OBJECTIVE_CONFIG } from "../../types";
 import { ExplainableMetric } from "../sustainability/ExplainableMetric";
 import {
@@ -47,7 +47,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
   const config = PLANNING_OBJECTIVE_CONFIG[plan.planning_objective] || {
     label: plan.name,
     badge: "Alternative",
-    icon: "Sparkles",
+    icon: "WaypointIcon",
     description:
       "Deterministic alternative balancing budget, waste and attendee preferences.",
     tagColor: "bg-paper-inset text-ink-muted border-line",
@@ -144,7 +144,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           />
         );
       default:
-        return <Sparkles className="w-5 h-5 text-ink-muted" />;
+        return <WaypointIcon className="w-5 h-5 text-ink-muted" />;
     }
   };
 

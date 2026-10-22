@@ -7,6 +7,7 @@ export interface LedgerRowProps {
   delta?: string;
   deltaType?: "moss" | "clay" | "neutral";
   isTotal?: boolean;
+  isHero?: boolean;
   sublabel?: string;
   className?: string;
 }
@@ -18,6 +19,7 @@ export const LedgerRow: React.FC<LedgerRowProps> = ({
   delta,
   deltaType = "neutral",
   isTotal = false,
+  isHero = false,
   sublabel,
   className = "",
 }) => {
@@ -40,7 +42,11 @@ export const LedgerRow: React.FC<LedgerRowProps> = ({
       <div className="flex flex-col min-w-0 pr-3">
         <span
           className={`truncate ${
-            isTotal ? "text-base font-semibold text-ink" : "text-sm text-ink font-medium"
+            isHero
+              ? "text-xs font-mono uppercase tracking-[0.16em] text-moss-700 font-semibold"
+              : isTotal
+              ? "text-base font-semibold text-ink"
+              : "text-sm text-ink font-medium"
           }`}
         >
           {label}
@@ -53,8 +59,11 @@ export const LedgerRow: React.FC<LedgerRowProps> = ({
       </div>
 
       {/* Dotted leader line */}
-      {!isTotal && (
-        <div className="flex-1 border-b border-dotted border-line-strong/70 mx-2 self-center translate-y-[2px]" />
+      {!isTotal && !isHero && (
+        <div
+          className="flex-1 border-b border-dotted border-line-strong/60 mx-2 self-center translate-y-[2px]"
+          aria-hidden="true"
+        />
       )}
 
       {/* Right: value, unit, and optional delta */}
@@ -66,7 +75,11 @@ export const LedgerRow: React.FC<LedgerRowProps> = ({
         )}
         <span
           className={`font-mono tabular-nums ${
-            isTotal ? "text-lg font-bold text-ink" : "text-sm font-semibold text-ink"
+            isHero
+              ? "text-3xl sm:text-4xl font-bold tracking-tight text-ink"
+              : isTotal
+              ? "text-lg font-bold text-ink"
+              : "text-sm font-semibold text-ink"
           }`}
         >
           {value}
@@ -84,7 +97,7 @@ export interface LedgerTableProps {
   subtitle?: string;
   children: React.ReactNode;
   className?: string;
-  badge?: string;
+  badge?: React.ReactNode;
 }
 
 export const LedgerTable: React.FC<LedgerTableProps> = ({
@@ -111,9 +124,15 @@ export const LedgerTable: React.FC<LedgerTableProps> = ({
             )}
           </div>
           {badge && (
-            <span className="font-mono text-[11px] font-semibold uppercase px-2 py-0.5 border border-line-strong rounded-control text-ink-muted bg-paper-inset/60">
-              {badge}
-            </span>
+            <div>
+              {typeof badge === "string" ? (
+                <span className="font-mono text-[11px] font-semibold uppercase px-2 py-0.5 border border-line-strong rounded-control text-ink-muted bg-paper-inset/60">
+                  {badge}
+                </span>
+              ) : (
+                badge
+              )}
+            </div>
           )}
         </div>
       )}

@@ -138,7 +138,45 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 3: Shared Components and Icons Report
+
+### 1. Deliverables Completed
+- **`GlassPanel.tsx`**: Reusable component wrapping `.glass` and `.glass-strong` with light-edge borders, inner top highlights, and solid surface fallbacks.
+- **`Stamp.tsx` & Stamp Styles**: Ledger status confirmation marks (`stamp-moss`, `stamp-clay`, `stamp-faint`) with authentic -2deg rotation, high-contrast borders, and `stamp-thump` entrance animation.
+- **`LedgerTable.tsx` Upgrade**: Enhanced `LedgerRow` with `isHero` numeral contrast support, dotted leader lines, and ReactNode badges.
+- **`MarginNote.tsx` Upgrade**: Integrated with `Stamp`, Caveat handwriting styling, and accessible contrast borders.
+- **`Receipt.tsx`**: Monospace line item summary with double-rule total, physical unit precision, and authentic torn-edge SVG bottom.
+- **`WaypointStepper.tsx`**: Contour-map survey route connecting numbered waypoints with drawn SVG progress paths.
+- **`RangeSlider.tsx`**: Notched physical survey slider with monospace value badge, calibrated tick marks, and keyboard accessibility.
+- **`SegmentedToggle.tsx`**: Sliding segmented selector with tactile active states and radio-group keyboard navigation.
+- **`EmptyState.tsx`**: Field-station empty logbook illustration on dotgrid background with Newsreader serif title.
+- **`ErrorState.tsx`**: Field discrepancy card on dotgrid with clay status stamp and retry action.
+- **`SkeletonLines.tsx`**: Opacity-pulsing ledger lines placeholder avoiding layout shifts and respecting reduced motion.
+- **Icon Set Extended**: Added `WaypointIcon` (diamond waypoint) and `ContourPinIcon` (elevation pin) in `icons/index.tsx`.
+- **Zero Sparkles Imports**: Replaced Lucide `Sparkles` across all 7 remaining files (`PlanCard.tsx`, `TimingWindowBar.tsx`, `ResourceManifest.tsx`, `CompletePlanPage.tsx`, `PlansPage.tsx`, `FoodPlanningPage.tsx`, `WastePlanningPage.tsx`) with custom semantic marks (`WaypointIcon`, `SproutIcon`, `LedgerIcon`, `PlateIcon`, `BinIcon`, `CupIcon`).
+- **Documentation**: Documented all 12 shared components with import and usage examples in Section 8 of `docs/frontend.md`.
+- **Component File Limits**: Every component in `frontend/src/components/common/` is strictly under 200 lines (longest is `LedgerTable.tsx` at 142 lines).
+
+### 2. Measured Post-Phase 3 Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 | Phase 3 Result | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | 104 passed | **104 passed (9 files)** | **0 regressions** |
+| **`tsc --noEmit`** | 0 errors | 0 errors | 0 errors | **0 errors** | **Clean** |
+| **`check:contrast`** | N/A | 33 / 33 passed | 33 / 33 passed | **33 / 33 passed** | **100% AA compliant** |
+| **Page Title Coverage** | 5 / 11 (45%) | 5 / 11 (45%) | 11 / 11 (100%) | **11 / 11 (100%)** | +6 pages (100%) |
+| **`Sparkles` Imports** | 8 | 8 | 7 | **0** | **-8 (100% eliminated)** |
+| **Common Components <= 200 lines** | N/A | N/A | 100% | **17 / 17 (100%)** | Max 142 lines |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | 518.50 kB | **518.32 kB** | +4.38 kB |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | 56.57 kB | **59.41 kB** | +13.45 kB (budget <= 70 KB) |
+
+### 3. Decisions Log (Phase 3)
+- **D008**: Replaced Lucide `Sparkles` with semantic icons tailored to each domain context (`CupIcon` for refreshments, `PlateIcon` for food estimation, `BinIcon` for waste calculation, `LedgerIcon` for timetable generation, and `WaypointIcon` for sustainable plan selection and route milestones).
+- **D009**: Designed `Receipt` with an inline SVG torn bottom edge (`M0,0 L5,7 L10,1...`) that inherits `currentColor` over `text-paper-raised`, creating a realistic torn receipt edge without image asset dependencies.
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.
+
 

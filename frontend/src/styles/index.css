@@ -171,6 +171,55 @@
   border-radius: 2px;
 }
 
+.stamp-faint {
+  display: inline-block;
+  border: 1.5px solid rgb(var(--c-line-strong));
+  color: rgb(var(--c-ink-muted));
+  background-color: rgb(var(--c-surface));
+  padding: 0.2rem 0.55rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-radius: 2px;
+}
+
+@keyframes stampThump {
+  0% {
+    transform: scale(1.15) rotate(-3deg);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1) rotate(-2deg);
+    opacity: 1;
+  }
+}
+
+.stamp-thump {
+  animation: stampThump 280ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+.skeleton-pulse {
+  animation: skeletonPulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp-thump,
+  .skeleton-pulse {
+    animation: none !important;
+  }
+}
+
 .double-rule-top {
   border-top: 3px double rgb(var(--c-line-strong));
 }

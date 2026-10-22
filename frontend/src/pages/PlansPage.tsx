@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import {
-  Sparkles,
   ArrowLeft,
   ArrowRight,
   Columns3,
@@ -11,6 +10,7 @@ import {
   RotateCcw,
   X,
 } from "lucide-react";
+import { WaypointIcon, LedgerIcon } from "../components/icons";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
@@ -316,7 +316,7 @@ export const PlansPage: React.FC = () => {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 mb-6 border-b border-line">
           <div>
             <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-paper-inset text-moss-800 text-xs font-semibold tracking-wide uppercase mb-2 border border-line">
-              <Sparkles className="w-3.5 h-3.5 text-moss-600" />
+              <WaypointIcon className="w-3.5 h-3.5 text-moss-700" />
               <span>Step 6 of 7 • Generated Sustainable Plans</span>
             </div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink tracking-tight">
@@ -428,7 +428,7 @@ export const PlansPage: React.FC = () => {
                 onClick={loadDemoPlans}
                 className="btn-ghost text-xs py-2 px-4"
               >
-                <Sparkles className="w-3.5 h-3.5 text-moss-600" />
+                <LedgerIcon className="w-3.5 h-3.5 text-moss-700" />
                 <span>Load Sample Alternatives</span>
               </button>
             </div>

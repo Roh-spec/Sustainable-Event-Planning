@@ -8,7 +8,6 @@ import {
   Moon,
   Cookie,
   CupSoda,
-  Sparkles,
   Leaf,
   Flame,
   Users,
@@ -24,6 +23,7 @@ import {
   AlertTriangle,
   Info,
 } from "lucide-react";
+import { CupIcon, PlateIcon, SproutIcon } from "../components/icons";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
@@ -82,7 +82,7 @@ const SUPPORTED_MEAL_OPTIONS: MealOptionMeta[] = [
     type: "REFRESHMENTS",
     label: "Refreshments",
     description: "Beverages, water & light snacks",
-    icon: <Sparkles className="w-5 h-5 text-sky-600" />,
+    icon: <CupIcon className="w-5 h-5 text-moss-700" />,
   },
 ];
 
@@ -1153,7 +1153,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4" />
+                  <PlateIcon className="w-4 h-4" />
                   <span>Calculate Food Estimates</span>
                 </>
               )}
@@ -1350,7 +1350,7 @@ export const FoodPlanningPage: React.FC = () => {
                       key={i}
                       className="text-xs text-ink-muted flex items-start space-x-2"
                     >
-                      <Sparkles className="w-4 h-4 text-moss-700 flex-shrink-0 mt-0.5" />
+                      <SproutIcon className="w-4 h-4 text-moss-700 flex-shrink-0 mt-0.5" />
                       <div>
                         <strong className="text-ink">{rec.title}:</strong>{" "}
                         {rec.description}

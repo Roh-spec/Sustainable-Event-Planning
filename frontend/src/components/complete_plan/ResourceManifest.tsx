@@ -2,11 +2,11 @@ import React from "react";
 import {
   PackageCheck,
   UtensilsCrossed,
-  Sparkles,
   Recycle,
   Trash2,
   ShieldAlert,
 } from "lucide-react";
+import { SproutIcon } from "../icons";
 import { ResourceManifest as ResourceManifestType } from "../../types/completePlan";
 
 interface ResourceManifestProps {
@@ -166,7 +166,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
       <div className="pt-4 border-t border-line">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <Sparkles className="w-4 h-4 text-moss-600" />
+            <SproutIcon className="w-4 h-4 text-moss-700" />
             <h3 className="font-serif text-sm sm:text-base font-bold text-ink">
               Suggested Equipment & Facility Stations (Requires Venue
               Confirmation)

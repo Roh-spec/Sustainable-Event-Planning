@@ -163,3 +163,187 @@ The following modules are strictly deferred to future project phases and have no
 - **Vendor Marketplace:** B2B supplier contracting.
 - **Machine Learning / External AI APIs:** Live LLM chat agents or OR-Tools solvers.
 - **PDF Report Generation:** Document export engines.
+
+---
+
+## 8. Shared Field-Station Design System Components (Phase 3)
+
+The interface is styled as a **glass field-station over a living landscape**, balancing airy frosted glass floating panels with strict physical ledger rules.
+
+### Component Catalogue
+
+#### 1. `GlassPanel`
+- **Location:** `src/components/common/GlassPanel.tsx`
+- **Purpose:** Wraps `.glass` (~0.62 opacity) or `.glass-strong` (~0.78 opacity for text/forms) with `-webkit-backdrop-filter`, light-edge highlights, and solid surface fallbacks.
+- **Usage Example:**
+  ```tsx
+  import { GlassPanel } from "../components/common/GlassPanel";
+
+  <GlassPanel variant="strong" className="p-6 max-w-md">
+    <h3 className="font-display text-lg text-ink">Field Estimate</h3>
+    <p className="text-sm text-ink-muted">Refracting living landscape backdrop.</p>
+  </GlassPanel>
+  ```
+
+#### 2. `Stamp`
+- **Location:** `src/components/common/Stamp.tsx`
+- **Purpose:** Physical status confirmation marks with authentic angle (-2deg) and high-contrast borders. Supports `thump` micro-moment animation.
+- **Variants:** `moss` (verified/recommended), `clay` (over-budget/deficit), `faint` (neutral/metadata).
+- **Usage Example:**
+  ```tsx
+  import { Stamp } from "../components/common/Stamp";
+
+  <Stamp variant="moss" thump>RECOMMENDED</Stamp>
+  <Stamp variant="clay">OVER BUDGET</Stamp>
+  ```
+
+#### 3. `LedgerTable` & `LedgerRow`
+- **Location:** `src/components/common/LedgerTable.tsx`
+- **Purpose:** Strict tabular figures with dotted leader lines, double-rule totals, and hero numeral scale contrast.
+- **Usage Example:**
+  ```tsx
+  import { LedgerTable, LedgerRow } from "../components/common/LedgerTable";
+
+  <LedgerTable title="Event Budget Allocation" badge="VERIFIED">
+    <LedgerRow label="Food Surplus Averted" value="-26" unit="kg" deltaType="moss" isHero />
+    <LedgerRow label="Single-Use Items" value="90" unit="items" />
+    <LedgerRow label="Committed Total" value="₹46,800" isTotal />
+  </LedgerTable>
+  ```
+
+#### 4. `MarginNote`
+- **Location:** `src/components/common/MarginNote.tsx`
+- **Purpose:** Restrained field marginalia rendered in Caveat handwriting with pen mark or stamp. Limit: 1-2 per page.
+- **Usage Example:**
+  ```tsx
+  import { MarginNote } from "../components/common/MarginNote";
+
+  <MarginNote label="Organizer Note" type="note">
+    Eliminated 530 single-use items by allocating ₹4,300 to reusable steel thalis.
+  </MarginNote>
+  ```
+
+#### 5. `Receipt`
+- **Location:** `src/components/common/Receipt.tsx`
+- **Purpose:** Physical checkout estimate card featuring monospace item rows, double-rule total, and authentic torn-edge SVG bottom.
+- **Usage Example:**
+  ```tsx
+  import { Receipt } from "../components/common/Receipt";
+
+  <Receipt
+    title="LIVE WASTE RECEIPT"
+    receiptNumber="W-104"
+    timestamp="14:30 IST"
+    items={[
+      { label: "Reusable Plates", value: "150", unit: "items" },
+      { label: "Plastic Diverted", value: "18.5", unit: "kg", deltaType: "moss" },
+    ]}
+    summaryRow={<div className="font-bold flex justify-between"><span>Net Cost</span><span>₹12,400</span></div>}
+  />
+  ```
+
+#### 6. `WaypointStepper`
+- **Location:** `src/components/common/WaypointStepper.tsx`
+- **Purpose:** Contour-map survey route connecting numbered waypoints with drawn SVG paths and active step highlighting.
+- **Usage Example:**
+  ```tsx
+  import { WaypointStepper } from "../components/common/WaypointStepper";
+
+  <WaypointStepper
+    steps={[
+      { id: 1, label: "Event" },
+      { id: 2, label: "Budget" },
+      { id: 3, label: "Plans" },
+    ]}
+    currentStep={2}
+    onStepClick={(step) => navigate(`/step/${step.id}`)}
+  />
+  ```
+
+#### 7. `RangeSlider`
+- **Location:** `src/components/common/RangeSlider.tsx`
+- **Purpose:** Notched physical survey slider with monospace value badge and calibrated tick markings. Accessible keyboard controls.
+- **Usage Example:**
+  ```tsx
+  import { RangeSlider } from "../components/common/RangeSlider";
+
+  <RangeSlider
+    label="Vegetarian Ratio"
+    value={vegRatio}
+    min={0}
+    max={100}
+    step={5}
+    unit="%"
+    ticks={[0, 25, 50, 75, 100]}
+    onChange={(val) => setVegRatio(val)}
+  />
+  ```
+
+#### 8. `SegmentedToggle`
+- **Location:** `src/components/common/SegmentedToggle.tsx`
+- **Purpose:** Sliding segmented selector with keyboard radiogroup accessibility and high-contrast tactile feedback.
+- **Usage Example:**
+  ```tsx
+  import { SegmentedToggle } from "../components/common/SegmentedToggle";
+
+  <SegmentedToggle
+    label="Pricing Basis"
+    options={[
+      { value: "PER_PERSON", label: "Per Person", sublabel: "₹/head" },
+      { value: "TOTAL", label: "Fixed Package", sublabel: "₹ total" },
+    ]}
+    value={priceBasis}
+    onChange={(val) => setPriceBasis(val)}
+  />
+  ```
+
+#### 9. `EmptyState`
+- **Location:** `src/components/common/EmptyState.tsx`
+- **Purpose:** Dotgrid registry empty-state illustration with Newsreader title, clear explanation, and action button.
+- **Usage Example:**
+  ```tsx
+  import { EmptyState } from "../components/common/EmptyState";
+
+  <EmptyState
+    title="No Events Found"
+    description="Your field station logbook is empty. Create your first sustainable event plan."
+    action={<button className="btn-primary">Plan First Event</button>}
+  />
+  ```
+
+#### 10. `ErrorState`
+- **Location:** `src/components/common/ErrorState.tsx`
+- **Purpose:** Incident discrepancy card on dotgrid with clay status stamp and retry action.
+- **Usage Example:**
+  ```tsx
+  import { ErrorState } from "../components/common/ErrorState";
+
+  <ErrorState
+    title="Ledger Communication Failure"
+    message="Unable to reach the event calculations service. Please check network connectivity."
+    onRetry={() => refetch()}
+  />
+  ```
+
+#### 11. `SkeletonLines`
+- **Location:** `src/components/common/SkeletonLines.tsx`
+- **Purpose:** Subtle opacity-pulsing ledger lines mimicking physical paper ruling without layout shifts.
+- **Usage Example:**
+  ```tsx
+  import { SkeletonLines } from "../components/common/SkeletonLines";
+
+  <SkeletonLines lines={4} variant="table" />
+  ```
+
+#### 12. `Reveal`
+- **Location:** `src/components/common/Reveal.tsx`
+- **Purpose:** Run-once IntersectionObserver scroll reveal (20px fade-up with 6px blur to 0, 550ms outExpo). Frozen under reduced motion.
+- **Usage Example:**
+  ```tsx
+  import { Reveal } from "../components/common/Reveal";
+
+  <Reveal staggerIndex={1}>
+    <div className="surface-sheet p-6">Revealed content</div>
+  </Reveal>
+  ```
+

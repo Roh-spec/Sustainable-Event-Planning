@@ -5,7 +5,6 @@ import {
   ArrowRight,
   Trash2,
   Package,
-  Sparkles,
   Utensils,
   Check,
   ChevronDown,
@@ -17,6 +16,7 @@ import {
   Layers,
   Recycle,
 } from "lucide-react";
+import { BinIcon, WaypointIcon } from "../components/icons";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
@@ -600,7 +600,7 @@ export const WastePlanningPage: React.FC = () => {
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 text-paper-raised" />
+                <BinIcon className="w-4 h-4 text-paper-raised" />
                 <span>Estimate my waste</span>
               </>
             )}
@@ -998,7 +998,7 @@ export const WastePlanningPage: React.FC = () => {
               </>
             ) : (
               <>
-                <Sparkles className="w-5 h-5" />
+                <WaypointIcon className="w-5 h-5" />
                 <span>Continue to Sustainable Plans</span>
                 <ArrowRight className="w-5 h-5" />
               </>

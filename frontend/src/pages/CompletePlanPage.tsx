@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   ArrowLeft,
   Printer,
-  Sparkles,
   AlertCircle,
   Calendar,
   Users,
@@ -11,6 +10,7 @@ import {
   Layers,
   Leaf,
 } from "lucide-react";
+import { LedgerIcon } from "../components/icons";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
@@ -487,7 +487,7 @@ export const CompletePlanPage: React.FC = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 mb-6 border-b border-line print:hidden">
         <div>
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-paper-inset text-moss-800 text-xs font-semibold tracking-wide uppercase mb-2 border border-line">
-            <Sparkles className="w-3.5 h-3.5 text-moss-600" />
+            <LedgerIcon className="w-3.5 h-3.5 text-moss-700" />
             <span>Step 7 of 7 • Complete Event Plan</span>
           </div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink tracking-tight">
@@ -702,7 +702,7 @@ export const CompletePlanPage: React.FC = () => {
             /* Empty State: Ready to Generate */
             <div className="surface-sheet p-12 text-center max-w-2xl mx-auto my-8 border border-line">
               <div className="w-12 h-12 rounded-control bg-paper-inset text-moss-700 flex items-center justify-center mx-auto mb-4 border border-line">
-                <Sparkles className="w-6 h-6" />
+                <LedgerIcon className="w-6 h-6" />
               </div>
               <h3 className="font-serif text-lg font-bold text-ink mb-2">
                 Ready to Generate Your Complete Event Plan

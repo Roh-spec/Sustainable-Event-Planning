@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Clock, AlertCircle, Sparkles, CheckCircle2, Info } from "lucide-react";
+import { Clock, AlertCircle, CheckCircle2, Info } from "lucide-react";
+import { LedgerIcon } from "../icons";
 import { Time12HourPicker } from "./Time12HourPicker";
 import { format12Hour } from "../../utils/timeFormatting";
 
@@ -229,7 +230,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4" />
+                <LedgerIcon className="w-4 h-4" />
                 <span>
                   {hasPlan
                     ? "Regenerate Event Plan"
