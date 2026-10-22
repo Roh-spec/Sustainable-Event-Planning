@@ -5,12 +5,15 @@ import {
   Columns3,
   CheckCircle,
   AlertTriangle,
+  Check,
 } from "lucide-react";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { EventSummaryBanner } from "../components/wizard/EventSummaryBanner";
 import { PlanAlternative } from "../types/planning";
 import { formatReusablePercentage } from "../utils/metricFormatting";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { Stamp } from "../components/common/Stamp";
+import { DumbbellChart } from "../components/comparison/DumbbellChart";
 
 export const PlanComparisonPage: React.FC = () => {
   usePageTitle("Compare Plans · EcoPlan");
@@ -85,6 +88,39 @@ export const PlanComparisonPage: React.FC = () => {
     }
   };
 
+  const isRecommended = (p: PlanAlternative) => {
+    if (selectedPlan?.plan_id === p.plan_id) return true;
+    if (!selectedPlan && (p.planning_objective === "BALANCED" || plans.length === 1)) {
+      return true;
+    }
+    return false;
+  };
+
+  const getPlanRatios = (p: PlanAlternative) => {
+    const costNum = p.estimated_cost ? Number(p.estimated_cost) : null;
+    const spendRatio =
+      eventBudgetNum && costNum
+        ? Math.min(Math.round((costNum / eventBudgetNum) * 100), 100)
+        : p.planning_objective === "BUDGET_FOCUSED"
+          ? 60
+          : p.planning_objective === "BALANCED"
+            ? 78
+            : 90;
+
+    let diversionRatio = 50;
+    if (
+      p.waste_metrics?.reusable_percentage !== undefined &&
+      p.waste_metrics?.reusable_percentage !== null
+    ) {
+      const parsed = parseFloat(String(p.waste_metrics.reusable_percentage));
+      diversionRatio =
+        parsed <= 1.0 && parsed > 0
+          ? Math.round(parsed * 100)
+          : Math.round(parsed);
+    }
+    return { spendRatio, diversionRatio };
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <div className="mb-6 flex items-center justify-between">
@@ -152,11 +188,14 @@ export const PlanComparisonPage: React.FC = () => {
                     </th>
                     {plans.map((p) => {
                       const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <th
                           key={p.plan_id}
-                          className={`py-4 px-5 border-r border-line last:border-r-0 transition-colors ${
-                            isSel ? "bg-moss-50/70 border-t-4 border-t-moss-800 border-b-2 border-moss-600" : "bg-paper-inset/20"
+                          className={`py-4 px-5 transition-colors relative ${
+                            isRec
+                              ? "glass-strong border-t-4 border-t-moss-800 border-x border-moss-700/30 shadow-subtle z-10"
+                              : "bg-paper-inset/20 border-r border-line"
                           }`}
                         >
                           <div className="flex items-center justify-between gap-2">
@@ -167,11 +206,15 @@ export const PlanComparisonPage: React.FC = () => {
                             >
                               {p.planning_objective.replace("_", " ")}
                             </span>
-                            {isSel && (
-                              <span className="stamp-moss text-[9px] py-0.5 px-1.5 flex items-center space-x-0.5">
-                                <span>Selected</span>
-                              </span>
-                            )}
+                            {isSel ? (
+                              <Stamp variant="moss" thump className="text-[9px] py-0.5 px-2">
+                                Selected
+                              </Stamp>
+                            ) : isRec ? (
+                              <Stamp variant="faint" className="text-[9px] py-0.5 px-2">
+                                Recommended
+                              </Stamp>
+                            ) : null}
                           </div>
                           <h3 className="font-serif text-base font-bold text-ink mt-2">
                             {p.name}
@@ -199,12 +242,12 @@ export const PlanComparisonPage: React.FC = () => {
                       Estimated Total Cost
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 font-mono font-bold text-ink text-sm border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {formatCost(p.estimated_cost)}
@@ -219,13 +262,13 @@ export const PlanComparisonPage: React.FC = () => {
                       Budget Headroom / Deficit
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       if (!eventBudgetNum || !p.estimated_cost) {
                         return (
                           <td
                             key={p.plan_id}
-                            className={`py-3.5 px-5 text-ink-faint border-r border-line last:border-r-0 ${
-                              isSel ? "bg-moss-50/30" : ""
+                            className={`py-3.5 px-5 text-ink-muted border-r border-line last:border-r-0 ${
+                              isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                             }`}
                           >
                             N/A
@@ -239,11 +282,46 @@ export const PlanComparisonPage: React.FC = () => {
                           key={p.plan_id}
                           className={`py-3.5 px-5 font-mono font-semibold border-r border-line last:border-r-0 ${
                             isOver ? "text-clay-700" : "text-moss-700"
-                          } ${isSel ? "bg-moss-50/30" : ""}`}
+                          } ${isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""}`}
                         >
                           {isOver
                             ? `Deficit ₹${Math.abs(diff).toLocaleString()}`
                             : `Remaining ₹${diff.toLocaleString()}`}
+                        </td>
+                      );
+                    })}
+                  </tr>
+
+                  {/* Row: Physical Spend vs Waste Trade-Off */}
+                  <tr className="bg-paper-inset/30 border-y border-line">
+                    <td className="py-3 px-5 font-bold text-ink border-r border-line bg-paper-inset/10">
+                      <div className="font-sans text-xs">Spend vs. Circularity</div>
+                      <div className="label-kicker text-[9px] text-ink-muted">Barbell Trade-Off</div>
+                    </td>
+                    {plans.map((p) => {
+                      const isRec = isRecommended(p);
+                      const { spendRatio, diversionRatio } = getPlanRatios(p);
+                      const costNum = p.estimated_cost ? Number(p.estimated_cost) : null;
+                      const diff = eventBudgetNum && costNum ? eventBudgetNum - costNum : null;
+                      const isOver = diff !== null && diff < 0;
+                      return (
+                        <td
+                          key={p.plan_id}
+                          className={`py-3 px-5 border-r border-line last:border-r-0 ${
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
+                          }`}
+                        >
+                          <DumbbellChart
+                            spendRatio={spendRatio}
+                            diversionRatio={diversionRatio}
+                            isOverBudget={isOver}
+                            compact
+                            deltaLabel={
+                              diff !== null
+                                ? `${isOver ? `+₹${Math.abs(diff).toLocaleString()} over` : `₹${diff.toLocaleString()} left`} • ${p.waste_metrics?.single_use_packaging_items ?? 0} disposables`
+                                : `${spendRatio}% ceiling vs ${diversionRatio}% circ`
+                            }
+                          />
                         </td>
                       );
                     })}
@@ -265,12 +343,12 @@ export const PlanComparisonPage: React.FC = () => {
                       Estimated Food Waste
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 font-mono font-bold text-ink border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {p.food_metrics?.estimated_waste_kg !== null &&
@@ -294,12 +372,12 @@ export const PlanComparisonPage: React.FC = () => {
                       Single-Use Packaging
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 font-mono font-medium text-ink-muted border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {formatMetric(
@@ -317,7 +395,7 @@ export const PlanComparisonPage: React.FC = () => {
                       Reusable Packaging Items
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       const reusablePctBadge = formatReusablePercentage(
                         p.waste_metrics,
                       );
@@ -325,7 +403,7 @@ export const PlanComparisonPage: React.FC = () => {
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 font-mono font-bold text-moss-700 border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {formatMetric(
@@ -348,14 +426,14 @@ export const PlanComparisonPage: React.FC = () => {
                       Plastic Waste Items
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       const count = p.waste_metrics?.total_plastic_items;
                       const isZero = count === 0 || count === "0";
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {isZero ? (
@@ -388,12 +466,12 @@ export const PlanComparisonPage: React.FC = () => {
                       Constraint Satisfaction
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {p.constraint_result.feasible ? (
@@ -423,17 +501,17 @@ export const PlanComparisonPage: React.FC = () => {
                       Relaxed Constraints
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 text-ink-muted text-[11px] border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {p.constraint_result.relaxed_constraints.length ===
                           0 ? (
-                            <span className="text-ink-faint">None</span>
+                            <span className="text-ink-muted">None</span>
                           ) : (
                             <ul className="list-disc pl-3 space-y-0.5">
                               {p.constraint_result.relaxed_constraints.map(
@@ -454,12 +532,12 @@ export const PlanComparisonPage: React.FC = () => {
                       Key Trade-offs
                     </td>
                     {plans.map((p) => {
-                      const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 text-ink-muted leading-snug text-[11px] border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/30" : ""
+                            isRec ? "bg-moss-50/40 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           {p.tradeoffs.length > 0
@@ -477,23 +555,31 @@ export const PlanComparisonPage: React.FC = () => {
                     </td>
                     {plans.map((p) => {
                       const isSel = selectedPlan?.plan_id === p.plan_id;
+                      const isRec = isRecommended(p);
                       return (
                         <td
                           key={p.plan_id}
                           className={`py-4 px-5 border-r border-line last:border-r-0 ${
-                            isSel ? "bg-moss-50/60" : ""
+                            isRec ? "bg-moss-50/60 border-x border-moss-700/20 relative z-10" : ""
                           }`}
                         >
                           <button
                             type="button"
                             onClick={() => handleSelect(p)}
-                            className={`w-full py-2.5 px-4 rounded-control text-xs font-semibold transition-all focus:outline-none ${
+                            className={`w-full py-2.5 px-4 rounded-control text-xs font-semibold transition-all focus:outline-none flex items-center justify-center space-x-1.5 ${
                               isSel
                                 ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
                                 : "btn-ghost w-full hover:bg-moss-50"
                             }`}
                           >
-                            {isSel ? "Selected Plan" : "Select Plan"}
+                            {isSel ? (
+                              <>
+                                <Check className="w-3.5 h-3.5" />
+                                <span>Selected Plan</span>
+                              </>
+                            ) : (
+                              <span>Select Plan</span>
+                            )}
                           </button>
                         </td>
                       );
@@ -503,106 +589,146 @@ export const PlanComparisonPage: React.FC = () => {
               </table>
             </div>
 
-            {/* Mobile / Narrow Screen View (stacked notebook cards) */}
-            <div className="md:hidden space-y-6">
-              {plans.map((p) => {
-                const isSel = selectedPlan?.plan_id === p.plan_id;
-                return (
-                  <div
-                    key={p.plan_id}
-                    className={`p-5 rounded-sheet border transition-all ${
-                      isSel
-                        ? "border border-line border-t-4 border-t-moss-800 bg-moss-50/30"
-                        : "border-line bg-paper-raised"
-                    }`}
-                  >
-                    <div className="flex justify-between items-center mb-3">
-                      <span
-                        className={`text-xs uppercase font-bold px-2.5 py-0.5 rounded-full border ${getObjectiveBadgeClass(
-                          p.planning_objective,
-                        )}`}
-                      >
-                        {p.planning_objective.replace("_", " ")}
-                      </span>
-                      {isSel && (
-                        <span className="stamp-moss">
-                          Active Selected
-                        </span>
-                      )}
-                    </div>
-                    <h3 className="font-serif text-lg font-bold text-ink mb-2">
-                      {p.name}
-                    </h3>
+            {/* Mobile / Narrow Screen View (swipeable stacked cards, readable at 360px) */}
+            <div className="md:hidden">
+              <div className="flex items-center justify-between text-xs text-ink-muted mb-3 px-1">
+                <span className="label-kicker text-[10px]">Swipe to compare alternatives →</span>
+                <span className="font-mono text-[11px] font-semibold">{plans.length} alternatives</span>
+              </div>
 
-                    <div className="space-y-2 text-xs divide-y divide-line">
-                      <div className="flex justify-between py-1.5">
-                        <span className="text-ink-muted">Estimated Cost:</span>
-                        <span className="font-mono font-bold text-ink tabular-nums">
-                          {formatCost(p.estimated_cost)}
-                        </span>
-                      </div>
-                      <div className="flex justify-between py-1.5">
-                        <span className="text-ink-muted">Food Waste:</span>
-                        <span className="font-mono font-bold text-ink tabular-nums">
-                          {p.food_metrics?.estimated_waste_kg !== null &&
-                          p.food_metrics?.estimated_waste_kg !== undefined
-                            ? formatMetric(
-                                p.food_metrics.estimated_waste_kg,
-                                "kg",
-                              )
-                            : formatMetric(
-                                p.food_metrics?.estimated_waste_servings,
-                                "servings",
-                              )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between py-1.5">
-                        <span className="text-ink-muted">
-                          Single-use Items:
-                        </span>
-                        <span className="font-mono font-bold text-ink tabular-nums">
-                          {formatMetric(
-                            p.waste_metrics?.single_use_packaging_items,
-                            "items",
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between py-1.5">
-                        <span className="text-ink-muted">Reusable Items:</span>
-                        <span className="font-mono font-bold text-moss-700 tabular-nums">
-                          {formatMetric(
-                            p.waste_metrics?.reusable_packaging_items,
-                            "items",
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between py-1.5">
-                        <span className="text-ink-muted">Plastic Items:</span>
-                        <span className="font-mono font-bold text-ink tabular-nums">
-                          {formatMetric(
-                            p.waste_metrics?.total_plastic_items,
-                            "items",
-                          )}
-                        </span>
-                      </div>
-                    </div>
+              <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 scrollbar-none">
+                {plans.map((p) => {
+                  const isSel = selectedPlan?.plan_id === p.plan_id;
+                  const isRec = isRecommended(p);
+                  const { spendRatio, diversionRatio } = getPlanRatios(p);
+                  const costNum = p.estimated_cost ? Number(p.estimated_cost) : null;
+                  const diff = eventBudgetNum && costNum ? eventBudgetNum - costNum : null;
+                  const isOver = diff !== null && diff < 0;
 
-                    <div className="mt-4">
-                      <button
-                        type="button"
-                        onClick={() => handleSelect(p)}
-                        className={`w-full py-2.5 px-4 rounded-control text-xs font-semibold transition-all ${
-                          isSel
-                            ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
-                            : "btn-ghost w-full"
-                        }`}
-                      >
-                        {isSel ? "Selected Plan" : "Select Plan"}
-                      </button>
+                  return (
+                    <div
+                      key={p.plan_id}
+                      className={`snap-center shrink-0 w-[84vw] max-w-[320px] p-4 sm:p-5 rounded-sheet border transition-all ${
+                        isRec
+                          ? "glass-strong border-t-4 border-t-moss-800 border-moss-700/40 shadow-subtle"
+                          : "border-line bg-paper-raised shadow-subtle"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center mb-2.5">
+                        <span
+                          className={`text-[10px] uppercase font-bold px-2.5 py-0.5 rounded-full border ${getObjectiveBadgeClass(
+                            p.planning_objective,
+                          )}`}
+                        >
+                          {p.planning_objective.replace("_", " ")}
+                        </span>
+                        {isSel ? (
+                          <Stamp variant="moss" thump className="text-[10px] py-0.5 px-2">
+                            Active Selected
+                          </Stamp>
+                        ) : isRec ? (
+                          <Stamp variant="faint" className="text-[10px] py-0.5 px-2">
+                            Recommended
+                          </Stamp>
+                        ) : null}
+                      </div>
+
+                      <h3 className="font-serif text-lg font-bold text-ink mb-3">
+                        {p.name}
+                      </h3>
+
+                      {/* Dumbbell Chart in Mobile Card */}
+                      <div className="p-2.5 rounded-control bg-paper-inset/40 border border-line mb-3">
+                        <span className="label-kicker text-[9px] block mb-1">
+                          Spend vs Circularity
+                        </span>
+                        <DumbbellChart
+                          spendRatio={spendRatio}
+                          diversionRatio={diversionRatio}
+                          isOverBudget={isOver}
+                          compact
+                          deltaLabel={
+                            diff !== null
+                              ? `${isOver ? `+₹${Math.abs(diff).toLocaleString()}` : `₹${diff.toLocaleString()} left`}`
+                              : `${spendRatio}% ceiling`
+                          }
+                        />
+                      </div>
+
+                      <div className="space-y-2 text-xs divide-y divide-line">
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-ink-muted">Estimated Cost:</span>
+                          <span className="font-mono font-bold text-ink tabular-nums">
+                            {formatCost(p.estimated_cost)}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-ink-muted">Budget Difference:</span>
+                          <span
+                            className={`font-mono font-bold tabular-nums ${
+                              isOver ? "text-clay-700" : "text-moss-700"
+                            }`}
+                          >
+                            {diff === null
+                              ? "N/A"
+                              : isOver
+                                ? `Deficit ₹${Math.abs(diff).toLocaleString()}`
+                                : `Remaining ₹${diff.toLocaleString()}`}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-ink-muted">Food Waste:</span>
+                          <span className="font-mono font-bold text-ink tabular-nums">
+                            {p.food_metrics?.estimated_waste_kg !== null &&
+                            p.food_metrics?.estimated_waste_kg !== undefined
+                              ? formatMetric(p.food_metrics.estimated_waste_kg, "kg")
+                              : formatMetric(p.food_metrics?.estimated_waste_servings, "servings")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-ink-muted">Single-use Items:</span>
+                          <span className="font-mono font-bold text-ink tabular-nums">
+                            {formatMetric(p.waste_metrics?.single_use_packaging_items, "items")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-ink-muted">Reusable Items:</span>
+                          <span className="font-mono font-bold text-moss-700 tabular-nums">
+                            {formatMetric(p.waste_metrics?.reusable_packaging_items, "items")}
+                          </span>
+                        </div>
+                        <div className="flex justify-between py-1.5">
+                          <span className="text-ink-muted">Plastic Items:</span>
+                          <span className="font-mono font-bold text-ink tabular-nums">
+                            {formatMetric(p.waste_metrics?.total_plastic_items, "items")}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mt-4">
+                        <button
+                          type="button"
+                          onClick={() => handleSelect(p)}
+                          className={`w-full py-2.5 px-4 rounded-control text-xs font-semibold transition-all flex items-center justify-center space-x-1.5 ${
+                            isSel
+                              ? "bg-moss-700 text-paper-raised hover:bg-moss-800"
+                              : "btn-ghost w-full"
+                          }`}
+                        >
+                          {isSel ? (
+                            <>
+                              <Check className="w-3.5 h-3.5" />
+                              <span>Selected Plan</span>
+                            </>
+                          ) : (
+                            <span>Select Plan</span>
+                          )}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </>
         )}

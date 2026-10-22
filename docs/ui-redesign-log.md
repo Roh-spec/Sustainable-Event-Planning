@@ -321,6 +321,54 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 6: Plans, Comparison, Complete Plan Report
+
+### 1. Deliverables Completed
+- **`DumbbellChart.tsx`**:
+  - Handcrafted inline-SVG dumbbell chart plotting physical spend versus waste / circularity trade-offs.
+  - Clay node for spend/cost burden (`fill-clay-700 stroke-paper-raised`).
+  - Moss node for circularity / waste diversion (`fill-moss-700 stroke-paper-raised`).
+  - Monospace delta label (`font-mono tabular-nums text-ink-muted`) indicating exact budget variance and disposable item counts.
+  - Zero hardcoded colors; respects palette tokens and reduced-motion.
+- **`PlanCard.tsx` Restyle**:
+  - Integrated `DumbbellChart` for spend vs circularity trade-off visualization.
+  - Selection indicator uses authentic verification `Stamp` with thump entrance (`<Stamp variant="moss" thump>Selected</Stamp>`).
+  - Zero gradients remain; maintains physical units and full test compatibility.
+- **`PlanComparisonPage.tsx` Comparison Ledger**:
+  - Solid surface ledger table on `bg-paper-raised` with 1px rules.
+  - Recommended column raised on glass (`glass-strong border-t-4 border-t-moss-800 border-x border-moss-700/30 shadow-subtle z-10`) with `Stamp` badge ("Recommended" / "Selected").
+  - Physical Spend vs. Circularity Dumbbell Chart row integrated across all evaluated alternatives.
+  - Mobile swipeable stacked layout (`flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4 -mx-4 px-4 scrollbar-none`) cleanly readable down to 360px viewport without page overflow.
+- **`CompletePlanPage.tsx` Clean Field-Station Output**:
+  - Completely removed icon-in-colored-square anti-pattern at lines ~527 and ~704, replacing them with clean unboxed line artwork on dotgrid empty sheets while preserving all test expectations.
+  - Timetable rendered with printed-schedule hairline spine (`border-l-2 border-line ml-3 sm:ml-4`) and monospace times (`font-mono tabular-nums font-bold text-ink`).
+  - Operational checklist featuring interactive task completion with animated SVG checkmark tick draw (`checklist-tick`).
+  - Clean black-on-white print styles: `@media print` rules ensure zero backdrop blur, zero glass, zero grain, solid black borders, and clean printer-friendly layout with `print:hidden` controls.
+- **Gradient Verification**:
+  - Verified `grep -rn gradient src` strictly matches only the two allowed utility patterns in `index.css` (`repeating-linear-gradient` for lined ledger and `radial-gradient` for dotgrid). Zero gradient classes or inline gradients in `.tsx`.
+
+### 2. Measured Post-Phase 6 Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 | Phase 3 | Phase 4 | Phase 5a | Phase 5b | Phase 6 Result | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | 104 passed | 104 passed | 104 passed | 104 passed | 104 passed | **104 passed (9 files)** | **0 regressions** |
+| **`tsc --noEmit`** | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | 0 errors | **0 errors** | **Clean** |
+| **`check:contrast`** | N/A | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | **33 / 33 passed** | **100% AA compliant** |
+| **Gradients in Codebase** | 3 | 2 | 2 | 2 | 2 | 2 | 2 | **2 (CSS definitions only)** | **-1 (PlanCard removed)** |
+| **Icon-in-Box Anti-Patterns** | 2 | 2 | 2 | 2 | 2 | 2 | 2 | **0 (Eliminated)** | **-2 (100% eliminated)** |
+| **DumbbellChart in Use** | 0 | 0 | 0 | 0 | 0 | 0 | 0 | **2 (PlanCard & Comparison)** | **Created & Integrated** |
+| **Printed Spine Schedule** | No | No | No | No | No | No | No | **Yes (EventTimetable)** | **Implemented** |
+| **Checklist Tick Animation** | Basic | Basic | Basic | Basic | Basic | Basic | Basic | **Yes (`checklist-tick`)** | **Implemented** |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | 518.50 kB | 518.32 kB | 522.43 kB | 526.10 kB | 527.76 kB | **532.26 kB** | +18.32 kB |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | 56.57 kB | 59.41 kB | 60.02 kB | 60.02 kB | 60.17 kB | **61.71 kB** | +15.75 kB (budget <= 70 KB) |
+
+### 3. Decisions Log (Phase 6)
+- **D018**: Extracted `DumbbellChart.tsx` as a standalone SVG component plotting spend vs. circularity with explicit mathematical deltas (over/under budget ceiling and disposable item count). In legend items, kept percentage values within parent text strings (`Spend (60%)`, `Circularity (70%)`) to avoid isolated percentage nodes interfering with query selectors in tests.
+- **D019**: Designed the side-by-side comparison ledger with a raised recommended column on glass (`glass-strong` with elevated border and shadow), while ensuring cell contents remain solid/opaque (`bg-moss-50/40`) to maintain strict ledger legibility without nesting glass inside scrolling lists.
+- **D020**: Replaced the icon-in-colored-square anti-pattern at lines ~527 and ~704 of `CompletePlanPage.tsx` with clean unboxed line icons on dotgrid empty sheets, preserving all text queries and buttons.
+- **D021**: Added `@media print` rules in `index.css` enforcing pure black-on-white rendering (hiding backdrop, grain, and navigation elements; rendering solid 1px grayscale borders for printed distribution).
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.

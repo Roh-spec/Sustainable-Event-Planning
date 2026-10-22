@@ -524,14 +524,14 @@ export const CompletePlanPage: React.FC = () => {
 
       {/* Empty State: No Plan Selected in Step 6 */}
       {!selectedPlan && !completePlan ? (
-        <div className="surface-sheet p-12 text-center max-w-2xl mx-auto my-8 border border-line">
-          <div className="text-clay-700 flex items-center justify-center mx-auto mb-4">
-            <AlertCircle className="w-8 h-8" />
+        <div className="surface-sheet dotgrid p-10 sm:p-12 text-center max-w-2xl mx-auto my-8 border border-line">
+          <div className="w-12 h-12 mx-auto mb-4 flex items-center justify-center text-clay-700">
+            <AlertCircle className="w-8 h-8 stroke-[1.75]" />
           </div>
           <h3 className="font-serif text-lg font-bold text-ink mb-2">
             No Sustainable Plan Selected Yet
           </h3>
-          <p className="text-xs sm:text-sm text-ink-muted mb-6 leading-relaxed">
+          <p className="text-xs sm:text-sm text-ink-muted mb-6 leading-relaxed max-w-md mx-auto">
             A complete event plan requires an organizer-confirmed sustainable
             plan alternative from Step 6. Please review and select a plan
             alternative first.
@@ -700,22 +700,22 @@ export const CompletePlanPage: React.FC = () => {
             </div>
           ) : !isGenerating ? (
             /* Empty State: Ready to Generate */
-            <div className="surface-sheet p-12 text-center max-w-2xl mx-auto my-8 border border-line">
-              <div className="w-12 h-12 rounded-control bg-paper-inset text-moss-700 flex items-center justify-center mx-auto mb-4 border border-line">
-                <LedgerIcon className="w-6 h-6" />
+            <div className="surface-sheet dotgrid p-10 sm:p-12 text-center max-w-2xl mx-auto my-8 border border-line">
+              <div className="text-moss-700 flex items-center justify-center mx-auto mb-3">
+                <LedgerIcon className="w-8 h-8 stroke-[1.5]" />
               </div>
               <h3 className="font-serif text-lg font-bold text-ink mb-2">
                 Ready to Generate Your Complete Event Plan
               </h3>
-              <p className="text-xs sm:text-sm text-ink-muted mb-6 leading-relaxed">
+              <p className="text-xs sm:text-sm text-ink-muted mb-6 leading-relaxed max-w-md mx-auto">
                 You have confirmed{" "}
-                <strong>
+                <strong className="text-ink">
                   {selectedPlan?.name ||
                     overview?.selected_plan_name ||
                     "Sustainable Plan"}
                 </strong>{" "}
                 as your sustainable plan. Click{" "}
-                <em>Generate Complete Event Plan</em> above to create your
+                <em className="text-ink">Generate Complete Event Plan</em> above to create your
                 timetable, operational checklist, resource requirements, and
                 sustainability verification report.
               </p>

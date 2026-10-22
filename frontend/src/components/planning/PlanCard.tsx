@@ -10,6 +10,8 @@ import {
   Check,
 } from "lucide-react";
 import { WaypointIcon } from "../icons";
+import { Stamp } from "../common/Stamp";
+import { DumbbellChart } from "../comparison/DumbbellChart";
 import { PlanAlternative, PLANNING_OBJECTIVE_CONFIG } from "../../types";
 import { ExplainableMetric } from "../sustainability/ExplainableMetric";
 import {
@@ -269,9 +271,9 @@ export const PlanCard: React.FC<PlanCardProps> = ({
           </div>
 
           {isSelected && (
-            <span className="stamp-moss flex-shrink-0">
+            <Stamp variant="moss" thump className="flex-shrink-0">
               Selected
-            </span>
+            </Stamp>
           )}
         </div>
 
@@ -320,74 +322,16 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             </span>
           </div>
 
-          <div className="pt-2 pb-1">
-            <svg
-              viewBox="0 0 300 42"
-              className="w-full h-10 overflow-visible"
-              aria-label="Trade-off dumbbell chart"
-            >
-              {/* Axis line */}
-              {/* Guideline axis */}
-              <line
-                x1="20"
-                y1="14"
-                x2="280"
-                y2="14"
-                className="stroke-line"
-                strokeWidth="1.5"
-                strokeDasharray="3 3"
-              />
-              {/* Connecting dumbbell line */}
-              <line
-                x1={Math.max(30, Math.min(130, spendRatio * 2.2))}
-                y1="14"
-                x2={Math.min(270, Math.max(170, diversionRatio * 2.6))}
-                y2="14"
-                className="stroke-ink-muted"
-                strokeWidth="2"
-              />
-              {/* Spend point (Clay = costs more) */}
-              <circle
-                cx={Math.max(30, Math.min(130, spendRatio * 2.2))}
-                cy="14"
-                r="5"
-                className="fill-clay-700 stroke-paper-raised"
-                strokeWidth="2"
-              />
-              {/* Waste diversion point (Moss = less waste) */}
-              <circle
-                cx={Math.min(270, Math.max(170, diversionRatio * 2.6))}
-                cy="14"
-                r="5"
-                className="fill-moss-700 stroke-paper-raised"
-                strokeWidth="2"
-              />
-              {/* Delta label on the dumbbell axis line */}
-              <text
-                x="150"
-                y="32"
-                textAnchor="middle"
-                fontSize="9"
-                fontFamily="JetBrains Mono, monospace"
-                className="fill-ink-muted"
-                fontWeight="600"
-              >
-                {budgetDifference !== null
-                  ? `${isOverBudget ? `+₹${Math.abs(budgetDifference).toLocaleString()} over ceiling` : `₹${budgetDifference.toLocaleString()} under ceiling`} for ${plan.waste_metrics?.single_use_packaging_items ?? 0} disposables`
-                  : `Trade-off: ${spendRatio}% ceiling vs ${diversionRatio}% circular`}
-              </text>
-            </svg>
-          </div>
-          <div className="flex justify-between items-center text-[10px] font-mono text-ink-muted pt-1 border-t border-line/50">
-            <span className="flex items-center gap-1">
-              <span className="inline-block w-2 h-2 rounded-full bg-clay-700" />
-              Clay = Spend ({spendRatio}%)
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="inline-block w-2 h-2 rounded-full bg-moss-700" />
-              Moss = Circularity ({diversionRatio}%)
-            </span>
-          </div>
+          <DumbbellChart
+            spendRatio={spendRatio}
+            diversionRatio={diversionRatio}
+            isOverBudget={isOverBudget}
+            deltaLabel={
+              budgetDifference !== null
+                ? `${isOverBudget ? `+₹${Math.abs(budgetDifference).toLocaleString()} over ceiling` : `₹${budgetDifference.toLocaleString()} under ceiling`} for ${plan.waste_metrics?.single_use_packaging_items ?? 0} disposables`
+                : `Trade-off: ${spendRatio}% ceiling vs ${diversionRatio}% circular`
+            }
+          />
         </div>
 
         {/* Key Measurable Sustainability Metrics */}

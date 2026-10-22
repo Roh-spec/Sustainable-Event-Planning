@@ -205,26 +205,26 @@ export const EventTimetable: React.FC<EventTimetableProps> = ({
         </div>
       </div>
 
-      {/* Vertical Hairline Spine Timeline Layout */}
-      <div className="relative pl-6 sm:pl-8 border-l border-line ml-3 sm:ml-4 space-y-4">
+      {/* Printed-Schedule Spine Timeline Layout */}
+      <div className="relative pl-6 sm:pl-8 border-l-2 border-line ml-3 sm:ml-4 space-y-4 print:border-ink print:pl-6 print:ml-2">
         {activeDay.slots.map((slot: TimetableSlot) => (
-          <div key={slot.slot_id} className="relative group">
+          <div key={slot.slot_id} className="relative group print:break-inside-avoid">
             {/* Timeline Node on Spine */}
             <div
-              className={`absolute -left-[31px] sm:-left-[39px] top-4.5 w-4 h-4 rounded-full border transition-all ${
+              className={`absolute -left-[32px] sm:-left-[41px] top-4.5 w-4 h-4 rounded-full border-2 transition-all print:border-ink print:bg-white ${
                 slot.is_meal
-                  ? "border-clay-600 bg-clay-50 ring-2 ring-clay-200"
+                  ? "border-clay-600 bg-clay-50 ring-2 ring-clay-200 print:ring-0"
                   : slot.is_sustainability_action
-                    ? "border-moss-700 bg-moss-100 ring-2 ring-moss-300"
-                    : "border-line-strong bg-paper-raised ring-2 ring-paper-inset"
+                    ? "border-moss-700 bg-moss-100 ring-2 ring-moss-300 print:ring-0"
+                    : "border-line-strong bg-paper-raised ring-2 ring-paper-inset print:ring-0"
               }`}
             />
 
             {/* Slot Card */}
-            <div className="p-4 sm:p-5 rounded-sheet border border-line bg-paper-raised hover:border-moss-400/80 transition-all shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="p-4 sm:p-5 rounded-sheet border border-line bg-paper-raised hover:border-moss-400/80 transition-all shadow-subtle flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 print:bg-white print:border-ink print:shadow-none print:p-3">
               {/* Time window & duration */}
               <div className="sm:w-52 flex-shrink-0 flex items-center space-x-2.5">
-                <div className="p-2 rounded-control bg-paper-inset/50 text-ink border border-line/60">
+                <div className="p-2 rounded-control bg-paper-inset/50 text-ink border border-line/60 print:hidden">
                   <Clock className="w-4 h-4 text-moss-600" />
                 </div>
                 <div>
@@ -245,28 +245,28 @@ export const EventTimetable: React.FC<EventTimetableProps> = ({
                     {slot.title}
                   </h4>
                   <span
-                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${getActivityBadgeStyle(
+                    className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border print:border-ink print:bg-transparent ${getActivityBadgeStyle(
                       slot.activity_type,
                     )}`}
                   >
                     {formatActivityTypeLabel(slot.activity_type)}
                   </span>
                   {slot.is_meal && (
-                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-clay-50 text-clay-800 border border-clay-200 text-[10px] font-bold">
-                      <Utensils className="w-3 h-3 text-clay-700" />
+                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-clay-50 text-clay-800 border border-clay-200 text-[10px] font-bold print:border-ink print:bg-transparent">
+                      <Utensils className="w-3 h-3 text-clay-700 print:hidden" />
                       <span>Meal: {slot.meal_type || "Catering"}</span>
                     </span>
                   )}
                   {slot.is_sustainability_action && (
-                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-moss-50 text-moss-800 border border-moss-200 text-[10px] font-bold">
-                      <Leaf className="w-3 h-3 text-moss-600" />
+                    <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-moss-50 text-moss-800 border border-moss-200 text-[10px] font-bold print:border-ink print:bg-transparent">
+                      <Leaf className="w-3 h-3 text-moss-600 print:hidden" />
                       <span>Eco Action</span>
                     </span>
                   )}
                 </div>
 
                 {slot.description && (
-                  <p className="text-xs text-ink-muted leading-relaxed line-clamp-2">
+                  <p className="text-xs text-ink-muted leading-relaxed line-clamp-2 print:line-clamp-none">
                     {slot.description}
                   </p>
                 )}
@@ -274,7 +274,7 @@ export const EventTimetable: React.FC<EventTimetableProps> = ({
 
               {/* Suggested Tag */}
               {slot.is_suggestion && (
-                <div className="sm:text-right flex-shrink-0">
+                <div className="sm:text-right flex-shrink-0 print:hidden">
                   <span className="text-[10px] font-medium text-ink-muted bg-paper-inset/40 px-2 py-1 rounded-control border border-line">
                     Suggested timing
                   </span>
