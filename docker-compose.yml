@@ -42,7 +42,6 @@ services:
       POSTGRES_DB: sustainable_events
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./database/seed:/docker-entrypoint-initdb.d
 
 volumes:
   postgres_data:

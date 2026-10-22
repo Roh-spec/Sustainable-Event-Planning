@@ -1,5 +1,7 @@
 # EcoPlan: Sustainable Event Planning Assistant
 
+[![CI](https://github.com/Roh-spec/Sustainable-Event-Planning/actions/workflows/ci.yml/badge.svg)](https://github.com/Roh-spec/Sustainable-Event-Planning/actions/workflows/ci.yml)
+
 Plan a college event that wastes less, costs what you can afford, and shows its working.
 
 EcoPlan walks an organiser through seven steps, from event details to a printable run-of-show. It estimates food surplus and single-use waste, compares three plan alternatives, and explains every number it produces. It is built from open-source tools only, so the initial software cost is ₹0.
@@ -263,6 +265,7 @@ npm run build
 - [Database schema](docs/database.md)
 - [Planning modules](docs/modules.md)
 - [Frontend design system](docs/frontend.md)
+- [Continuous Integration (CI)](docs/ci.md)
 
 ## Contributing
 
