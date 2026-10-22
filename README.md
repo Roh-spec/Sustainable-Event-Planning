@@ -1,187 +1,275 @@
-# AI-Based Sustainable Event Planning Assistant
+# EcoPlan: Sustainable Event Planning Assistant
 
-A modular, scalable, software-only system designed to help college event organizers plan sustainable events within a given budget with ₹0 initial cost.
+Plan a college event that wastes less, costs what you can afford, and shows its working.
 
-## 🌟 Core Philosophy
-- **Modular Monolith**: Extensible domain modules (Food, Waste, Water, Energy, Materials, Transport, Venue, Vendors, Carbon).
-- **Core First, AI/ML Optional**: The deterministic planning engine, cost calculator, and sustainability scoring run independently without mandatory external AI services.
-- **Cost-Free Development**: Built strictly with open-source tools (FastAPI, React, PostgreSQL, OpenStreetMap, Vitest/Pytest).
+EcoPlan walks an organiser through seven steps, from event details to a printable run-of-show. It estimates food surplus and single-use waste, compares three plan alternatives, and explains every number it produces. It is built from open-source tools only, so the initial software cost is ₹0.
+
+<!-- Add screenshots to docs/images/ and reference them here, for example: ![Plan comparison](docs/images/plan-comparison.png) -->
 
 ---
 
-## 🏗️ Repository Architecture
+## Why EcoPlan is different
+
+- **Physical units, never invented scores.** Results are kilograms, item counts and rupees. There is no "87/100 eco score".
+- **It never silently invents a value.** Every number is traced to its source: `USER_PROVIDED`, `REFERENCE`, `ASSUMED`, `ACTUAL` or `ML_PREDICTED`. If a value is missing, the engine says so.
+- **Honest trade-offs.** Three alternatives (*Cost-First Ledger*, *Pragmatic Balance*, *Maximum Circularity*) show what you gain and what you pay.
+- **Deterministic core.** Planning, costing and constraint checks run without any external AI service. AI and ML are optional future add-ons.
+- **Honest deficits.** If your budget can't cover a plan, EcoPlan states the shortfall instead of hiding it.
+
+---
+
+## What works today
+
+| Area | Status |
+| --- | --- |
+| Event setup, budget and constraints | Implemented |
+| Assumption engine (event-specific → global → missing) | Implemented |
+| Food planning (servings, cost, surplus, dietary split) | Implemented |
+| Waste planning (packaging, plastic, food and other waste) | Implemented |
+| Cost engine and constraint engine | Implemented |
+| Plan alternatives and side-by-side comparison | Implemented |
+| Complete plan: timetable, checklist, resource manifest, budget ledger | Implemented |
+| 7-step React wizard and printable day sheet | Implemented |
+| Water, energy, materials, transport, venue, vendors, carbon | Scaffolded, not yet implemented |
+| Reports/export, optimisation, AI/ML helpers, maps | Scaffolded, not yet implemented |
+
+---
+
+## How it works
 
 ```text
-ESC PROJECT/
-├── frontend/             # React + TypeScript + Vite + Tailwind CSS
-├── backend/              # FastAPI + SQLAlchemy + Pydantic Modular Monolith
-│   └── app/
-│       ├── api/          # Route controllers and API dependencies
-│       ├── core/         # Core configs, database, security, logging
-│       ├── models/       # SQLAlchemy ORM entity definitions
-│       ├── schemas/      # Pydantic validation schemas
-│       ├── services/     # Application service orchestrators
-│       ├── planning/     # Modular domain planning engines
-│       ├── optimization/ # Optimization interfaces & algorithms (e.g. OR-Tools)
-│       ├── sustainability/ Scoring, metrics, & recommendations
-│       ├── ai/           # Optional local/open-source AI/NLP helpers
-│       ├── ml/           # scikit-learn attendance & cost predictors
-│       ├── location/     # OpenStreetMap / MapLibre geocoding & routing
-│       ├── reporting/    # Report generators & exporters
-│       └── integrations/ # Interfaces for external and future systems
-├── database/             # Migrations, seed data, and schema docs
-├── tests/                # Unit and integration test suites
-├── docs/                 # Architectural Decision Records (ADRs) and design guides
-├── scripts/              # Development, migration, and deployment scripts
-├── config/               # Baseline assumptions and sustainability constants
-└── .github/              # CI/CD Workflows
+Event details → Budget & constraints → Food → Waste → Plan alternatives → Complete plan
 ```
 
----
-
-## 🎯 Target Event Types
-- Tech Fest
-- Cultural Fest
-- Hackathon
-- Workshop
-- Conference
-- Sports Event
-- College Farewell
-- Department Event
-
-## 📊 Planning Modes
-1. **Balanced**
-2. **Budget-focused**
-3. **Sustainability-focused**
-4. **Custom priorities**
-
----
-
-## 📌 Project Status
-
-### PHASE 1 STATUS:
-- Database foundation implemented (PostgreSQL + SQLAlchemy 2.x declarative models: Event, Budget, CostItem, Constraint, Assumption, Plan)
-- FastAPI foundation implemented (Health endpoints at `/health` and `/api/v1/health`, Pydantic Settings, CORS)
-- Event API implemented (`POST /api/v1/events`, `GET /api/v1/events/{event_id}`, `GET /api/v1/events`)
-
-### PHASE 2A STATUS:
-- **Assumption Engine Implemented** (`backend/app/planning/assumption_engine/`)
-- Reusable deterministic `AssumptionResolver` enforcing strict precedence: `EVENT-SPECIFIC` ──► `GLOBAL` ──► `MISSING` (never silently invents values)
-- Data provenance strictly preserved across source types (`USER_PROVIDED`, `REFERENCE`, `ASSUMED`, `ACTUAL`, `ML_PREDICTED`)
-- Assumption CRUD and `/api/v1/assumptions/resolve` API endpoints implemented
-
-### PHASE 2B STATUS:
-- **Food Planning Module Implemented** (`backend/app/planning/modules/food/`)
-- Pure, decoupled calculation engine (`FoodCalculator`) with whole-number servings and Decimal precision
-- Integrated with Assumption Engine for meal participation, costs per serving, waste percentages, and serving weights
-- Supports 3 pricing approaches: User-provided total, User-provided unit cost, Assumption-based cost
-- Rule-based constraint evaluation (vegetarian-only mandates, budget ceilings) and actionable eco-recommendations
-- Comprehensive unit and integration test suite
-
-### PHASE 2C STATUS:
-- **Waste Planning Module Implemented** (`backend/app/planning/modules/waste/`)
-- Covers 4 waste streams: Food Waste (reused directly from Food Module or user-overridden), Packaging Waste (Plate, Cup, Spoon, Fork, Glass, Other), Plastic Waste (Water Bottle, Plastic Bag, Wrapper, Plastic Cup, Other), and Other Waste (predefined categories and custom items)
-- Primary metrics are count/item-based (servings, items); no forced conversion to kilograms
-- Supports 4 calculation bases: `PER_PERSON`, `PER_MEAL`, `PER_EVENT`, `CUSTOM`
-- Baseline reference assumptions calibrated (including `Decorations Per Event` and `Containers Per Event`)
-- Reusable vs single-use split resolution with assumption fallback (`reusable_ratio_<item>`, `single_use_ratio_<item>`)
-- Pure calculation engine (`WasteCalculator`), rule-based recommendations (`WasteRulesEngine`), orchestrator (`WastePlanningService`), and `POST /api/v1/planning/waste` API endpoint
-- Complete automated test suite passing (123 total backend tests passing)
-
-### FRONTEND & DESIGN SYSTEM (Field Notebook UI):
-- **Field Notebook Design Language**:
-  - Curated, organic palette: warm paper (`#F8F5EE`), deep ink (`#1E231F`), forest moss (`#2D5A3D`), and terra-cotta clay (`#C46849`).
-  - Editorial typography: **Fraunces** serif for headings, **Plus Jakarta Sans** for interfaces, and **JetBrains Mono** for metrics and financial ledgers.
-  - Physical stationery aesthetics: `.surface-sheet`, `.label-kicker`, delicate rules, and tactile notebook shadow tokens.
-
-- **Full 7-Step Planning Wizard** (`frontend/src/pages/`):
-  1. **Event Setup**: Type selection via illustrated tiles, attendee headcount, duration, and venue context.
-  2. **Budget Calibration**: Currency and ceiling limits with real-time variance monitoring and honest deficit reporting.
-  3. **Preferences & Constraints**: User-prioritized rules with clear preference tags (*Must Have*, *Avoid*, *Would Be Nice*, *Flexible*).
-  4. **Food Planning**: Meal selection, dietary split sliders (veg/non-veg), caterer pricing modes, and edible surplus projections.
-  5. **Waste Planning**: Streamlined item-based calculations across packaging, plastic, and general waste streams with reference benchmark transparency.
-  6. **Plan Alternatives & Decision Ledger**: Multi-objective alternative cards (*Cost-First Ledger*, *Pragmatic Balance*, *Maximum Circularity*) with spend-vs-waste trade-off meters and comprehensive side-by-side comparison.
-  7. **Run of Show / Complete Event Plan**: Authentic chronological vertical spine timetable, interactive operational execution checklist with session tracking, 3-column resource manifest, budget ledger, sustainability verification criteria, and print-optimized (`@media print`) physical day sheet.
-
-- **Accessible Motion System (Anime.js + Lenis)**:
-  - **Accessibility Compliance**: Dedicated `prefersReducedMotion()` utility respecting operating system and browser accessibility settings.
-  - **Lenis Smooth Inertial Scrolling**: Momentum scrolling across the application with route-based scroll reset and an ambient gradient reading beam (hidden during print).
-  - **Kinetic Micro-Interactions**: Real-time numerical tweening (`<AnimatedCounter />`) with spring physics for portions, expenditures, and waste mass.
-  - **Choreographed Feedback**: Elastic active step pulse in wizard navigation, plan selection pulse, and staggered entrance reveals for alternative cards.
-
----
-
-## 🚀 Getting Started
-
-### Method 1: Running with Docker (Recommended)
-
-1. Make sure **Docker Desktop** is running.
-2. Clone the repository and configure your environment:
-   ```bash
-   cp .env.example .env
-   ```
-3. Build and launch all services:
-   ```bash
-   docker compose up --build
-   ```
-4. Access the applications:
-   - **Frontend Web UI**: [http://localhost:5173](http://localhost:5173) (or [http://localhost:3000](http://localhost:3000))
-   - **FastAPI Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
-   - **PostgreSQL Database**: `localhost:5432` (`db: event_planner`)
-
-To stop all services:
-```bash
-docker compose down
+```text
+React wizard
+   │  JSON over /api/v1
+   ▼
+FastAPI routes ──► Services ──► Orchestrator
+                                   ├── Assumption engine   (resolves every parameter, keeps provenance)
+                                   ├── Food module         (pure calculator + rules engine)
+                                   ├── Waste module        (pure calculator + rules engine)
+                                   ├── Cost engine
+                                   ├── Constraint engine
+                                   └── Scheduling module   (timetable and checklist)
+                                   │
+                                   ▼
+                              PostgreSQL (events, budgets, constraints, assumptions, plans)
 ```
 
+Calculators are pure functions with no database access, which keeps them easy to test. Services fetch data and call them.
+
 ---
 
-### Method 2: Running Locally
+## Tech stack
 
-#### 1. Backend Setup
+- **Backend:** Python 3.11+, FastAPI, SQLAlchemy 2, Pydantic 2, Alembic, PostgreSQL 16
+- **Frontend:** React 18, TypeScript, Vite 5, Tailwind CSS 3, React Router 6, anime.js, Lenis
+- **Testing:** Pytest (backend, in-memory SQLite) and Vitest with Testing Library (frontend)
+- **Tooling:** Docker Compose
+
+---
+
+## Getting started
+
+### Option 1: Docker (recommended)
+
+Requirements: Docker Desktop (or Docker Engine with Compose).
+
 ```bash
-# Create and activate virtual environment
+cp .env.example .env        # Windows: copy .env.example .env
+docker compose up --build
+```
+
+| Service | URL |
+| --- | --- |
+| Web app | http://localhost:5173 |
+| API docs (Swagger) | http://localhost:8000/docs |
+| PostgreSQL | `localhost:5432`, database `sustainable_events` |
+
+The backend waits for the database, runs `alembic upgrade head` (which also loads the baseline assumptions), and starts with auto-reload.
+
+```bash
+docker compose down        # stop
+docker compose down -v     # stop and wipe the database
+```
+
+### Option 2: Run locally
+
+Requirements: Python 3.11+, Node.js 18+ (20 LTS recommended), and a running PostgreSQL instance.
+
+**Database** (quickest way to get one):
+
+```bash
+docker compose up db
+```
+
+**Backend**
+
+```bash
 python -m venv venv
-# Windows:
-venv\Scripts\activate
-# Linux/macOS:
-# source venv/bin/activate
-
-# Install dependencies
+# Windows: venv\Scripts\activate      Linux/macOS: source venv/bin/activate
 pip install -r backend/requirements.txt
-
-# Run migrations and seed data
 alembic upgrade head
-python scripts/database/seed_assumptions.py
-
-# Start the development server
-uvicorn backend.app.main:app --reload --port 8000
+python -m uvicorn backend.app.main:app --reload --port 8000
 ```
 
-#### 2. Frontend Setup
+`alembic upgrade head` creates the tables and loads the baseline assumptions. `scripts/database/seed_assumptions.py` is also available if you want to seed them manually.
+
+**Frontend**
+
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
+Open http://localhost:5173.
+
 ---
 
-## 🧪 Running Tests
+## Configuration
 
-- **Backend Pytest Suite** (123 tests):
-  ```bash
-  pytest tests -q
-  ```
-- **Frontend Vitest Suite** (104 tests):
-  ```bash
-  cd frontend
-  npm test -- --run
-  ```
-- **Frontend Production Build**:
-  ```bash
-  cd frontend
-  npm run build
-  ```
+Copy `.env.example` to `.env`. Main variables:
 
-Refer to [docs/architecture/README.md](docs/architecture/README.md) and [docs/database/README.md](docs/database/README.md) for detailed architecture documentation.
+| Variable | Purpose | Default |
+| --- | --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://postgres:postgres@localhost:5432/sustainable_events` |
+| `ALLOWED_ORIGINS` | Comma-separated CORS origins | `http://localhost:5173,http://127.0.0.1:5173` |
+| `SECRET_KEY` | Application secret | **change before any real deployment** |
+| `DEBUG` / `ENVIRONMENT` | Runtime mode | `True` / `development` |
+| `VITE_API_BASE_URL` | API URL used by the frontend | `http://localhost:8000/api/v1` |
+| `ENABLE_AI_FEATURES`, `ENABLE_ML_PREDICTIONS` | Optional modules (not yet implemented) | `False` |
+
+---
+
+## API overview
+
+Interactive documentation is always available at `/docs`.
+
+| Method | Path | Purpose |
+| --- | --- | --- |
+| GET | `/health`, `/api/v1/health` | Health checks |
+| POST, GET | `/api/v1/events` | Create and list events |
+| GET | `/api/v1/events/{event_id}` | Fetch one event |
+| various | `/api/v1/assumptions` | Create, read, update and delete assumptions |
+| GET/POST | `/api/v1/assumptions/resolve` | Resolve a parameter with provenance |
+| POST | `/api/v1/planning/generate` | Generate the plan alternatives |
+| POST | `/api/v1/planning/food` | Food estimate |
+| POST | `/api/v1/planning/waste` | Waste estimate |
+| POST | `/api/v1/planning/complete-plan` | Full run-of-show plan |
+
+---
+
+## Data and assumptions
+
+Every parameter is resolved with this strict precedence: **event-specific → global → missing**. The source type is preserved on every value:
+
+| Source | Meaning |
+| --- | --- |
+| `USER_PROVIDED` | Entered by the organiser |
+| `REFERENCE` | Taken from a benchmark or quote |
+| `ASSUMED` | A default used because nothing better exists |
+| `ACTUAL` | Measured after the event |
+| `ML_PREDICTED` | Produced by an optional model |
+
+The baseline values shipped in `database/migrations/versions/002_seed_baseline_assumptions.py` are starting points for Indian college events. Replace them with your own caterer quotes and measurements before relying on the results.
+
+---
+
+## Frontend design system
+
+- **Look:** a glass-over-landscape interface with a ledger-style core, so data stays precise and floating panels stay light.
+- **Palettes:** three swappable palettes defined in one file (`frontend/src/styles/palettes.css`). In development, add `?palette=a`, `b` or `c` to the URL to compare them.
+- **Accessibility:** WCAG AA contrast is enforced by `npm run check:contrast`; motion respects reduced-motion; glass falls back to solid surfaces when transparency is reduced; the day sheet prints cleanly.
+- Details live in [docs/frontend.md](docs/frontend.md); the redesign history is in [docs/ui-redesign-log.md](docs/ui-redesign-log.md).
+
+---
+
+## Testing
+
+```bash
+# Backend (123 tests, no database needed)
+pytest tests -q
+
+# Frontend (104 tests)
+cd frontend
+npm test
+
+# Contrast check for all palettes
+npm run check:contrast
+
+# Type check and production build
+npx tsc --noEmit
+npm run build
+```
+
+---
+
+## Project structure
+
+```text
+.
+├── frontend/                 React + TypeScript + Vite + Tailwind
+│   └── src/
+│       ├── pages/            The 7 wizard steps plus Home, Events and 404
+│       ├── components/       Layout, common UI, planning, comparison, complete plan
+│       ├── hooks/            Page state hooks and helpers
+│       ├── context/          Planning wizard state
+│       ├── styles/           Tokens, palettes, glass and motion rules
+│       └── test/             Vitest suites
+├── backend/app/
+│   ├── api/                  Route controllers
+│   ├── core/                 Config, database, logging
+│   ├── models/               SQLAlchemy models
+│   ├── schemas/              Pydantic schemas
+│   ├── services/             Orchestration and persistence
+│   ├── planning/
+│   │   ├── assumption_engine/
+│   │   ├── constraint_engine/
+│   │   ├── cost_engine/
+│   │   ├── orchestrator/
+│   │   └── modules/          food, waste, scheduling (implemented); others scaffolded
+│   └── (optimization, ai, ml, location, reporting, integrations: scaffolded)
+├── database/                 Alembic migrations and seed SQL
+├── tests/                    Backend unit and integration tests
+├── docs/                     Architecture, database, modules and frontend guides
+└── scripts/database/         Manual assumption seeding
+```
+
+---
+
+## Known limitations
+
+- No authentication yet; anyone who can reach the API can list events.
+- Plans are not saved on the server. The wizard state is held in the browser session, so a refresh loses it.
+- Only the Food and Waste engines exist. Carbon, transport, water, energy and the other modules are planned.
+- The Docker setup is for development (auto-reload, default database credentials, exposed database port). Harden it before any public deployment.
+- Baseline assumptions are editable estimates, not audited data.
+
+## Roadmap
+
+1. Plan persistence, shareable read-only links and PDF/CSV export
+2. Transport and carbon modules (reported as kg CO₂e, never as a score)
+3. What-if sliders (attendance, veg split, reusable ratio)
+4. Post-event actuals feeding back into assumptions
+5. Authentication and saved events
+6. Continuous integration running both test suites against PostgreSQL
+7. Optional natural-language event setup using a local model
+
+## Documentation
+
+- [Architecture and request flow](docs/architecture.md)
+- [Database schema](docs/database.md)
+- [Planning modules](docs/modules.md)
+- [Frontend design system](docs/frontend.md)
+
+## Contributing
+
+1. Run the backend and frontend tests before opening a change.
+2. Keep the core principle: show real units, and never invent or default a value that the engine didn't produce.
+3. Add or update tests alongside any behaviour change.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
