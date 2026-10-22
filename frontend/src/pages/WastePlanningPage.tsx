@@ -360,7 +360,7 @@ export const WastePlanningPage: React.FC = () => {
             role="alert"
             className="p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-clay-600 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-5 h-5 text-clay-700 mt-0.5 flex-shrink-0" />
             <div>
               <p className="font-bold">Estimation Error</p>
               <p>{error}</p>
@@ -373,7 +373,7 @@ export const WastePlanningPage: React.FC = () => {
             role="alert"
             className="p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-clay-600 mt-0.5 flex-shrink-0" />
+            <AlertCircle className="w-5 h-5 text-clay-700 mt-0.5 flex-shrink-0" />
             <p className="font-medium">{validationError}</p>
           </div>
         )}
@@ -401,7 +401,7 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-sheet border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isFoodSelected
-                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20"
                   : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
@@ -409,7 +409,7 @@ export const WastePlanningPage: React.FC = () => {
                 <div
                   className={`w-10 h-10 rounded-control flex items-center justify-center transition-colors flex-shrink-0 ${
                     isFoodSelected
-                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      ? "bg-moss-700 text-paper-raised"
                       : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
@@ -451,7 +451,7 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-sheet border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isDisposableSelected
-                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20"
                   : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
@@ -459,7 +459,7 @@ export const WastePlanningPage: React.FC = () => {
                 <div
                   className={`w-10 h-10 rounded-control flex items-center justify-center transition-colors flex-shrink-0 ${
                     isDisposableSelected
-                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      ? "bg-moss-700 text-paper-raised"
                       : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
@@ -498,7 +498,7 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-sheet border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isPlasticSelected
-                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20"
                   : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
@@ -506,7 +506,7 @@ export const WastePlanningPage: React.FC = () => {
                 <div
                   className={`w-10 h-10 rounded-control flex items-center justify-center transition-colors flex-shrink-0 ${
                     isPlasticSelected
-                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      ? "bg-moss-700 text-paper-raised"
                       : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
@@ -545,7 +545,7 @@ export const WastePlanningPage: React.FC = () => {
               }
               className={`p-5 rounded-sheet border transition-all cursor-pointer select-none flex items-start justify-between ${
                 isOtherSelected
-                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20 shadow-sm"
+                  ? "border-moss-600 bg-moss-50/70 ring-2 ring-moss-500/20"
                   : "border-line bg-paper-raised hover:border-line-strong hover:bg-paper-inset/30"
               }`}
             >
@@ -553,7 +553,7 @@ export const WastePlanningPage: React.FC = () => {
                 <div
                   className={`w-10 h-10 rounded-control flex items-center justify-center transition-colors flex-shrink-0 ${
                     isOtherSelected
-                      ? "bg-moss-700 text-paper-raised shadow-sm"
+                      ? "bg-moss-700 text-paper-raised"
                       : "bg-paper-inset/60 text-ink-muted border border-line"
                   }`}
                 >
@@ -638,7 +638,7 @@ export const WastePlanningPage: React.FC = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {/* Food Waste Metric */}
               {isFoodSelected && (
-                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-sm">
+                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-subtle">
                   <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Food Waste
                   </span>
@@ -677,7 +677,7 @@ export const WastePlanningPage: React.FC = () => {
 
               {/* Disposable Items Metric */}
               {isDisposableSelected && (
-                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-sm">
+                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-subtle">
                   <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Disposable Items
                   </span>
@@ -718,7 +718,7 @@ export const WastePlanningPage: React.FC = () => {
 
               {/* Plastic Waste Metric */}
               {isPlasticSelected && (
-                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-sm">
+                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-subtle">
                   <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Plastic Waste
                   </span>
@@ -748,7 +748,7 @@ export const WastePlanningPage: React.FC = () => {
 
               {/* Other Waste Metric */}
               {isOtherSelected && (
-                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-sm">
+                <div className="p-4 rounded-sheet bg-paper-raised border border-line shadow-subtle">
                   <span className="text-[11px] font-mono text-ink-muted uppercase tracking-wide block">
                     Other Waste
                   </span>
@@ -844,7 +844,7 @@ export const WastePlanningPage: React.FC = () => {
                   {wastePlanResponse.recommendations.map((rec, i) => (
                     <div
                       key={i}
-                      className="p-3.5 rounded-control bg-paper-raised border border-line text-xs shadow-xs space-y-1"
+                      className="p-3.5 rounded-control bg-paper-raised border border-line text-xs space-y-1"
                     >
                       <div className="flex items-center justify-between">
                         <strong className="font-semibold text-ink">

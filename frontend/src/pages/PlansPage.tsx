@@ -363,7 +363,7 @@ export const PlansPage: React.FC = () => {
 
         {/* Selected Plan Status Banner */}
         {selectedPlan && (
-          <div className="mb-6 py-3.5 px-5 rounded-sheet bg-moss-50 border border-moss-300 text-moss-950 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-notebook">
+          <div className="mb-6 py-3.5 px-5 rounded-sheet bg-moss-50 border border-moss-300 text-moss-950 text-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-subtle">
             <div className="flex items-center space-x-2.5">
               <div className="p-1 rounded-control bg-moss-700 text-paper-raised flex-shrink-0">
                 <Check className="w-3.5 h-3.5" />
@@ -386,7 +386,7 @@ export const PlansPage: React.FC = () => {
               )}
               <Link
                 to={`/events/${event?.id || eventId}/complete-plan`}
-                className="btn-primary text-xs py-2 px-4 shadow-notebook"
+                className="btn-primary text-xs py-2 px-4"
               >
                 <span>Continue to Complete Event Plan</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -496,7 +496,7 @@ export const PlansPage: React.FC = () => {
           aria-labelledby="selection-modal-title"
           className="fixed inset-0 z-50 bg-ink/50 backdrop-blur-xs flex items-center justify-center p-4"
         >
-          <div className="surface-sheet max-w-lg w-full p-6 sm:p-8 shadow-notebook-lg space-y-5">
+          <div className="surface-sheet max-w-lg w-full p-6 sm:p-8 shadow-modal space-y-5">
             <div className="flex justify-between items-start">
               <div>
                 <span className="label-kicker">Plan Selection Confirmation</span>

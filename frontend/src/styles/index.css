@@ -1,3 +1,5 @@
+@import "./palettes.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,13 +10,13 @@
   }
 
   body {
-    color: #1C1917;
-    background-color: #F3EEE4;
+    color: rgb(var(--c-ink));
+    background-color: rgb(var(--c-canvas));
     position: relative;
     min-height: 100vh;
   }
 
-  /* Paper grain overlay using inline SVG feTurbulence */
+  /* Paper grain overlay using inline SVG feTurbulence at token z-index */
   body::before {
     content: "";
     position: fixed;
@@ -22,7 +24,7 @@
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: 9999;
+    z-index: var(--z-grain, 5);
     opacity: 0.035;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E");
     background-repeat: repeat;
@@ -45,23 +47,63 @@
   code,
   pre,
   .font-mono,
-  .tabular-nums,
-  table {
+  .tabular-nums {
     font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-variant-numeric: tabular-nums;
   }
 
   input[type="range"] {
-    accent-color: #344C3D;
+    accent-color: rgb(var(--c-primary-deep));
   }
 }
 
 :focus-visible {
-  outline: 2px solid #344C3D;
+  outline: 2px solid rgb(var(--c-primary-deep));
   outline-offset: 2px;
 }
 
 @layer components {
+  /* Glass Surface System */
+  .glass {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--glass-border);
+    border-top-color: var(--glass-light-edge-top);
+    border-left-color: var(--glass-light-edge-left);
+    box-shadow: var(--glass-shadow), var(--glass-inner-highlight);
+    border-radius: 6px;
+  }
+
+  .glass-strong {
+    background-color: var(--glass-bg-strong);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid var(--glass-border-strong);
+    border-top-color: var(--glass-light-edge-top);
+    border-left-color: var(--glass-light-edge-left);
+    box-shadow: var(--glass-shadow), var(--glass-inner-highlight);
+    border-radius: 6px;
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .glass,
+    .glass-strong {
+      background-color: rgb(var(--c-surface));
+      border: 1px solid rgb(var(--c-line));
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass,
+    .glass-strong {
+      background-color: rgb(var(--c-surface));
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border: 1px solid rgb(var(--c-line));
+    }
+  }
+
   .surface-sheet {
     @apply bg-paper-raised border border-line rounded-sheet shadow-subtle;
   }
@@ -89,21 +131,21 @@
     to bottom,
     transparent,
     transparent 27px,
-    #DDD4C6 27px,
-    #DDD4C6 28px
+    rgb(var(--c-line)) 27px,
+    rgb(var(--c-line)) 28px
   );
 }
 
 .dotgrid {
-  background-image: radial-gradient(#C9BDAA 1.25px, transparent 1.25px);
+  background-image: radial-gradient(rgb(var(--c-line-strong)) 1.25px, transparent 1.25px);
   background-size: 18px 18px;
 }
 
 .stamp-clay {
   display: inline-block;
-  border: 2px solid #8B4A26;
-  color: #8B4A26;
-  background-color: #FBF4EE;
+  border: 2px solid rgb(var(--c-accent-deep));
+  color: rgb(var(--c-accent-deep));
+  background-color: rgb(var(--c-highlight));
   padding: 0.2rem 0.55rem;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
@@ -116,9 +158,9 @@
 
 .stamp-moss {
   display: inline-block;
-  border: 2px solid #344C3D;
-  color: #344C3D;
-  background-color: #F4F6F1;
+  border: 2px solid rgb(var(--c-primary-deep));
+  color: rgb(var(--c-primary-deep));
+  background-color: rgb(var(--c-highlight));
   padding: 0.2rem 0.55rem;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
@@ -130,11 +172,11 @@
 }
 
 .double-rule-top {
-  border-top: 3px double #C9BDAA;
+  border-top: 3px double rgb(var(--c-line-strong));
 }
 
 .double-rule-bottom {
-  border-bottom: 3px double #C9BDAA;
+  border-bottom: 3px double rgb(var(--c-line-strong));
 }
 
 .card-hover {
@@ -144,7 +186,7 @@
 
 .card-hover:hover {
   transform: translateY(-1px);
-  border-color: #C9BDAA;
+  border-color: rgb(var(--c-line-strong));
 }
 
 @keyframes checkmarkDraw {
@@ -168,4 +210,3 @@
     stroke-dashoffset: 0;
   }
 }
-

@@ -28,21 +28,21 @@ export const NotFoundPage: React.FC = () => {
             aria-hidden="true"
           >
             {/* Open notebook covers */}
-            <path d="M16 22 C 32 18, 44 20, 48 24 C 52 20, 64 18, 80 22 L 80 76 C 64 72, 52 74, 48 78 C 44 74, 32 72, 16 76 Z" fill="#FDFBF7" stroke="#344C3D" />
+            <path d="M16 22 C 32 18, 44 20, 48 24 C 52 20, 64 18, 80 22 L 80 76 C 64 72, 52 74, 48 78 C 44 74, 32 72, 16 76 Z" className="fill-paper-raised stroke-moss-700" />
             {/* Spine */}
-            <line x1="48" y1="24" x2="48" y2="78" stroke="#8B4A26" strokeWidth="2" />
+            <line x1="48" y1="24" x2="48" y2="78" className="stroke-clay-700" strokeWidth="2" />
             {/* Ruled lines on left page */}
-            <line x1="22" y1="34" x2="42" y2="34" stroke="#DDD4C6" strokeWidth="1.2" />
-            <line x1="22" y1="44" x2="42" y2="44" stroke="#DDD4C6" strokeWidth="1.2" />
-            <line x1="22" y1="54" x2="42" y2="54" stroke="#DDD4C6" strokeWidth="1.2" />
-            <line x1="22" y1="64" x2="38" y2="64" stroke="#DDD4C6" strokeWidth="1.2" />
+            <line x1="22" y1="34" x2="42" y2="34" className="stroke-line" strokeWidth="1.2" />
+            <line x1="22" y1="44" x2="42" y2="44" className="stroke-line" strokeWidth="1.2" />
+            <line x1="22" y1="54" x2="42" y2="54" className="stroke-line" strokeWidth="1.2" />
+            <line x1="22" y1="64" x2="38" y2="64" className="stroke-line" strokeWidth="1.2" />
             {/* Ruled lines on right page with dog-ear */}
-            <line x1="54" y1="34" x2="74" y2="34" stroke="#DDD4C6" strokeWidth="1.2" />
-            <line x1="54" y1="44" x2="74" y2="44" stroke="#DDD4C6" strokeWidth="1.2" />
-            <line x1="54" y1="54" x2="70" y2="54" stroke="#DDD4C6" strokeWidth="1.2" />
+            <line x1="54" y1="34" x2="74" y2="34" className="stroke-line" strokeWidth="1.2" />
+            <line x1="54" y1="44" x2="74" y2="44" className="stroke-line" strokeWidth="1.2" />
+            <line x1="54" y1="54" x2="70" y2="54" className="stroke-line" strokeWidth="1.2" />
             {/* Small sprout bookmark */}
-            <path d="M48 24 Q 44 14, 40 16 Q 44 20, 48 24" stroke="#344C3D" fill="#C9D6C2" strokeWidth="1.5" />
-            <path d="M48 24 Q 52 12, 56 15 Q 52 20, 48 24" stroke="#344C3D" fill="#A3B896" strokeWidth="1.5" />
+            <path d="M48 24 Q 44 14, 40 16 Q 44 20, 48 24" className="stroke-moss-700 fill-moss-200" strokeWidth="1.5" />
+            <path d="M48 24 Q 52 12, 56 15 Q 52 20, 48 24" className="stroke-moss-700 fill-moss-300" strokeWidth="1.5" />
           </svg>
         </div>
 

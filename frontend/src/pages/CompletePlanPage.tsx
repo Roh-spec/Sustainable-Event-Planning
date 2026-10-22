@@ -512,7 +512,7 @@ export const CompletePlanPage: React.FC = () => {
             <button
               type="button"
               onClick={handlePrint}
-              className="btn-primary text-xs py-2 px-4 shadow-notebook"
+              className="btn-primary text-xs py-2 px-4"
             >
               <Printer className="w-4 h-4" />
               <span>Print / Save Plan</span>
@@ -524,8 +524,8 @@ export const CompletePlanPage: React.FC = () => {
       {/* Empty State: No Plan Selected in Step 6 */}
       {!selectedPlan && !completePlan ? (
         <div className="surface-sheet p-12 text-center max-w-2xl mx-auto my-8 border border-line">
-          <div className="w-12 h-12 rounded-control bg-clay-50 border border-clay-300 text-clay-700 flex items-center justify-center mx-auto mb-4">
-            <AlertCircle className="w-6 h-6" />
+          <div className="text-clay-700 flex items-center justify-center mx-auto mb-4">
+            <AlertCircle className="w-8 h-8" />
           </div>
           <h3 className="font-serif text-lg font-bold text-ink mb-2">
             No Sustainable Plan Selected Yet
@@ -565,7 +565,7 @@ export const CompletePlanPage: React.FC = () => {
               role="alert"
               className="mb-8 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-3 print:hidden"
             >
-              <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-clay-700 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <strong className="font-bold">Generation Error:</strong> {error}
               </div>

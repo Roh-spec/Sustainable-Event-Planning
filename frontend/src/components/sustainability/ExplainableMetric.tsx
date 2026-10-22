@@ -52,7 +52,7 @@ export const ExplainableMetric: React.FC<ExplainableMetricProps> = ({
   const provenance = formatProvenanceLabel(sourceType);
 
   return (
-    <div className="bg-paper-inset/40 border border-line rounded-control p-3 sm:p-3.5 shadow-xs hover:border-moss-400 transition-colors flex flex-col justify-between">
+    <div className="bg-paper-inset/40 border border-line rounded-control p-3 sm:p-3.5 hover:border-moss-400 transition-colors flex flex-col justify-between">
       <div>
         <div className="flex items-center justify-between gap-1.5">
           <div className="flex items-center space-x-1.5 min-w-0">

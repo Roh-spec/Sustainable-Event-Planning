@@ -42,9 +42,39 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
-## Decisions Log
+## Phase 1: Tokens and Foundations Report
+
+### 1. Deliverables Completed
+- **`palettes.css`**: Created with semantic CSS variable definitions for Palette A ("Sage Dawn", default), Palette B ("Tidepool Night", dark glass), and Palette C ("Kiln & Lagoon", light).
+- **Tailwind Palette Wiring**: Configured `withOpacity` dynamic alpha helper in `tailwind.config.js`. Preserved backwards-compatible aliases (`paper`, `ink`, `moss`, `clay`, `line`) while mapping primary/accent semantic scales.
+- **Glass System**: Defined `.glass` and `.glass-strong` utility classes with `-webkit-backdrop-filter`, light-edge highlights, and `@supports` / `prefers-reduced-transparency` solid fallbacks.
+- **Z-Index System**: Replaced arbitrary values (`z-index: 9999`) with strict token scale: backdrop (-1), grain (5), content (0), sticky (30), header (40), modal (50), toast (60).
+- **Shadow Collapse**: Pruned dead shadow classes (`shadow-xs`, `shadow-sm`, `shadow-notebook`, `shadow-notebook-lg`). Standardized to `shadow-subtle` (`--glass-shadow`) and `shadow-modal` (`--modal-shadow`).
+- **Contrast Remediation**:
+  - Replaced non-compliant `#78716C` with `#675F5A` for `ink-faint` across all 28 usages (5.43:1 on canvas, 5.80:1 on surface).
+  - Eliminated all borderline `text-clay-600` usages in favor of compliant `text-clay-700` (`--c-accent-deep`, 5.74:1).
+  - Replaced all 21 hex literals in `.tsx` with semantic Tailwind token classes.
+- **Table Font Fix**: Removed blanket `table { font-family: mono }` rule in `index.css`; monospace now strictly scopes to numeric figures and kicker labels.
+- **Automated Contrast Audit**: Created `frontend/scripts/check-contrast.mjs` verifying 33 required color pairs across Palettes A, B, and C plus safeguard assertions against text on non-text fills. Wired to `npm run check:contrast`.
+- **Dev Palette Switcher**: Created `DevPaletteSwitcher.tsx` reading `?palette=a|b|c` and localStorage, active only in DEV mode.
+
+### 2. Measured Post-Phase 1 Delta
+| Metric | Phase 0 Baseline | Phase 1 Result | Delta |
+| :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed (9 files) | 0 regressions |
+| **`tsc --noEmit`** | 0 errors | 0 errors | Clean |
+| **`check:contrast`** | N/A | 33 / 33 passed | 100% WCAG AA compliant |
+| **Hex Literals in `.tsx`** | 21 | **0** | -21 (100% eliminated) |
+| **`shadow-*` usages** | 51 (6 variants) | **23** (`shadow-subtle`: 20, `shadow-modal`: 3) | Pruned to 1 subtle + 1 modal |
+| **Dead shadows outside modals** | 35 (`shadow-xs`, `shadow-sm`) | **0** | -35 (100% eliminated) |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | -0.22 kB |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | +2.93 kB (palette tokens & glass system) |
+
+### 3. Decisions Log
 - **D001**: Baseline measured prior to any Phase 1 token modifications to establish strict regression boundaries.
 - **D002**: Retain backward-compatible color aliases (`paper`, `ink`, `moss`, `clay`, `line`) in Tailwind config wired to CSS variables to prevent breakages across child components during progressive rollout.
+- **D003**: In Palette B (dark glass), adjusted `inkFaint` to `[134, 158, 150]` (`#869E96`) to ensure it reliably clears the 4.5:1 WCAG AA threshold on dark surfaces (yielding 4.91:1).
+- **D004**: Standardized modal overlays and mobile expanding drawer sheets to `shadow-modal`, while all other elevated cards use `shadow-subtle` or hairline rules.
 
 ---
 

@@ -1,45 +1,78 @@
 /** @type {import('tailwindcss').Config} */
+
+function withOpacity(variableName) {
+  return ({ opacityValue }) => {
+    if (opacityValue !== undefined) {
+      return `rgb(var(${variableName}) / ${opacityValue})`;
+    }
+    return `rgb(var(${variableName}))`;
+  };
+}
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        paper: {
-          DEFAULT: "#F3EEE4",
-          raised: "#FAF6EF",
-          inset: "#EBE4D8",
+        // Semantic Token Scale (Palettes A, B, C)
+        canvas: {
+          DEFAULT: withOpacity("--c-canvas"),
+          2: withOpacity("--c-canvas-2"),
         },
+        surface: {
+          DEFAULT: withOpacity("--c-surface"),
+          inset: withOpacity("--c-surface-inset"),
+        },
+        highlight: withOpacity("--c-highlight"),
         ink: {
-          DEFAULT: "#1C1917",
-          muted: "#57534E",
-          faint: "#78716C",
+          DEFAULT: withOpacity("--c-ink"),
+          muted: withOpacity("--c-ink-muted"),
+          faint: withOpacity("--c-ink-faint"),
         },
         line: {
-          DEFAULT: "#DDD4C6",
-          strong: "#C9BDAA",
+          DEFAULT: withOpacity("--c-line"),
+          strong: withOpacity("--c-line-strong"),
+        },
+        primary: {
+          DEFAULT: withOpacity("--c-primary"),
+          deep: withOpacity("--c-primary-deep"),
+        },
+        accent: {
+          DEFAULT: withOpacity("--c-accent"),
+          deep: withOpacity("--c-accent-deep"),
+        },
+
+        // Backward-Compatible Aliases mapped to CSS Variables
+        paper: {
+          DEFAULT: withOpacity("--c-canvas"),
+          raised: withOpacity("--c-surface"),
+          inset: withOpacity("--c-surface-inset"),
         },
         moss: {
-          50: "#F4F6F1",
-          100: "#E4EBE0",
-          200: "#C9D6C2",
-          300: "#A3B896",
-          400: "#7A9670",
-          500: "#5C7A54",
-          600: "#3F5D4A",
-          700: "#344C3D",
-          800: "#2A3D32",
-          900: "#1F2E26",
-          950: "#141F1A",
+          50: withOpacity("--c-highlight"),
+          100: "rgb(var(--c-canvas-2) / 0.6)",
+          200: "rgb(var(--c-line) / 0.8)",
+          300: withOpacity("--c-line-strong"),
+          400: withOpacity("--c-primary"),
+          500: withOpacity("--c-primary"),
+          600: withOpacity("--c-primary"),
+          700: withOpacity("--c-primary-deep"),
+          800: withOpacity("--c-primary-deep"),
+          900: withOpacity("--c-primary-deep"),
+          950: withOpacity("--c-primary-deep"),
         },
         clay: {
-          50: "#FBF4EE",
-          100: "#F3E4D6",
-          400: "#D4895A",
-          500: "#C46B3A",
-          600: "#A85A2E",
-          700: "#8B4A26",
-          800: "#713718",
-          stamp: "#8B4A26",
+          50: withOpacity("--c-highlight"),
+          100: "rgb(var(--c-highlight))",
+          200: withOpacity("--c-line"),
+          300: withOpacity("--c-line-strong"),
+          400: withOpacity("--c-accent"),
+          500: withOpacity("--c-accent"),
+          600: withOpacity("--c-accent-deep"),
+          700: withOpacity("--c-accent-deep"),
+          800: withOpacity("--c-accent-deep"),
+          900: withOpacity("--c-accent-deep"),
+          stamp: withOpacity("--c-accent-deep"),
         },
       },
       fontFamily: {
@@ -81,8 +114,19 @@ export default {
         "rule-strong": "2px",
       },
       boxShadow: {
-        subtle: "0 1px 2px rgba(28, 25, 23, 0.05)",
-        notebook: "0 1px 2px rgba(28, 25, 23, 0.05)",
+        subtle: "var(--glass-shadow)",
+        modal: "var(--modal-shadow)",
+        // Notebook alias for transition:
+        notebook: "var(--glass-shadow)",
+      },
+      zIndex: {
+        backdrop: "var(--z-backdrop, -1)",
+        grain: "var(--z-grain, 5)",
+        content: "var(--z-content, 0)",
+        sticky: "var(--z-sticky, 30)",
+        header: "var(--z-header, 40)",
+        modal: "var(--z-modal, 50)",
+        toast: "var(--z-toast, 60)",
       },
       borderRadius: {
         control: "4px",
@@ -92,4 +136,3 @@ export default {
   },
   plugins: [],
 };
-

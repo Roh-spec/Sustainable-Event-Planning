@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
 import { SmoothScrollProvider } from "../common/SmoothScrollProvider";
+import { DevPaletteSwitcher } from "../common/DevPaletteSwitcher";
 
 export const MainLayout: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ export const MainLayout: React.FC = () => {
           <Outlet />
         </main>
         <Footer />
+        <DevPaletteSwitcher />
       </div>
     </SmoothScrollProvider>
   );

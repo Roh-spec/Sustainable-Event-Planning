@@ -58,9 +58,9 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
             {confirmations.map((item, idx) => (
               <li
                 key={idx}
-                className="flex items-start space-x-2.5 text-xs text-ink bg-paper-raised p-2.5 rounded-control border border-clay-200/60 shadow-xs"
+                className="flex items-start space-x-2.5 text-xs text-ink bg-paper-raised p-2.5 rounded-control border border-clay-200/60"
               >
-                <CheckCircle className="w-4 h-4 text-clay-600 flex-shrink-0 mt-0.5" />
+                <CheckCircle className="w-4 h-4 text-clay-700 flex-shrink-0 mt-0.5" />
                 <span className="font-medium leading-relaxed">{item}</span>
               </li>
             ))}

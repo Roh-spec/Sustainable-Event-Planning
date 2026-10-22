@@ -128,7 +128,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
             </span>
           ) : (
             <span className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-clay-50 text-clay-800 border border-clay-300 font-semibold">
-              <Info className="w-3.5 h-3.5 text-clay-600" />
+              <Info className="w-3.5 h-3.5 text-clay-700" />
               <span>
                 Default timing suggestion ({format12Hour("09:00")} –{" "}
                 {format12Hour("17:00")})
@@ -146,7 +146,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
               htmlFor="timing-event-date"
               className="label-kicker text-[11px] block mb-1.5"
             >
-              Event Date <span className="text-clay-600">*</span>
+              Event Date <span className="text-clay-700">*</span>
             </label>
             <div className="relative">
               <input
@@ -209,7 +209,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
             role="alert"
             className="p-3.5 rounded-control bg-clay-50 border border-clay-300 text-xs text-clay-900 flex items-center space-x-2.5"
           >
-            <AlertCircle className="w-4 h-4 text-clay-600 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 text-clay-700 flex-shrink-0" />
             <span className="font-medium">{validationError}</span>
           </div>
         )}

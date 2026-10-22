@@ -48,7 +48,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
             </span>
           ) : (
             <span className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-clay-50 text-clay-800 border border-clay-300 text-xs font-extrabold">
-              <AlertTriangle className="w-4 h-4 text-clay-600" />
+              <AlertTriangle className="w-4 h-4 text-clay-700" />
               <span>Budget Deficit</span>
             </span>
           )}
@@ -79,7 +79,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
       {/* Primary Financial Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
         {/* Allocated Budget */}
-        <div className="p-4 rounded-sheet bg-paper-inset/40 border border-line shadow-xs">
+        <div className="p-4 rounded-sheet bg-paper-inset/40 border border-line">
           <div className="flex items-center justify-between text-xs text-ink-muted mb-1">
             <span>Allocated Budget</span>
             <Coins className="w-4 h-4 text-ink-muted" />
@@ -93,7 +93,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
         </div>
 
         {/* Estimated Plan Cost */}
-        <div className="p-4 rounded-sheet bg-paper-inset/40 border border-line shadow-xs">
+        <div className="p-4 rounded-sheet bg-paper-inset/40 border border-line">
           <div className="flex items-center justify-between text-xs text-ink-muted mb-1">
             <span>Estimated Plan Cost</span>
             <Receipt className="w-4 h-4 text-ink-muted" />
@@ -108,7 +108,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
 
         {/* Remaining Contingency or Deficit */}
         <div
-          className={`p-4 rounded-sheet border shadow-xs ${
+          className={`p-4 rounded-sheet border ${
             isFeasible
               ? "bg-moss-50/60 border-moss-200 text-moss-950"
               : "bg-clay-50/60 border-clay-200 text-clay-950"

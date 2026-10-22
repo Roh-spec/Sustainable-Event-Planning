@@ -444,7 +444,7 @@ export const FoodPlanningPage: React.FC = () => {
             role="alert"
             className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-clay-700 flex-shrink-0 mt-0.5" />
             <span>{validationError}</span>
           </div>
         )}
@@ -454,7 +454,7 @@ export const FoodPlanningPage: React.FC = () => {
             role="alert"
             className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
           >
-            <AlertCircle className="w-5 h-5 text-clay-600 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-clay-700 flex-shrink-0 mt-0.5" />
             <span>{apiError}</span>
           </div>
         )}
@@ -490,7 +490,7 @@ export const FoodPlanningPage: React.FC = () => {
                         onClick={() => setSelectedDay(dayNum)}
                         className={`px-3.5 py-1.5 rounded-control text-xs font-semibold transition-all focus:outline-none ${
                           isActive
-                            ? "bg-paper-raised text-moss-800 shadow-sm border border-moss-300"
+                            ? "bg-paper-raised text-moss-800 border border-moss-300"
                             : "text-ink-muted hover:text-ink hover:bg-paper-inset/60"
                         }`}
                       >
@@ -530,7 +530,7 @@ export const FoodPlanningPage: React.FC = () => {
                   aria-pressed={isSelected}
                   className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                     isSelected
-                      ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                      ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20"
                       : "border-line bg-paper-raised hover:border-line-strong text-ink"
                   }`}
                 >
@@ -611,7 +611,7 @@ export const FoodPlanningPage: React.FC = () => {
                 id: "NON_VEGETARIAN" as DietaryPreference,
                 label: "Non-vegetarian only",
                 description: "All meals will include non-vegetarian dishes.",
-                icon: <Flame className="w-5 h-5 text-clay-600" />,
+                icon: <Flame className="w-5 h-5 text-clay-700" />,
               },
               {
                 id: "MIXED" as DietaryPreference,
@@ -631,7 +631,7 @@ export const FoodPlanningPage: React.FC = () => {
                   aria-pressed={isSelected}
                   className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                     isSelected
-                      ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                      ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20"
                       : "border-line bg-paper-raised hover:border-line-strong text-ink"
                   }`}
                 >
@@ -736,7 +736,7 @@ export const FoodPlanningPage: React.FC = () => {
               aria-pressed={foodConfig.budgetMode !== "ENTER"}
               className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                 foodConfig.budgetMode !== "ENTER"
-                  ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                  ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20"
                   : "border-line bg-paper-raised hover:border-line-strong text-ink"
               }`}
             >
@@ -778,7 +778,7 @@ export const FoodPlanningPage: React.FC = () => {
               aria-pressed={foodConfig.budgetMode === "ENTER"}
               className={`text-left p-4 rounded-sheet border transition-all flex flex-col justify-between focus:outline-none cursor-pointer ${
                 foodConfig.budgetMode === "ENTER"
-                  ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20 shadow-sm"
+                  ? "border-moss-600 bg-moss-50/70 text-moss-950 font-semibold ring-2 ring-moss-500/20"
                   : "border-line bg-paper-raised hover:border-line-strong text-ink"
               }`}
             >
@@ -1028,7 +1028,7 @@ export const FoodPlanningPage: React.FC = () => {
                       }
                       className={`text-left p-3 rounded-control border text-xs transition-all focus:outline-none cursor-pointer ${
                         foodConfig.costApproach === opt.id
-                          ? "border-moss-600 bg-moss-50 text-moss-950 font-bold shadow-sm"
+                          ? "border-moss-600 bg-moss-50 text-moss-950 font-bold"
                           : "border-line bg-paper-raised text-ink hover:border-line-strong"
                       }`}
                     >
@@ -1178,7 +1178,7 @@ export const FoodPlanningPage: React.FC = () => {
               {/* Primary Metric Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* 1. Servings Card */}
-                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-subtle">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Estimated Servings
@@ -1222,7 +1222,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 2. Food Cost Card */}
-                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-subtle">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Estimated Food Cost
@@ -1260,7 +1260,7 @@ export const FoodPlanningPage: React.FC = () => {
                     )}
                   {foodPlanResponse.cost_summary.is_over_budget ? (
                     <div className="mt-2 text-[11px] font-bold text-clay-700 flex items-center space-x-1">
-                      <AlertTriangle className="w-3.5 h-3.5 text-clay-600" />
+                      <AlertTriangle className="w-3.5 h-3.5 text-clay-700" />
                       <span>
                         ₹
                         {Number(
@@ -1285,7 +1285,7 @@ export const FoodPlanningPage: React.FC = () => {
                 </div>
 
                 {/* 3. Food Waste Card */}
-                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-sm">
+                <div className="bg-paper-raised border border-line rounded-sheet p-5 shadow-subtle">
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-xs font-mono uppercase tracking-wider text-ink-muted">
                       Expected Food Waste
@@ -1365,7 +1365,7 @@ export const FoodPlanningPage: React.FC = () => {
                 ).length > 0 && (
                   <div className="p-4 rounded-sheet bg-clay-50 border border-clay-300 text-xs text-clay-900 space-y-1">
                     <span className="font-bold flex items-center gap-1.5 text-clay-800">
-                      <AlertTriangle className="w-4 h-4 text-clay-600" />
+                      <AlertTriangle className="w-4 h-4 text-clay-700" />
                       Preference & Constraint Notices:
                     </span>
                     {foodPlanResponse.constraints_evaluation

@@ -69,7 +69,7 @@ export const EventSummaryBanner: React.FC<EventSummaryBannerProps> = ({
 
           {formattedBudget && (
             <div className="flex items-center space-x-1.5 bg-clay-500/20 px-3 py-1.5 rounded-control border border-clay-400/30 text-clay-100 font-semibold font-mono text-xs tabular-nums">
-              <Wallet className="w-4 h-4 text-clay-400" />
+              <Wallet className="w-4 h-4 text-clay-200" />
               <span>Budget: {formattedBudget}</span>
             </div>
           )}

@@ -83,7 +83,7 @@ export const Time12HourPicker: React.FC<Time12HourPickerProps> = ({
           htmlFor={`${id}-hour`}
           className="label-kicker text-[11px] block"
         >
-          {label} {required && <span className="text-clay-600">*</span>}
+          {label} {required && <span className="text-clay-700">*</span>}
         </label>
         {/* Railway-style 12-hour badge preview */}
         <span

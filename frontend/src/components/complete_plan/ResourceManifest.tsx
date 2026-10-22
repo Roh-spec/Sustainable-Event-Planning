@@ -57,7 +57,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
       {/* 3 Metric Groups for Quantities */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Food & Catering */}
-        <div className="p-5 rounded-sheet bg-clay-50/60 border border-clay-200 flex flex-col justify-between shadow-xs">
+        <div className="p-5 rounded-sheet bg-clay-50/60 border border-clay-200 flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-2 text-clay-900 font-bold text-sm mb-3">
               <UtensilsCrossed className="w-4 h-4 text-clay-700" />
@@ -97,7 +97,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
         </div>
 
         {/* Tableware & Serving Items */}
-        <div className="p-5 rounded-sheet bg-moss-50/60 border border-moss-200 flex flex-col justify-between shadow-xs">
+        <div className="p-5 rounded-sheet bg-moss-50/60 border border-moss-200 flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-2 text-moss-900 font-bold text-sm mb-3">
               <Recycle className="w-4 h-4 text-moss-700" />
@@ -135,7 +135,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
         </div>
 
         {/* Plastic Items */}
-        <div className="p-5 rounded-sheet bg-paper-inset/40 border border-line flex flex-col justify-between shadow-xs">
+        <div className="p-5 rounded-sheet bg-paper-inset/40 border border-line flex flex-col justify-between">
           <div>
             <div className="flex items-center space-x-2 text-ink font-bold text-sm mb-3">
               <Trash2 className="w-4 h-4 text-ink-muted" />
@@ -178,7 +178,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
         </div>
 
         <div className="mb-4 p-3.5 rounded-control bg-clay-50 border border-clay-300 text-xs text-clay-950 flex items-start space-x-2.5">
-          <ShieldAlert className="w-4 h-4 text-clay-600 flex-shrink-0 mt-0.5" />
+          <ShieldAlert className="w-4 h-4 text-clay-700 flex-shrink-0 mt-0.5" />
           <div>
             <strong className="font-semibold text-clay-900">
               Confirmation Required:

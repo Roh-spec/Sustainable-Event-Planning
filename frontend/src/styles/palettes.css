@@ -1,0 +1,129 @@
+/**
+ * palettes.css
+ * Semantic color, glass, and surface tokens for EcoPlan.
+ * Supports swappable palettes:
+ * - Palette A (Default): "Sage Dawn" (warm paper, moss, clay)
+ * - Palette B: "Tidepool Night" (deep dark glass, mint, amber)
+ * - Palette C: "Kiln & Lagoon" (sand, teal, terracotta)
+ */
+
+:root,
+[data-palette="a"] {
+  /* Canvas & Surfaces */
+  --c-canvas: 242 239 230;          /* #F2EFE6 */
+  --c-canvas-2: 230 232 216;        /* #E6E8D8 */
+  --c-surface: 250 246 239;         /* #FAF6EF (paper-raised) */
+  --c-surface-inset: 235 228 216;   /* #EBE4D8 */
+  --c-highlight: 251 244 238;       /* #FBF4EE */
+
+  /* Ink / Typography */
+  --c-ink: 30 42 35;                /* #1E2A23 */
+  --c-ink-muted: 77 90 82;          /* #4D5A52 */
+  --c-ink-faint: 103 95 90;         /* #675F5A (WCAG AA compliant) */
+
+  /* Brand / Accents */
+  --c-primary: 63 93 74;            /* #3F5D4A */
+  --c-primary-deep: 47 74 58;       /* #2F4A3A */
+  --c-accent: 217 136 95;           /* #D9885F (apricot - fills only) */
+  --c-accent-deep: 143 74 44;       /* #8F4A2C (clay - text and stamp) */
+
+  /* Rules & Boundaries */
+  --c-line: 221 212 198;            /* #DDD4C6 */
+  --c-line-strong: 201 189 170;     /* #C9BDAA */
+
+  /* Glassmorphism Specification */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.48);
+  --glass-border-strong: rgba(255, 255, 255, 0.75);
+  --glass-shadow: 0 4px 20px -2px rgba(30, 42, 35, 0.06), 0 2px 6px -1px rgba(30, 42, 35, 0.04);
+  --glass-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  --glass-light-edge-top: rgba(255, 255, 255, 0.75);
+  --glass-light-edge-left: rgba(255, 255, 255, 0.60);
+
+  /* Modal Shadow */
+  --modal-shadow: 0 20px 25px -5px rgba(30, 42, 35, 0.12), 0 10px 10px -5px rgba(30, 42, 35, 0.06);
+
+  /* Z-Index Scale */
+  --z-backdrop: -1;
+  --z-grain: 5;
+  --z-content: 0;
+  --z-sticky: 30;
+  --z-header: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+}
+
+[data-palette="b"] {
+  /* Canvas & Surfaces (Tidepool Night) */
+  --c-canvas: 14 27 26;             /* #0E1B1A */
+  --c-canvas-2: 19 37 36;           /* #132524 */
+  --c-surface: 22 48 45;            /* #16302D */
+  --c-surface-inset: 17 36 34;      /* #112422 */
+  --c-highlight: 29 63 59;          /* #1D3F3B */
+
+  /* Ink / Typography */
+  --c-ink: 232 242 236;             /* #E8F2EC */
+  --c-ink-muted: 169 189 181;       /* #A9BDB5 */
+  --c-ink-faint: 134 158 150;       /* #869E96 (WCAG AA compliant) */
+
+  /* Brand / Accents */
+  --c-primary: 134 209 178;         /* #86D1B2 (mint) */
+  --c-primary-deep: 97 184 150;      /* #61B896 */
+  --c-accent: 240 178 122;          /* #F0B27A (amber) */
+  --c-accent-deep: 226 155 90;      /* #E29B5A */
+
+  /* Rules & Boundaries */
+  --c-line: 36 71 67;               /* #244743 */
+  --c-line-strong: 51 94 88;        /* #335E58 */
+
+  /* Glassmorphism Specification */
+  --glass-bg: rgba(22, 48, 45, 0.65);
+  --glass-bg-strong: rgba(22, 48, 45, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-strong: rgba(255, 255, 255, 0.24);
+  --glass-shadow: 0 4px 24px -2px rgba(0, 0, 0, 0.45);
+  --glass-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --glass-light-edge-top: rgba(255, 255, 255, 0.22);
+  --glass-light-edge-left: rgba(255, 255, 255, 0.14);
+
+  /* Modal Shadow */
+  --modal-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.65);
+}
+
+[data-palette="c"] {
+  /* Canvas & Surfaces (Kiln & Lagoon) */
+  --c-canvas: 241 236 226;          /* #F1ECE2 */
+  --c-canvas-2: 227 211 181;        /* #E3D3B5 (sand) */
+  --c-surface: 250 247 240;         /* #FAF7F0 */
+  --c-surface-inset: 236 229 217;   /* #ECE5D9 */
+  --c-highlight: 247 239 230;       /* #F7EFE6 */
+
+  /* Ink / Typography */
+  --c-ink: 27 37 35;                /* #1B2523 */
+  --c-ink-muted: 75 88 86;          /* #4B5856 */
+  --c-ink-faint: 94 105 102;        /* #5E6966 (WCAG AA compliant) */
+
+  /* Brand / Accents */
+  --c-primary: 44 110 106;          /* #2C6E6A (teal) */
+  --c-primary-deep: 30 80 77;       /* #1E504D */
+  --c-accent: 200 100 59;           /* #C8643B (terracotta fill) */
+  --c-accent-deep: 154 69 36;       /* #9A4524 (terracotta text) */
+
+  /* Rules & Boundaries */
+  --c-line: 220 211 195;            /* #DCD3C3 */
+  --c-line-strong: 199 187 167;     /* #C7BBA7 */
+
+  /* Glassmorphism Specification */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.48);
+  --glass-border-strong: rgba(255, 255, 255, 0.75);
+  --glass-shadow: 0 4px 20px -2px rgba(27, 37, 35, 0.06);
+  --glass-inner-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  --glass-light-edge-top: rgba(255, 255, 255, 0.75);
+  --glass-light-edge-left: rgba(255, 255, 255, 0.60);
+
+  /* Modal Shadow */
+  --modal-shadow: 0 20px 25px -5px rgba(27, 37, 35, 0.12), 0 10px 10px -5px rgba(27, 37, 35, 0.06);
+}

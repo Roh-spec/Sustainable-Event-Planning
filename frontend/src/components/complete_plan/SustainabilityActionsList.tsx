@@ -55,7 +55,7 @@ export const SustainabilityActionsList: React.FC<
         {actions.map((act, idx) => (
           <div
             key={idx}
-            className="p-5 rounded-sheet border border-line bg-paper-raised hover:border-moss-400 transition-all flex flex-col justify-between space-y-3 shadow-xs card-hover"
+            className="p-5 rounded-sheet border border-line bg-paper-raised hover:border-moss-400 transition-all flex flex-col justify-between space-y-3 card-hover"
           >
             <div>
               <div className="flex flex-wrap items-center justify-between gap-2 mb-2">

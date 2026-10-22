@@ -240,7 +240,7 @@ export const PlanComparisonPage: React.FC = () => {
                         <td
                           key={p.plan_id}
                           className={`py-3.5 px-5 font-mono font-semibold border-r border-line last:border-r-0 ${
-                            isOver ? "text-clay-600" : "text-moss-700"
+                            isOver ? "text-clay-700" : "text-moss-700"
                           } ${isSel ? "bg-moss-50/30" : ""}`}
                         >
                           {isOver
@@ -409,7 +409,7 @@ export const PlanComparisonPage: React.FC = () => {
                               </span>
                             </span>
                           ) : (
-                            <span className="text-clay-600 font-semibold flex items-center space-x-1">
+                            <span className="text-clay-700 font-semibold flex items-center space-x-1">
                               <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
                               <span>Infeasible</span>
                             </span>

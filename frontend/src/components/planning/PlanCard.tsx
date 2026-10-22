@@ -92,7 +92,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       case "BUDGET_FOCUSED":
         return {
           cardClass:
-            "border border-line hover:border-clay-400 shadow-notebook bg-paper-raised",
+            "border border-line hover:border-clay-400 shadow-subtle bg-paper-raised",
           topAccent: "bg-clay-500",
           tagClass: "bg-clay-100 text-clay-800 border-clay-300",
           iconBoxClass: "bg-clay-50 text-clay-700 border border-clay-200",
@@ -101,7 +101,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       case "BALANCED":
         return {
           cardClass:
-            "border border-line hover:border-moss-400 shadow-notebook bg-paper-raised",
+            "border border-line hover:border-moss-400 shadow-subtle bg-paper-raised",
           topAccent: "bg-moss-500",
           tagClass: "bg-moss-100 text-moss-800 border-moss-300",
           iconBoxClass: "bg-moss-50 text-moss-700 border border-moss-200",
@@ -110,17 +110,17 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       case "SUSTAINABILITY_FOCUSED":
         return {
           cardClass:
-            "border-2 border-moss-400 hover:border-moss-600 shadow-notebook bg-gradient-to-b from-moss-50/40 via-paper-raised to-paper-raised",
+            "border-2 border-moss-400 hover:border-moss-600 shadow-subtle bg-paper-raised",
           topAccent: "bg-moss-700",
           tagClass:
-            "bg-moss-700 text-paper-raised border-moss-800 shadow-xs font-semibold",
+            "bg-moss-700 text-paper-raised border-moss-800 font-semibold",
           iconBoxClass: "bg-moss-800 text-moss-100 border border-moss-900",
           kicker: "Maximum Circularity",
         };
       default:
         return {
           cardClass:
-            "border border-line hover:border-line-strong shadow-notebook bg-paper-raised",
+            "border border-line hover:border-line-strong shadow-subtle bg-paper-raised",
           topAccent: "bg-line-strong",
           tagClass: "bg-paper-inset text-ink-muted border-line",
           iconBoxClass: "bg-paper-inset text-ink-muted border border-line",
@@ -290,7 +290,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
             <div className="mt-2 pt-2 border-t border-line/70 flex items-center justify-between text-xs">
               <span className="text-ink-muted">Budget Limit:</span>
               {isOverBudget ? (
-                <span className="text-clay-600 font-semibold flex items-center space-x-1 font-mono">
+                <span className="text-clay-700 font-semibold flex items-center space-x-1 font-mono">
                   <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
                   <span>
                     Deficit of ₹
@@ -327,12 +327,13 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               aria-label="Trade-off dumbbell chart"
             >
               {/* Axis line */}
+              {/* Guideline axis */}
               <line
                 x1="20"
                 y1="14"
                 x2="280"
                 y2="14"
-                stroke="#DDD4C6"
+                className="stroke-line"
                 strokeWidth="1.5"
                 strokeDasharray="3 3"
               />
@@ -342,7 +343,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 y1="14"
                 x2={Math.min(270, Math.max(170, diversionRatio * 2.6))}
                 y2="14"
-                stroke="#78716C"
+                className="stroke-ink-muted"
                 strokeWidth="2"
               />
               {/* Spend point (Clay = costs more) */}
@@ -350,8 +351,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 cx={Math.max(30, Math.min(130, spendRatio * 2.2))}
                 cy="14"
                 r="5"
-                fill="#8B4A26"
-                stroke="#FAF6EF"
+                className="fill-clay-700 stroke-paper-raised"
                 strokeWidth="2"
               />
               {/* Waste diversion point (Moss = less waste) */}
@@ -359,8 +359,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 cx={Math.min(270, Math.max(170, diversionRatio * 2.6))}
                 cy="14"
                 r="5"
-                fill="#344C3D"
-                stroke="#FAF6EF"
+                className="fill-moss-700 stroke-paper-raised"
                 strokeWidth="2"
               />
               {/* Delta label on the dumbbell axis line */}
@@ -370,7 +369,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
                 textAnchor="middle"
                 fontSize="9"
                 fontFamily="JetBrains Mono, monospace"
-                fill="#57534E"
+                className="fill-ink-muted"
                 fontWeight="600"
               >
                 {budgetDifference !== null
@@ -479,7 +478,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               </span>
             </span>
           ) : (
-            <span className="text-clay-600 font-semibold flex items-center space-x-1">
+            <span className="text-clay-700 font-semibold flex items-center space-x-1">
               <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0" />
               <span>Hard constraints violated</span>
             </span>
@@ -494,7 +493,7 @@ export const PlanCard: React.FC<PlanCardProps> = ({
               plan.constraint_result.relaxed_constraints.length > 0 && (
                 <div className="bg-clay-50/90 border border-clay-200/80 rounded-control p-3 text-xs text-clay-950 space-y-2">
                   <div className="flex items-center space-x-1.5 font-bold text-clay-900">
-                    <AlertTriangle className="w-3.5 h-3.5 text-clay-600 flex-shrink-0" />
+                    <AlertTriangle className="w-3.5 h-3.5 text-clay-700 flex-shrink-0" />
                     <span>A preference we couldn't fully meet</span>
                   </div>
                   <ul className="space-y-2 text-ink-muted">
