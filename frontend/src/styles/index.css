@@ -253,10 +253,43 @@
   animation: checkmarkDraw 240ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
+@keyframes ruleDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.rule-draw {
+  transform-origin: left;
+  animation: ruleDraw 500ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes routeDraw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.route-draw {
+  transform-origin: left;
+  animation: routeDraw 700ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .checklist-tick {
     animation: none;
     stroke-dashoffset: 0;
+  }
+  .rule-draw,
+  .route-draw {
+    animation: none !important;
+    transform: scaleX(1) !important;
   }
   .blob-drift-1,
   .blob-drift-2,

@@ -1,82 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  Calendar,
-  Users,
-  Clock,
-  MapPin,
-  ArrowRight,
-  AlertCircle,
-} from "lucide-react";
+import { Calendar, Users, Clock, MapPin, ArrowRight, AlertCircle } from "lucide-react";
 import { usePlanningWizard } from "../context/PlanningWizardContext";
 import { WizardProgress } from "../components/wizard/WizardProgress";
 import { eventsApi } from "../api/events";
-import { EVENT_TYPE_OPTIONS, EventType } from "../types/events";
-import {
-  HackathonMark,
-  WorkshopMark,
-  CulturalMark,
-  SportsMark,
-  ConferenceMark,
-  SocialMark,
-} from "../components/icons";
+import { EventType } from "../types/events";
+import { EventTypeTiles } from "../components/events/EventTypeTiles";
 import { usePageTitle } from "../hooks/usePageTitle";
-
-const EVENT_TYPE_TILES: {
-  value: EventType;
-  label: string;
-  desc: string;
-  icon: React.ComponentType<{ className?: string; size?: number }>;
-}[] = [
-  {
-    value: "TECH_FEST",
-    label: "Tech Fest",
-    desc: "Coding fairs & tech demos",
-    icon: HackathonMark,
-  },
-  {
-    value: "CULTURAL_FEST",
-    label: "Cultural Fest",
-    desc: "Performances, drama & arts",
-    icon: CulturalMark,
-  },
-  {
-    value: "HACKATHON",
-    label: "Hackathon",
-    desc: "Intensive 24-48h sprints",
-    icon: HackathonMark,
-  },
-  {
-    value: "WORKSHOP",
-    label: "Workshop",
-    desc: "Hands-on labs & seminars",
-    icon: WorkshopMark,
-  },
-  {
-    value: "CONFERENCE",
-    label: "Conference",
-    desc: "Keynotes & symposiums",
-    icon: ConferenceMark,
-  },
-  {
-    value: "SPORTS_EVENT",
-    label: "Sports Event",
-    desc: "Tournaments & athletic meets",
-    icon: SportsMark,
-  },
-  {
-    value: "FAREWELL",
-    label: "Farewell",
-    desc: "Graduation & batch send-offs",
-    icon: SocialMark,
-  },
-  {
-    value: "DEPARTMENT_EVENT",
-    label: "Department",
-    desc: "Club meets & symposiums",
-    icon: WorkshopMark,
-  },
-];
 
 export const EventCreationPage: React.FC = () => {
   usePageTitle("New Event · EcoPlan");
@@ -127,7 +57,7 @@ export const EventCreationPage: React.FC = () => {
     }
     const attendeesNum = parseInt(expectedAttendees, 10);
     if (isNaN(attendeesNum) || attendeesNum <= 0) {
-      setError("Expected Attendees must be a positive integer greater than 0.");
+      setError("Attendees must be a positive integer greater than 0.");
       return;
     }
     const durationNum = parseInt(durationDays, 10);
@@ -137,12 +67,11 @@ export const EventCreationPage: React.FC = () => {
     }
 
     setIsSubmitting(true);
-
     try {
       if (event?.id && eventId) {
         setEvent({
           ...event,
-          name,
+          name: name.trim(),
           event_type: eventType,
           expected_attendees: attendeesNum,
           duration_days: durationNum,
@@ -175,8 +104,7 @@ export const EventCreationPage: React.FC = () => {
       }
     } catch (err: any) {
       setError(
-        err.message ||
-          "Failed to create event. Please verify backend connection.",
+        err.message || "Failed to create event. Please verify backend connection.",
       );
     } finally {
       setIsSubmitting(false);
@@ -194,7 +122,7 @@ export const EventCreationPage: React.FC = () => {
             {eventId ? "Edit Event Details" : "Create Your Sustainable Event"}
           </h1>
           <p className="text-ink-muted text-sm mt-1 max-w-2xl leading-relaxed">
-            Record the basic physical parameters: head count, duration, and format. These govern food portion algorithms and waste projections.
+            Record physical parameters: head count, duration, and format. These govern food portion algorithms and waste projections.
           </p>
         </div>
 
@@ -212,11 +140,10 @@ export const EventCreationPage: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} noValidate className="space-y-8">
-          {/* Section 1: Identification & Gathering Format */}
+          {/* Section A: Identification & Gathering Format */}
           <section className="border-b border-line pb-8 space-y-6">
             <span className="label-kicker">Section A · Identity & Format</span>
 
-            {/* Event Name */}
             <div>
               <label
                 htmlFor="event-name"
@@ -235,75 +162,10 @@ export const EventCreationPage: React.FC = () => {
               />
             </div>
 
-            {/* Event Type as Line Illustration Tiles */}
-            <div>
-              <div className="flex items-center justify-between mb-2">
-                <label
-                  htmlFor="event-type"
-                  className="block text-xs font-mono font-bold uppercase tracking-wider text-ink"
-                >
-                  Event Type <span className="text-clay-700">*</span>
-                </label>
-                <span className="text-[11px] font-mono text-ink-muted">
-                  format template
-                </span>
-              </div>
-
-              {/* Accessible native select */}
-              <select
-                id="event-type"
-                aria-label="Event Type"
-                value={eventType}
-                onChange={(e) => setEventType(e.target.value)}
-                className="sr-only"
-              >
-                {EVENT_TYPE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-
-              {/* Illustrated tile selection grid */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                {EVENT_TYPE_TILES.map((tile) => {
-                  const isSelected = eventType === tile.value;
-                  const TileIcon = tile.icon;
-                  return (
-                    <button
-                      key={tile.value}
-                      type="button"
-                      onClick={() => setEventType(tile.value)}
-                      className={`p-3 rounded-control border text-left transition-colors flex flex-col justify-between min-h-[92px] ${
-                        isSelected
-                          ? "border-moss-800 border-b-4 bg-moss-50/80 text-ink"
-                          : "border-line bg-paper-inset/30 hover:bg-paper-inset/70 hover:border-line-strong text-ink-muted"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between w-full mb-2">
-                        <span className={isSelected ? "text-moss-800" : "text-ink-muted"}>
-                          <TileIcon size={22} />
-                        </span>
-                        {isSelected && (
-                          <span className="w-2 h-2 rounded-full bg-moss-800" />
-                        )}
-                      </div>
-                      <div>
-                        <span className="text-xs font-bold text-ink block font-display">
-                          {tile.label}
-                        </span>
-                        <span className="text-[10px] text-ink-muted line-clamp-1 mt-0.5 font-sans">
-                          {tile.desc}
-                        </span>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <EventTypeTiles value={eventType} onChange={setEventType} />
           </section>
 
-          {/* Section 2: Scale & Duration */}
+          {/* Section B: Scale & Attendance */}
           <section className="border-b border-line pb-8 space-y-6">
             <span className="label-kicker">Section B · Scale & Attendance</span>
 
@@ -327,7 +189,7 @@ export const EventCreationPage: React.FC = () => {
                     value={expectedAttendees}
                     onChange={(e) => setExpectedAttendees(e.target.value)}
                     placeholder="e.g. 150"
-                    className="w-full pl-9 pr-14 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
+                    className="w-full pl-9 pr-16 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
                     required
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-mono text-ink-muted">
@@ -371,7 +233,7 @@ export const EventCreationPage: React.FC = () => {
             </div>
           </section>
 
-          {/* Section 3: Venue & Optional Date */}
+          {/* Section C: Venue & Logistics */}
           <section className="space-y-6">
             <span className="label-kicker">Section C · Venue & Logistics</span>
 
@@ -403,10 +265,7 @@ export const EventCreationPage: React.FC = () => {
                   htmlFor="event-date"
                   className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
                 >
-                  Event Date{" "}
-                  <span className="text-[10px] font-normal text-ink-muted lowercase">
-                    (optional)
-                  </span>
+                  Event Date <span className="text-[10px] font-normal text-ink-muted lowercase">(optional)</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
@@ -431,9 +290,7 @@ export const EventCreationPage: React.FC = () => {
               disabled={isSubmitting}
               className="btn-primary px-7 py-3 text-sm"
             >
-              <span>
-                {isSubmitting ? "Saving Event..." : "Continue to Budget Step"}
-              </span>
+              <span>{isSubmitting ? "Saving Event..." : "Continue to Budget Step"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

@@ -175,8 +175,70 @@ Recorded at commit branch: `ui/glass-redesign` (based on `main@e697a9c`).
 
 ---
 
+## Phase 4: Home, Events List, Event Creation, 404 Report
+
+### 1. Deliverables Completed
+- **`HomePage.tsx` Redesign**:
+  - Asymmetric hero grid (7 cols text / 5 cols worked example) over the living landscape backdrop.
+  - Hero typographic scale contrast: Newsreader headline (`font-display text-4xl sm:text-5xl lg:text-6xl`) with tiny JetBrains Mono kickers (`label-kicker`).
+  - Staggered entrance animations via `Reveal` (`delay={60}`, `delay={120}`).
+- **`HomeWorkedExample.tsx`**:
+  - Encapsulated 150-person hackathon worked case study in a floating `GlassPanel` (`variant="strong"`).
+  - Strictly conditional phrasing ("would eliminate", "food surplus that would be averted").
+  - Mathematical minus sign (`−`, `\u2212`) throughout: `−26 kg` hero counter and `8 kg (−26)` low-waste comparison.
+  - Authentic double-ruled total spend line (`double-rule-top double-rule-bottom`).
+  - Caveat handwritten organizer margin note.
+- **`HomeWorkflowRoute.tsx`**:
+  - Field-station guided survey route displaying 6 sequential ledger steps.
+  - Connected with `.route-draw` horizontal rule on desktop (drawn line animation) and vertical timeline on mobile.
+  - Custom domain marks (`HackathonMark`, `ScaleIcon`, `SproutIcon`, `PlateIcon`, `BinIcon`, `LedgerIcon`).
+- **Recent Events Ledger on Solid Surface**:
+  - Solid surface ledger rows (`surface-sheet divide-y divide-line/60`) with mono IDs, attendees, durations, and budget ceilings.
+  - Strictly **ZERO glass inside lists**.
+  - Integrated `EmptyState` ("The ledger desk is clear"), `ErrorState`, and `SkeletonLines`.
+- **`EventsListPage.tsx` Directory Redesign**:
+  - Replaced generic card grid with an authentic tabular ledger directory.
+  - Clean metadata chips (mono IDs, attendees, days, budget ceiling in ₹).
+  - Wired `EmptyState` and `ErrorState` components.
+  - 100% responsive down to 360px viewport.
+- **`EventCreationPage.tsx` & `EventTypeTiles.tsx`**:
+  - Extracted format selector into `EventTypeTiles.tsx` featuring 8 illustrated format tiles with custom marks (`HackathonMark`, `CulturalMark`, `WorkshopMark`, `ConferenceMark`, `SportsMark`, `SocialMark`) and active selection states.
+  - Synchronized accessible native `<select>` preserving all `getByLabelText` queries.
+  - Ruled sections (Section A: Identity & Format, Section B: Scale & Attendance, Section C: Venue & Logistics) on solid surface (`bg-paper-raised`).
+  - Page file shrunk from 16.51 KB (445 lines) to 8.11 KB (212 lines).
+- **`NotFoundPage.tsx` Custom 404 Notebook**:
+  - Field notebook illustration with center spine, ruled leaves, dog-ear fold, and sprout bookmark.
+  - Added `Stamp` with `variant="clay"` ("404 UNCHARTED").
+  - Dotgrid background with accessible return actions.
+- **Rule Draw Motion**:
+  - Added `.rule-draw` and `.route-draw` (transform-only `scaleX(0)` to `scaleX(1)`, 500-700ms outExpo) in `index.css` with `prefers-reduced-motion` override.
+
+### 2. Measured Post-Phase 4 Delta
+| Metric | Phase 0 Baseline | Phase 1 | Phase 2 | Phase 3 | Phase 4 Result | Delta vs Baseline |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **Vitest Tests** | 104 passed (9 files) | 104 passed | 104 passed | 104 passed | **104 passed (9 files)** | **0 regressions** |
+| **`tsc --noEmit`** | 0 errors | 0 errors | 0 errors | 0 errors | **0 errors** | **Clean** |
+| **`check:contrast`** | N/A | 33 / 33 passed | 33 / 33 passed | 33 / 33 passed | **33 / 33 passed** | **100% AA compliant** |
+| **Glass inside Lists** | N/A | N/A | N/A | N/A | **0 (Strictly solid)** | **Enforced** |
+| **Hex literals in `.tsx`** | 21 | 0 | 0 | 0 | **0** | **-21 (Clean)** |
+| **`Sparkles` Imports** | 8 | 8 | 7 | 0 | **0** | **-8 (Clean)** |
+| **HomePage Size** | 15.87 KB (357 lines) | 15.87 KB | 15.87 KB | 15.87 KB | **8.15 KB (190 lines)** | -7.72 KB (-49%) |
+| **EventCreationPage Size** | 16.51 KB (445 lines) | 16.51 KB | 16.51 KB | 16.51 KB | **8.11 KB (212 lines)** | -8.40 KB (-51%) |
+| **EventsListPage Size** | 6.28 KB (159 lines) | 6.28 KB | 6.28 KB | 6.28 KB | **6.85 KB (178 lines)** | +0.57 KB (ledger rows) |
+| **NotFoundPage Size** | 3.48 KB (79 lines) | 3.48 KB | 3.48 KB | 3.48 KB | **3.67 KB (111 lines)** | +0.19 KB |
+| **JS Bundle Size** | 513.94 kB | 513.72 kB | 518.50 kB | 518.32 kB | **522.43 kB** | +8.49 kB |
+| **CSS Bundle Size** | 45.96 kB | 48.89 kB | 56.57 kB | 59.41 kB | **60.02 kB** | +14.06 kB (budget <= 70 KB) |
+
+### 3. Decisions Log (Phase 4)
+- **D010**: Extracted `HomeWorkedExample.tsx`, `HomeWorkflowRoute.tsx`, and `EventTypeTiles.tsx` into dedicated, typed subcomponents to uphold the component size limit (< 200 lines) and ensure page files stay thin and modular (< 15 KB).
+- **D011**: Converted the Events Directory from multi-column floating cards to clean ledger rows on solid paper with 1px hairline rules, strictly adhering to the architectural invariant that glass is never placed inside scrolling lists or table rows.
+- **D012**: Replaced all hyphens in numeric differences with the true mathematical minus sign (`−`, unicode `\u2212`) across worked example ledgers.
+
+---
+
 ## Out of Scope Observations
 - Fastify/FastAPI backend has CORS and dev proxy configured on `/api/v1`; when backend is stopped during frontend unit tests, Vitest mocks cleanly isolate API surfaces.
 - Future work could explore code-splitting calculation utilities from wizard pages to further shrink chunk size.
+
 
 
