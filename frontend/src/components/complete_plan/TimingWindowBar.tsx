@@ -113,7 +113,7 @@ export const TimingWindowBar: React.FC<TimingWindowBarProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 mb-4 border-b border-line gap-2">
         <div className="flex items-center space-x-2">
           <Clock className="w-5 h-5 text-moss-600" />
-          <h2 className="font-serif text-base sm:text-lg font-bold text-ink">
+          <h2 className="font-sans text-base sm:text-lg font-bold text-ink">
             Event Timing & Schedule Window
           </h2>
         </div>

@@ -11,7 +11,7 @@
 [data-palette="a"] {
   /* Canvas & Surfaces */
   --c-canvas: 242 239 230;          /* #F2EFE6 */
-  --c-canvas-2: 230 232 216;        /* #E6E8D8 */
+  --c-canvas-2: 236 232 223;        /* #ECE8DF (warm linen paper) */
   --c-surface: 250 246 239;         /* #FAF6EF (paper-raised) */
   --c-surface-inset: 235 228 216;   /* #EBE4D8 */
   --c-highlight: 251 244 238;       /* #FBF4EE */

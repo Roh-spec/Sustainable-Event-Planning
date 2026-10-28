@@ -241,7 +241,7 @@ export const EventTimetable: React.FC<EventTimetableProps> = ({
               {/* Title, description, and tags */}
               <div className="flex-1 min-w-0">
                 <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                  <h4 className="font-serif font-bold text-sm sm:text-base text-ink">
+                  <h4 className="font-sans font-bold text-sm sm:text-base text-ink">
                     {slot.title}
                   </h4>
                   <span

@@ -167,7 +167,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
             <SproutIcon className="w-4 h-4 text-moss-700" />
-            <h3 className="font-serif text-sm sm:text-base font-bold text-ink">
+            <h3 className="font-sans text-sm sm:text-base font-bold text-ink">
               Suggested Equipment & Facility Stations (Requires Venue
               Confirmation)
             </h3>
@@ -202,7 +202,7 @@ export const ResourceManifest: React.FC<ResourceManifestProps> = ({
                 className="p-4 rounded-sheet border border-line bg-paper-raised hover:border-moss-400 transition-all text-xs space-y-1.5 shadow-subtle"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h4 className="font-serif font-bold text-ink text-sm">
+                  <h4 className="font-sans font-bold text-ink text-sm">
                     {eq.name}
                   </h4>
                   <span className="px-2 py-0.5 rounded-control bg-paper-inset text-ink-muted font-bold text-[10px] uppercase tracking-wider flex-shrink-0 border border-line">

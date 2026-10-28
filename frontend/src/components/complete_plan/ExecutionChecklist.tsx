@@ -176,7 +176,7 @@ export const ExecutionChecklist: React.FC<ExecutionChecklistProps> = ({
             <div key={phase} className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-line gap-1">
                 <div>
-                  <h3 className="font-serif text-sm sm:text-base font-bold text-ink flex items-center space-x-2">
+                  <h3 className="font-sans text-sm sm:text-base font-bold text-ink flex items-center space-x-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-moss-600" />
                     <span>{config.label}</span>
                   </h3>

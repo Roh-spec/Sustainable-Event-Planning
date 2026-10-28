@@ -87,10 +87,13 @@ export const FoodLiveReceipt: React.FC<FoodLiveReceiptProps> = ({
               </div>
 
               {isOverBudget && (
-                <div className="mt-2 text-center">
+                <div className="mt-2.5 space-y-1.5 text-center">
                   <Stamp variant="danger" thump>
                     {symbol}{deficitAmount.toLocaleString()} over ceiling
                   </Stamp>
+                  <p className="text-[10px] text-danger-deep font-sans font-medium">
+                    Tip: Adjust meal portions or quotes to stay within ceiling.
+                  </p>
                 </div>
               )}
             </div>

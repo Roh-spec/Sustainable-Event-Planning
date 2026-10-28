@@ -216,7 +216,7 @@ export const PlanComparisonPage: React.FC = () => {
                               </Stamp>
                             ) : null}
                           </div>
-                          <h3 className="font-serif text-base font-bold text-ink mt-2">
+                          <h3 className="font-sans text-sm sm:text-base font-bold text-ink mt-2">
                             {p.name}
                           </h3>
                         </th>

@@ -407,7 +407,7 @@ export const PlansPage: React.FC = () => {
         ) : plans.length === 0 && !isInfeasible ? (
           <div className="p-16 text-center border-2 border-dashed border-line rounded-sheet bg-paper-inset/20">
             <AlertCircle className="w-8 h-8 text-ink-muted mx-auto mb-2" />
-            <h4 className="font-serif text-base font-bold text-ink">
+            <h4 className="font-sans text-base font-bold text-ink">
               No Feasible Plans Generated
             </h4>
             <p className="text-xs text-ink-muted mt-1 max-w-md mx-auto">

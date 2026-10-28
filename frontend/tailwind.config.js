@@ -92,6 +92,7 @@ export default {
           "sans-serif",
         ],
         display: ['"Newsreader"', "Georgia", "Times New Roman", "serif"],
+        serif: ['"Newsreader"', "Georgia", "Times New Roman", "serif"],
         mono: [
           '"JetBrains Mono"',
           "ui-monospace",

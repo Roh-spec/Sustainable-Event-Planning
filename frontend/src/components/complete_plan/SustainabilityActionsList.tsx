@@ -71,7 +71,7 @@ export const SustainabilityActionsList: React.FC<
                 </span>
               </div>
 
-              <h3 className="font-serif font-bold text-ink text-base mb-1.5">
+              <h3 className="font-sans font-bold text-ink text-sm sm:text-base mb-1.5">
                 {act.title}
               </h3>
               <p className="text-xs text-ink-muted leading-relaxed">

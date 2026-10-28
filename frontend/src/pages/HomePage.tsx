@@ -140,7 +140,7 @@ export const HomePage: React.FC = () => {
           </div>
 
           {isLoading ? (
-            <div className="surface-sheet p-6 space-y-3">
+            <div className="surface-sheet p-6 space-y-4 min-h-[220px]">
               <SkeletonLines lines={4} />
             </div>
           ) : fetchError ? (

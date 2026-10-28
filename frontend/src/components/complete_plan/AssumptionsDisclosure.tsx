@@ -77,7 +77,7 @@ export const AssumptionsDisclosure: React.FC<AssumptionsDisclosureProps> = ({
         >
           <div className="flex items-center space-x-2">
             <FileText className="w-4 h-4 text-moss-600" />
-            <span className="font-serif font-bold text-xs sm:text-sm text-ink">
+            <span className="font-sans font-semibold text-xs sm:text-sm text-ink">
               Planning Assumptions & Calculation Factors (
               {planningAssumptions.length} reference parameters)
             </span>
