@@ -104,6 +104,15 @@
     }
   }
 
+  /* Mid-range mobile GPU optimization: Halve blur radius on mobile to lock 60fps */
+  @media (max-width: 767px) {
+    .glass,
+    .glass-strong {
+      backdrop-filter: blur(10px) saturate(130%);
+      -webkit-backdrop-filter: blur(10px) saturate(130%);
+    }
+  }
+
   .surface-sheet {
     @apply bg-paper-raised border border-line rounded-sheet shadow-subtle;
   }

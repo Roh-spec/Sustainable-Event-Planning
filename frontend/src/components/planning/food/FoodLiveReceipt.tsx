@@ -106,7 +106,7 @@ export const FoodLiveReceipt: React.FC<FoodLiveReceiptProps> = ({
       </aside>
 
       {/* Mobile Expanding Glass Bottom Sheet */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-line shadow-modal">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 glass-strong border-t border-line shadow-modal">
         {/* Toggle Bar */}
         <button
           type="button"

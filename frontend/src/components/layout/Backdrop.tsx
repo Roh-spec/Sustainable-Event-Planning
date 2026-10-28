@@ -46,7 +46,7 @@ export const Backdrop: React.FC = () => {
   return (
     <div
       className="backdrop-layer fixed inset-0 overflow-hidden pointer-events-none select-none print:hidden"
-      style={{ zIndex: "var(--z-backdrop, -1)" }}
+      style={{ zIndex: "var(--z-backdrop, -1)", transform: "translate3d(0, 0, 0)" }}
       aria-hidden="true"
     >
       {/* Organic Blobs Layer */}

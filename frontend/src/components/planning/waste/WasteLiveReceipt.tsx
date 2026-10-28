@@ -103,7 +103,7 @@ export const WasteLiveReceipt: React.FC<WasteLiveReceiptProps> = ({
       </aside>
 
       {/* Mobile Expanding Glass Bottom Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 glass-strong border-t border-line shadow-modal">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-30 glass-strong border-t border-line shadow-modal">
         <button
           type="button"
           onClick={() => setMobileExpanded(!mobileExpanded)}
