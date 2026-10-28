@@ -64,12 +64,12 @@ export const DumbbellChart: React.FC<DumbbellChartProps> = ({
           strokeLinecap="round"
         />
 
-        {/* Spend endpoint (Clay = costs more) */}
+        {/* Spend endpoint (Danger if over ceiling, Clay if within budget) */}
         <circle
           cx={x1}
           cy={y}
           r={compact ? "4.5" : "5.5"}
-          className="fill-clay-700 stroke-paper-raised"
+          className={`${isOverBudget ? "fill-danger-deep" : "fill-clay-700"} stroke-paper-raised`}
           strokeWidth="2"
         />
 
@@ -102,10 +102,10 @@ export const DumbbellChart: React.FC<DumbbellChartProps> = ({
         <div className="flex justify-between items-center text-[10px] font-mono text-ink-muted pt-1 border-t border-line/40 mt-1">
           <span className="flex items-center gap-1.5">
             <span
-              className="inline-block w-2 h-2 rounded-full bg-clay-700 flex-shrink-0"
+              className={`inline-block w-2 h-2 rounded-full ${isOverBudget ? "bg-danger-deep" : "bg-clay-700"} flex-shrink-0`}
               aria-hidden="true"
             />
-            <span>
+            <span className={isOverBudget ? "text-danger-deep font-semibold" : ""}>
               Spend ({clampedSpend}%{isOverBudget ? " over ceiling" : ""})
             </span>
           </span>

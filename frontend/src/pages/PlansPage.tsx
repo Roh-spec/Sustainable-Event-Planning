@@ -341,7 +341,7 @@ export const PlansPage: React.FC = () => {
         {error && (
           <div
             role="alert"
-            className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm"
+            className="mb-6 p-4 rounded-control bg-danger-bg border border-danger-border text-danger-deep text-sm"
           >
             {error}
           </div>

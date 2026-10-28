@@ -12,16 +12,17 @@ export interface WorkflowStep {
   step: string;
   label: string;
   desc: string;
+  outputTag: string;
   icon: React.ComponentType<{ className?: string; size?: number }>;
 }
 
 const WORKFLOW_STEPS: WorkflowStep[] = [
-  { step: "01", label: "Event", desc: "Type, count & duration", icon: HackathonMark },
-  { step: "02", label: "Budget", desc: "Hard ceiling in ₹", icon: ScaleIcon },
-  { step: "03", label: "Limits", desc: "Must-haves & dietary", icon: SproutIcon },
-  { step: "04", label: "Food", desc: "Meal quantities & surplus", icon: PlateIcon },
-  { step: "05", label: "Waste", desc: "Disposables vs reusable", icon: BinIcon },
-  { step: "06", label: "Plans", desc: "Side-by-side ledger", icon: LedgerIcon },
+  { step: "01", label: "Event", desc: "Type, count & duration", outputTag: "Headcount & Days", icon: HackathonMark },
+  { step: "02", label: "Budget", desc: "Hard ceiling in ₹", outputTag: "Immutable Ceiling", icon: ScaleIcon },
+  { step: "03", label: "Limits", desc: "Must-haves & dietary", outputTag: "Policy Rules", icon: SproutIcon },
+  { step: "04", label: "Food", desc: "Meal quantities & surplus", outputTag: "Portions & Surplus", icon: PlateIcon },
+  { step: "05", label: "Waste", desc: "Disposables vs reusable", outputTag: "Packaging Counts", icon: BinIcon },
+  { step: "06", label: "Plans", desc: "Side-by-side ledger", outputTag: "Trade-Off Ledger", icon: LedgerIcon },
 ];
 
 export interface HomeWorkflowRouteProps {
@@ -91,6 +92,9 @@ export const HomeWorkflowRoute: React.FC<HomeWorkflowRouteProps> = ({
                   <p className="text-xs text-ink-muted mt-0.5 leading-snug">
                     {item.desc}
                   </p>
+                  <span className="mt-2 inline-block font-mono text-[9px] font-bold uppercase tracking-wider text-moss-800 bg-paper-inset/70 border border-line px-1.5 py-0.5 rounded-[2px]">
+                    {item.outputTag}
+                  </span>
                 </div>
               </li>
             );
