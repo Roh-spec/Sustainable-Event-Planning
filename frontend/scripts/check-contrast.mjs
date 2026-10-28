@@ -28,9 +28,10 @@ const palettes = {
     surfaceInset: [235, 228, 216], // #EBE4D8
     ink: [30, 42, 35], // #1E2A23
     inkMuted: [77, 90, 82], // #4D5A52
-    inkFaint: [103, 95, 90], // #675F5A (accessible ink-faint replacement)
+    inkFaint: [88, 80, 75], // #58504B (enhanced accessible ink-faint)
     primaryDeep: [47, 74, 58], // #2F4A3A (moss text & active)
-    accentDeep: [143, 74, 44], // #8F4A2C (clay - the only clay text)
+    accentDeep: [143, 74, 44], // #8F4A2C (clay - warm badges only)
+    dangerDeep: [155, 35, 36], // #9B2324 (danger deficit text)
     white: [255, 255, 255],
     primaryButtonBg: [47, 74, 58],
     // Known non-text colors to document/check
@@ -46,6 +47,7 @@ const palettes = {
     inkFaint: [134, 158, 150], // #869E96 (passes 4.76:1 on dark surface)
     primaryDeep: [134, 209, 178], // #86D1B2 (mint)
     accentDeep: [240, 178, 122], // #F0B27A (amber)
+    dangerDeep: [248, 113, 113], // #F87171 (mint/danger)
     white: [232, 242, 236],
     primaryButtonBg: [36, 80, 72],
   },
@@ -58,6 +60,7 @@ const palettes = {
     inkFaint: [94, 105, 102], // #5E6966 (passes 4.5:1 on canvas)
     primaryDeep: [30, 80, 77], // #1E504D (teal deep)
     accentDeep: [154, 69, 36], // #9A4524 (terracotta deep text)
+    dangerDeep: [153, 27, 27], // #991B1B (crimson danger)
     white: [255, 255, 255],
     primaryButtonBg: [30, 80, 77],
     // Known non-text
@@ -89,6 +92,8 @@ for (const [paletteName, colors] of Object.entries(palettes)) {
     { name: "primary-deep on surface", fg: colors.primaryDeep, bg: colors.surface, min: 4.5 },
     { name: "accent-deep on canvas", fg: colors.accentDeep, bg: colors.canvas, min: 4.5 },
     { name: "accent-deep on surface", fg: colors.accentDeep, bg: colors.surface, min: 4.5 },
+    { name: "danger-deep on canvas", fg: colors.dangerDeep, bg: colors.canvas, min: 4.5 },
+    { name: "danger-deep on surface", fg: colors.dangerDeep, bg: colors.surface, min: 4.5 },
     { name: "white text on primary button", fg: colors.white, bg: colors.primaryButtonBg, min: 4.5 },
   ];
 

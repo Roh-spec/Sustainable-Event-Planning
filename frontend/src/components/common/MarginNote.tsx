@@ -11,7 +11,7 @@ export interface MarginNoteProps {
 
 /**
  * MarginNote Component:
- * Field-notebook style marginalia rendered in Caveat handwriting with pen mark or stamp.
+ * Field-notebook style marginalia rendered with authentic technical editorial styling.
  * Rule: Maximum 1-2 annotations per page to preserve editorial restraint.
  */
 export const MarginNote: React.FC<MarginNoteProps> = ({
@@ -25,29 +25,29 @@ export const MarginNote: React.FC<MarginNoteProps> = ({
 
   return (
     <aside
-      className={`relative my-4 border-l-2 pl-4 py-2 transition-colors ${
+      className={`relative my-4 border-l-2 pl-3.5 py-1.5 transition-colors ${
         isWarning
-          ? "border-clay-700 bg-clay-50/50"
-          : "border-moss-700 bg-moss-50/40"
+          ? "border-danger-deep bg-danger-bg/50"
+          : "border-moss-700 bg-moss-50/50"
       } ${className}`}
       aria-label="Margin note"
     >
-      <div className="flex items-center space-x-2 mb-1">
+      <div className="flex items-center space-x-2 mb-0.5">
         {stampText ? (
-          <Stamp variant={isWarning ? "clay" : "moss"}>{stampText}</Stamp>
+          <Stamp variant={isWarning ? "danger" : "moss"}>{stampText}</Stamp>
         ) : (
           <span
-            className={`font-handwriting text-xl font-semibold tracking-wide ${
-              isWarning ? "text-clay-700" : "text-moss-800"
+            className={`font-mono text-[10px] font-bold uppercase tracking-[0.16em] ${
+              isWarning ? "text-danger-deep" : "text-moss-800"
             }`}
           >
-            {label} ✍
+            {label}
           </span>
         )}
       </div>
       <div
         className={`text-xs leading-relaxed font-sans ${
-          isWarning ? "text-ink" : "text-ink-muted"
+          isWarning ? "text-danger-deep" : "text-ink-muted"
         }`}
       >
         {children}

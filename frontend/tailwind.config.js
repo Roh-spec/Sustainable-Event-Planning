@@ -41,6 +41,12 @@ export default {
           DEFAULT: withOpacity("--c-accent"),
           deep: withOpacity("--c-accent-deep"),
         },
+        danger: {
+          DEFAULT: withOpacity("--c-danger"),
+          deep: withOpacity("--c-danger-deep"),
+          bg: withOpacity("--c-danger-bg"),
+          border: withOpacity("--c-danger-border"),
+        },
 
         // Backward-Compatible Aliases mapped to CSS Variables
         paper: {
@@ -93,7 +99,6 @@ export default {
           "Menlo",
           "monospace",
         ],
-        handwriting: ['"Caveat"', "cursive"],
       },
       fontSize: {
         "display-xl": [

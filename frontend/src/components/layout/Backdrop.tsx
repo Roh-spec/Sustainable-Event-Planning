@@ -61,11 +61,12 @@ export const Backdrop: React.FC = () => {
         {/* Blob 1: Primary tone, upper-right */}
         <div
           className={`absolute -top-24 -right-24 w-[580px] h-[520px] transition-transform ${
-            reducedMotion ? "" : "blob-drift-1"
+            isMobile || reducedMotion ? "" : "blob-drift-1"
           }`}
           style={{
-            filter: isMobile ? "blur(60px)" : "blur(80px)",
-            opacity: 0.62,
+            filter: isMobile ? "blur(24px)" : "blur(36px)",
+            opacity: 0.16,
+            willChange: isMobile ? "auto" : "transform",
           }}
         >
           <svg viewBox="0 0 580 520" className="w-full h-full">
@@ -79,11 +80,12 @@ export const Backdrop: React.FC = () => {
         {/* Blob 2: Accent tone, mid/lower-left */}
         <div
           className={`absolute top-[35%] -left-28 w-[540px] h-[500px] transition-transform ${
-            reducedMotion ? "" : "blob-drift-2"
+            isMobile || reducedMotion ? "" : "blob-drift-2"
           }`}
           style={{
-            filter: isMobile ? "blur(60px)" : "blur(85px)",
-            opacity: 0.58,
+            filter: isMobile ? "blur(24px)" : "blur(36px)",
+            opacity: 0.12,
+            willChange: isMobile ? "auto" : "transform",
           }}
         >
           <svg viewBox="0 0 540 500" className="w-full h-full">
@@ -101,8 +103,9 @@ export const Backdrop: React.FC = () => {
               reducedMotion ? "" : "blob-drift-3"
             }`}
             style={{
-              filter: "blur(70px)",
-              opacity: 0.65,
+              filter: "blur(28px)",
+              opacity: 0.15,
+              willChange: "transform",
             }}
           >
             <svg viewBox="0 0 500 460" className="w-full h-full">

@@ -79,7 +79,7 @@ export const FoodLiveReceipt: React.FC<FoodLiveReceiptProps> = ({
                 <span className="text-ink-muted">Budget Balance</span>
                 <span
                   className={`font-bold tabular-nums ${
-                    isOverBudget ? "text-clay-800" : "text-moss-800"
+                    isOverBudget ? "text-danger-deep" : "text-moss-800"
                   }`}
                 >
                   {isOverBudget ? `\u2212${symbol}${deficitAmount.toLocaleString()}` : `${symbol}${remainingBudget.toLocaleString()}`}
@@ -88,7 +88,7 @@ export const FoodLiveReceipt: React.FC<FoodLiveReceiptProps> = ({
 
               {isOverBudget && (
                 <div className="mt-2 text-center">
-                  <Stamp variant="clay" thump>
+                  <Stamp variant="danger" thump>
                     {symbol}{deficitAmount.toLocaleString()} over ceiling
                   </Stamp>
                 </div>
@@ -143,11 +143,11 @@ export const FoodLiveReceipt: React.FC<FoodLiveReceiptProps> = ({
               isTotal
               label="Remaining Ceiling"
               value={`${isOverBudget ? "\u2212" : ""}${symbol}${deficitAmount.toLocaleString()}`}
-              deltaType={isOverBudget ? "clay" : "moss"}
+              deltaType={isOverBudget ? "danger" : "moss"}
             />
             {isOverBudget && (
               <div className="pt-2 text-center">
-                <Stamp variant="clay" thump>
+                <Stamp variant="danger" thump>
                   {symbol}{deficitAmount.toLocaleString()} over ceiling
                 </Stamp>
               </div>

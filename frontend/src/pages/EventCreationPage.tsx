@@ -129,9 +129,9 @@ export const EventCreationPage: React.FC = () => {
         {error && (
           <div
             role="alert"
-            className="mb-8 p-4 rounded-control bg-clay-50 border-l-2 border-clay-700 text-clay-900 text-xs font-mono flex items-start space-x-3"
+            className="mb-8 p-4 rounded-control bg-danger-bg border-l-2 border-danger-deep text-danger-deep text-xs font-mono flex items-start space-x-3"
           >
-            <AlertCircle className="w-4 h-4 text-clay-700 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-danger-deep flex-shrink-0 mt-0.5" />
             <div>
               <span className="font-bold uppercase tracking-wider">Validation Error: </span>
               <span>{error}</span>
@@ -149,7 +149,7 @@ export const EventCreationPage: React.FC = () => {
                 htmlFor="event-name"
                 className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
               >
-                Event Name <span className="text-clay-700">*</span>
+                Event Name <span className="text-danger-deep">*</span>
               </label>
               <input
                 type="text"
@@ -157,7 +157,7 @@ export const EventCreationPage: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Annual College Tech Fest 2026"
-                className="w-full px-3.5 py-2.5 rounded-control border border-line bg-paper text-ink text-sm font-medium focus:border-moss-700 focus:outline-none placeholder:text-ink-muted/50"
+                className="w-full px-3.5 py-2.5 rounded-control border border-line bg-paper text-ink text-sm font-medium focus:border-moss-700 focus:outline-none placeholder:text-ink-muted/80"
                 required
               />
             </div>
@@ -175,7 +175,7 @@ export const EventCreationPage: React.FC = () => {
                   htmlFor="expected-attendees"
                   className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
                 >
-                  Expected Attendees <span className="text-clay-700">*</span>
+                  Expected Attendees <span className="text-danger-deep">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
@@ -189,7 +189,7 @@ export const EventCreationPage: React.FC = () => {
                     value={expectedAttendees}
                     onChange={(e) => setExpectedAttendees(e.target.value)}
                     placeholder="e.g. 150"
-                    className="w-full pl-9 pr-16 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
+                    className="no-spin w-full pl-9 pr-16 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none placeholder:text-ink-muted/80"
                     required
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-mono text-ink-muted">
@@ -206,7 +206,7 @@ export const EventCreationPage: React.FC = () => {
                   htmlFor="duration-days"
                   className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1.5"
                 >
-                  Duration (Days) <span className="text-clay-700">*</span>
+                  Duration (Days) <span className="text-danger-deep">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-muted">
@@ -219,7 +219,7 @@ export const EventCreationPage: React.FC = () => {
                     max="30"
                     value={durationDays}
                     onChange={(e) => setDurationDays(e.target.value)}
-                    className="w-full pl-9 pr-14 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
+                    className="no-spin w-full pl-9 pr-14 py-2.5 rounded-control border border-line bg-paper text-ink font-mono text-sm font-semibold focus:border-moss-700 focus:outline-none"
                     required
                   />
                   <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-xs font-mono text-ink-muted">

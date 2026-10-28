@@ -50,7 +50,7 @@ export const FoodPlanningPage: React.FC = () => {
   } = useFoodPlanningState();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-28 sm:pb-32 lg:pb-8">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 pb-48 sm:pb-52 lg:pb-10">
       <WizardProgress currentStep={4} eventId={event?.id || Number(eventId)} />
       <EventSummaryBanner event={event} budget={budget} />
 
@@ -87,9 +87,9 @@ export const FoodPlanningPage: React.FC = () => {
           {validationError && (
             <div
               role="alert"
-              className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
+              className="mb-6 p-4 rounded-control bg-danger-bg border border-danger-border text-danger-deep text-sm flex items-start space-x-2.5"
             >
-              <AlertCircle className="w-5 h-5 text-clay-700 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-danger-deep flex-shrink-0 mt-0.5" />
               <span>{validationError}</span>
             </div>
           )}
@@ -97,9 +97,9 @@ export const FoodPlanningPage: React.FC = () => {
           {apiError && (
             <div
               role="alert"
-              className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-900 text-sm flex items-start space-x-2.5"
+              className="mb-6 p-4 rounded-control bg-danger-bg border border-danger-border text-danger-deep text-sm flex items-start space-x-2.5"
             >
-              <AlertCircle className="w-5 h-5 text-clay-700 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-danger-deep flex-shrink-0 mt-0.5" />
               <span>{apiError}</span>
             </div>
           )}

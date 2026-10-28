@@ -5,7 +5,7 @@ export interface LedgerRowProps {
   value: React.ReactNode;
   unit?: string;
   delta?: string;
-  deltaType?: "moss" | "clay" | "neutral";
+  deltaType?: "moss" | "clay" | "danger" | "neutral";
   isTotal?: boolean;
   isHero?: boolean;
   sublabel?: string;
@@ -24,8 +24,10 @@ export const LedgerRow: React.FC<LedgerRowProps> = ({
   className = "",
 }) => {
   const deltaColor =
-    deltaType === "moss"
-      ? "text-moss-700"
+    deltaType === "danger"
+      ? "text-danger-deep font-semibold"
+      : deltaType === "moss"
+      ? "text-moss-700 font-semibold"
       : deltaType === "clay"
       ? "text-clay-700"
       : "text-ink-muted";

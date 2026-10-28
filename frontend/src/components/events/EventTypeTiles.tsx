@@ -90,7 +90,7 @@ export const EventTypeTiles: React.FC<EventTypeTilesProps> = ({
           htmlFor="event-type"
           className="block text-xs font-mono font-bold uppercase tracking-wider text-ink"
         >
-          Event Type <span className="text-clay-700">*</span>
+          Event Type <span className="text-danger-deep">*</span>
         </label>
         <span className="text-[11px] font-mono text-ink-muted">
           format template
@@ -138,7 +138,7 @@ export const EventTypeTiles: React.FC<EventTypeTilesProps> = ({
                 )}
               </div>
               <div>
-                <span className="text-xs font-bold text-ink block font-display">
+                <span className="text-xs font-semibold text-ink block font-sans">
                   {tile.label}
                 </span>
                 <span className="text-[10px] text-ink-muted line-clamp-1 mt-0.5 font-sans">

@@ -180,7 +180,7 @@ export const ConstraintsPage: React.FC = () => {
               id="priority-heading"
               className="block text-xs font-mono font-bold uppercase tracking-wider text-ink"
             >
-              What's your main priority? <span className="text-clay-700">*</span>
+              What's your main priority? <span className="text-danger-deep">*</span>
             </h2>
             <p className="text-xs text-ink-muted mt-0.5">
               Choose the primary optimization focus for candidate plans.
@@ -288,9 +288,9 @@ export const ConstraintsPage: React.FC = () => {
               {error && (
                 <div
                   role="alert"
-                  className="mb-4 p-3 rounded-control bg-clay-50 border-l-2 border-clay-700 text-clay-900 text-xs font-mono flex items-center space-x-2"
+                  className="mb-4 p-3 rounded-control bg-danger-bg border-l-2 border-danger-deep text-danger-deep text-xs font-mono flex items-center space-x-2"
                 >
-                  <AlertCircle className="w-4 h-4 text-clay-700" />
+                  <AlertCircle className="w-4 h-4 text-danger-deep" />
                   <span>{error}</span>
                 </div>
               )}
@@ -301,7 +301,7 @@ export const ConstraintsPage: React.FC = () => {
                     htmlFor="preference-desc-input"
                     className="block text-xs font-mono font-bold uppercase tracking-wider text-ink mb-1"
                   >
-                    Short Description <span className="text-clay-700">*</span>
+                    Short Description <span className="text-danger-deep">*</span>
                   </label>
                   <input
                     type="text"
@@ -423,7 +423,7 @@ export const ConstraintsPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => removeConstraint(index)}
-                      className="text-ink-muted hover:text-clay-700 p-1 rounded-control hover:bg-clay-50 transition-colors focus:outline-none flex-shrink-0"
+                      className="text-ink-muted hover:text-danger-deep p-1 rounded-control hover:bg-danger-bg transition-colors focus:outline-none flex-shrink-0"
                       aria-label="Remove preference"
                     >
                       <Trash2 className="w-4 h-4" />

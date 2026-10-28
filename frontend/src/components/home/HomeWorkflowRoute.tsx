@@ -84,7 +84,7 @@ export const HomeWorkflowRoute: React.FC<HomeWorkflowRouteProps> = ({
                     <span className="font-mono text-[11px] font-bold text-moss-700">
                       {item.step}
                     </span>
-                    <h3 className="font-display text-base font-semibold text-ink">
+                    <h3 className="font-sans text-sm font-bold text-ink tracking-tight">
                       {item.label}
                     </h3>
                   </div>

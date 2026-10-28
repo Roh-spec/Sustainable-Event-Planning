@@ -38,15 +38,15 @@ export const DevPaletteSwitcher: React.FC = () => {
   return (
     <aside
       aria-label="Development palette switcher"
-      className="fixed bottom-3 right-3 z-50 bg-paper-raised/90 backdrop-blur-md border border-line rounded-control p-1.5 shadow-subtle flex items-center space-x-1 text-[11px] font-mono print:hidden"
+      className="fixed bottom-3 right-3 z-50 bg-paper-raised/95 backdrop-blur-md border border-line rounded-control p-1.5 shadow-subtle flex items-center space-x-1 text-xs font-mono print:hidden"
     >
-      <span className="text-ink-muted px-1.5 uppercase tracking-wider font-semibold">
+      <span className="text-ink-muted px-2 uppercase tracking-wider font-semibold text-[11px]">
         Palette:
       </span>
       <button
         type="button"
         onClick={() => applyPalette("a")}
-        className={`px-2 py-0.5 rounded-control transition-colors ${
+        className={`min-h-[44px] min-w-[44px] px-2.5 py-1.5 rounded-control transition-colors flex items-center justify-center ${
           activePalette === "a"
             ? "bg-moss-700 text-paper-raised font-bold"
             : "text-ink hover:bg-paper-inset"
@@ -58,7 +58,7 @@ export const DevPaletteSwitcher: React.FC = () => {
       <button
         type="button"
         onClick={() => applyPalette("b")}
-        className={`px-2 py-0.5 rounded-control transition-colors ${
+        className={`min-h-[44px] min-w-[44px] px-2.5 py-1.5 rounded-control transition-colors flex items-center justify-center ${
           activePalette === "b"
             ? "bg-moss-700 text-paper-raised font-bold"
             : "text-ink hover:bg-paper-inset"
@@ -70,7 +70,7 @@ export const DevPaletteSwitcher: React.FC = () => {
       <button
         type="button"
         onClick={() => applyPalette("c")}
-        className={`px-2 py-0.5 rounded-control transition-colors ${
+        className={`min-h-[44px] min-w-[44px] px-2.5 py-1.5 rounded-control transition-colors flex items-center justify-center ${
           activePalette === "c"
             ? "bg-moss-700 text-paper-raised font-bold"
             : "text-ink hover:bg-paper-inset"

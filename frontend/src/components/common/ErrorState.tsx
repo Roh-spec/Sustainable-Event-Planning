@@ -22,17 +22,17 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   return (
     <div
       role="alert"
-      className={`surface-sheet dotgrid p-8 sm:p-10 border border-clay-300/80 bg-paper-raised flex flex-col items-center text-center relative overflow-hidden ${className}`}
+      className={`surface-sheet dotgrid p-8 sm:p-10 border border-danger-border bg-paper-raised flex flex-col items-center text-center relative overflow-hidden ${className}`}
     >
       <div className="mb-3">
-        <Stamp variant="clay">DISCREPANCY</Stamp>
+        <Stamp variant="danger">DISCREPANCY</Stamp>
       </div>
 
-      <div className="w-12 h-12 mb-3 rounded-full bg-clay-50 border border-clay-300 flex items-center justify-center text-clay-700">
+      <div className="w-12 h-12 mb-3 rounded-full bg-danger-bg border border-danger-border flex items-center justify-center text-danger-deep">
         <AlertCircle className="w-6 h-6 stroke-[1.75]" />
       </div>
 
-      <h3 className="font-display text-lg font-semibold text-ink mb-1">
+      <h3 className="font-sans text-lg font-bold text-ink mb-1">
         {title}
       </h3>
       <p className="text-xs sm:text-sm text-ink-muted max-w-md mb-6 leading-relaxed">

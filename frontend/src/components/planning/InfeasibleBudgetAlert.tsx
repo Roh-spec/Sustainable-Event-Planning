@@ -45,18 +45,18 @@ export const InfeasibleBudgetAlert: React.FC<InfeasibleBudgetAlertProps> = ({
   };
 
   return (
-    <div className="surface-sheet p-5 sm:p-6 mb-8 border border-clay-700/60 bg-paper-raised relative">
+    <div className="surface-sheet p-5 sm:p-6 mb-8 border border-danger-border bg-paper-raised relative">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 mb-4 border-b border-line">
         <div className="flex items-center space-x-3">
-          <span className="stamp-clay">INFEASIBLE_BUDGET</span>
-          <span className="font-handwriting text-lg text-clay-800 font-semibold">
-            organizer action needed ✍
+          <span className="stamp-danger">INFEASIBLE_BUDGET</span>
+          <span className="font-mono text-xs uppercase font-bold tracking-wider text-danger-deep">
+            Action required
           </span>
         </div>
       </div>
 
       <div>
-        <h3 className="text-xl font-display font-semibold text-ink">
+        <h3 className="text-xl font-sans font-bold text-ink">
           Current Budget is Insufficient for Feasible Planning
         </h3>
         <p className="text-sm text-ink-muted mt-1 max-w-2xl">
@@ -75,15 +75,15 @@ export const InfeasibleBudgetAlert: React.FC<InfeasibleBudgetAlertProps> = ({
             <span className="text-ink-muted uppercase font-semibold">Minimum Feasible Budget</span>
             <span className="text-moss-800 font-semibold tabular-nums text-sm">{formatCurrency(minFeasibleNum)}</span>
           </div>
-          <div className="flex justify-between items-baseline py-2 font-mono text-xs text-clay-800 font-bold">
+          <div className="flex justify-between items-baseline py-2 font-mono text-xs text-danger-deep font-bold">
             <span className="uppercase">Budget Deficit</span>
             <span className="tabular-nums text-sm">+{formatCurrency(deficitNum)}</span>
           </div>
         </div>
 
-        <div className="border-l-2 border-clay-700 pl-3 py-1 bg-clay-50/60 text-xs text-clay-900 mb-4 space-y-1">
+        <div className="border-l-2 border-danger-deep pl-3 py-1 bg-danger-bg text-xs text-danger-deep mb-4 space-y-1">
           <p className="font-semibold flex items-center space-x-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-clay-700 flex-shrink-0" />
+            <AlertCircle className="w-3.5 h-3.5 text-danger-deep flex-shrink-0" />
             <span>Explicit Organiser Action Required:</span>
           </p>
           <p>
@@ -117,7 +117,7 @@ export const InfeasibleBudgetAlert: React.FC<InfeasibleBudgetAlertProps> = ({
                 step="100"
                 value={proposedBudget}
                 onChange={(e) => setProposedBudget(e.target.value)}
-                className="input-ruled pl-8 text-sm font-semibold"
+                className="input-ruled no-spin pl-8 text-sm font-semibold"
                 required
               />
             </div>

@@ -32,7 +32,7 @@ export const Header: React.FC = () => {
               <span className="font-display text-2xl font-bold tracking-tight text-ink">
                 EcoPlan
               </span>
-              <span className="hidden sm:inline font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-moss-800 border-l border-line-strong pl-2">
+              <span className="hidden sm:inline font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-moss-900 border-l border-line-strong pl-2">
                 Field notes
               </span>
             </div>

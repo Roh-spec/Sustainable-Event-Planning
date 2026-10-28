@@ -1,5 +1,4 @@
 import React from "react";
-import { GlassPanel } from "../common/GlassPanel";
 import { Stamp } from "../common/Stamp";
 import { MarginNote } from "../common/MarginNote";
 import { AnimatedCounter } from "../common/AnimatedCounter";
@@ -19,17 +18,16 @@ export const HomeWorkedExample: React.FC<HomeWorkedExampleProps> = ({
   className = "",
 }) => {
   return (
-    <GlassPanel
-      variant="strong"
-      className={`p-6 relative overflow-hidden ${className}`}
+    <div
+      className={`surface-sheet p-6 relative overflow-hidden border border-line-strong shadow-subtle ${className}`}
     >
       {/* Header with Case Study Title and Stamp */}
       <div className="flex items-start justify-between border-b border-line pb-3 mb-4">
         <div>
-          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-moss-700 block">
+          <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-moss-800 block">
             Worked Case Study
           </span>
-          <h3 className="font-display text-xl font-semibold text-ink">
+          <h3 className="font-sans text-lg font-bold text-ink">
             150-Person Hackathon
           </h3>
         </div>
@@ -41,8 +39,9 @@ export const HomeWorkedExample: React.FC<HomeWorkedExampleProps> = ({
       {/* Hero Metric Anchor */}
       <div className="bg-paper p-4 rounded-control border border-line/70 mb-4">
         <div className="flex items-baseline space-x-1.5">
-          <span className="font-display text-display-xl text-moss-700 font-bold tabular-nums">
-            −<AnimatedCounter value={26} duration={900} />
+          <span className="inline-flex items-baseline font-display text-display-xl text-moss-700 font-bold tabular-nums tracking-tight">
+            <span>−</span>
+            <AnimatedCounter value={26} duration={900} />
           </span>
           <span className="font-display text-2xl text-ink font-semibold">kg</span>
         </div>
@@ -98,6 +97,6 @@ export const HomeWorkedExample: React.FC<HomeWorkedExampleProps> = ({
         With ₹4,300 allocated toward washable thalis and compostable bin liners,
         this hackathon would eliminate 530 disposables without breaking the ceiling.
       </MarginNote>
-    </GlassPanel>
+    </div>
   );
 };

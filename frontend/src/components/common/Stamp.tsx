@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface StampProps {
-  variant?: "clay" | "moss" | "faint";
+  variant?: "clay" | "moss" | "faint" | "danger";
   children: React.ReactNode;
   thump?: boolean;
   className?: string;
@@ -19,7 +19,9 @@ export const Stamp: React.FC<StampProps> = ({
   className = "",
 }) => {
   const variantClass =
-    variant === "clay"
+    variant === "danger"
+      ? "stamp-danger"
+      : variant === "clay"
       ? "stamp-clay"
       : variant === "faint"
       ? "stamp-faint"

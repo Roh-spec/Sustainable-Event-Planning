@@ -66,39 +66,39 @@ export const HomePage: React.FC = () => {
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link to="/events/new" className="btn-primary px-6 py-3 text-sm">
+              <Link to="/events/new" className="btn-primary px-7 py-3.5 text-sm sm:text-base shadow-sm font-semibold tracking-tight">
                 <span>Start planning</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to="/events" className="btn-ghost px-6 py-3 text-sm">
+              <Link to="/events" className="inline-flex items-center justify-center gap-2 rounded-control border border-line bg-paper-raised/40 px-5 py-3 text-sm font-medium text-ink-muted transition-colors hover:text-ink hover:border-line-strong hover:bg-paper-raised">
                 <Calendar className="w-4 h-4 text-moss-700" />
                 <span>Browse events</span>
               </Link>
             </div>
 
             {/* Core Ledger Principles */}
-            <div className="pt-6 border-t border-line grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <span className="font-mono text-xs uppercase font-bold text-ink block mb-0.5">
-                  Physical Units
+            <div className="pt-6 border-t border-line grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="space-y-1">
+                <span className="font-mono text-[11px] font-bold text-moss-800 tracking-wider uppercase block">
+                  01 / Physical Units
                 </span>
                 <p className="text-xs text-ink-muted leading-relaxed">
-                  Kg surplus, disposable counts, rupee spends. Never flattened
+                  Kg surplus, disposable counts, and rupee spends. Never flattened
                   into composite grades.
                 </p>
               </div>
-              <div>
-                <span className="font-mono text-xs uppercase font-bold text-ink block mb-0.5">
-                  Strict Ceilings
+              <div className="space-y-1">
+                <span className="font-mono text-[11px] font-bold text-moss-800 tracking-wider uppercase block">
+                  02 / Strict Ceilings
                 </span>
                 <p className="text-xs text-ink-muted leading-relaxed">
                   If a plan exceeds your ceiling, the ledger stamps it. No
                   hidden budget creep.
                 </p>
               </div>
-              <div>
-                <span className="font-mono text-xs uppercase font-bold text-ink block mb-0.5">
-                  Clear Trade-Offs
+              <div className="space-y-1">
+                <span className="font-mono text-[11px] font-bold text-moss-800 tracking-wider uppercase block">
+                  03 / Clear Trade-Offs
                 </span>
                 <p className="text-xs text-ink-muted leading-relaxed">
                   Know exactly what ₹1,000 extra buys you in reduced single-use

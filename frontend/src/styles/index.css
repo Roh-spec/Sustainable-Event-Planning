@@ -117,11 +117,22 @@
   }
 
   .label-kicker {
-    @apply text-[11px] font-semibold uppercase tracking-[0.16em] text-moss-700;
+    @apply text-[11px] font-semibold uppercase tracking-[0.16em] text-moss-800;
   }
 
   .input-ruled {
     @apply w-full bg-transparent border-0 border-b border-line px-1 py-2 min-h-[44px] text-ink font-mono text-base transition-colors focus:border-moss-700 focus:outline-none focus:ring-0;
+  }
+
+  /* Accessible number input without native spin arrows overlapping suffix tags */
+  .no-spin::-webkit-inner-spin-button,
+  .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .no-spin {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
 }
 
@@ -143,46 +154,62 @@
 
 .stamp-clay {
   display: inline-block;
-  border: 2px solid rgb(var(--c-accent-deep));
+  border: 1.5px solid rgb(var(--c-accent-deep));
   color: rgb(var(--c-accent-deep));
   background-color: rgb(var(--c-highlight));
-  padding: 0.2rem 0.55rem;
+  padding: 0.15rem 0.5rem;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transform: rotate(-2deg);
+  letter-spacing: 0.12em;
+  border-radius: 2px;
+}
+
+.stamp-danger {
+  display: inline-block;
+  border: 1.5px solid rgb(var(--c-danger-deep));
+  color: rgb(var(--c-danger-deep));
+  background-color: rgb(var(--c-danger-bg));
+  padding: 0.15rem 0.5rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
   border-radius: 2px;
 }
 
 .stamp-moss {
   display: inline-block;
-  border: 2px solid rgb(var(--c-primary-deep));
+  border: 1.5px solid rgb(var(--c-primary-deep));
   color: rgb(var(--c-primary-deep));
   background-color: rgb(var(--c-highlight));
-  padding: 0.2rem 0.55rem;
+  padding: 0.15rem 0.5rem;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transform: rotate(-2deg);
+  letter-spacing: 0.12em;
   border-radius: 2px;
 }
 
 .stamp-faint {
   display: inline-block;
-  border: 1.5px solid rgb(var(--c-line-strong));
+  border: 1px solid rgb(var(--c-line-strong));
   color: rgb(var(--c-ink-muted));
   background-color: rgb(var(--c-surface));
-  padding: 0.2rem 0.55rem;
+  padding: 0.15rem 0.5rem;
   font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   border-radius: 2px;
+}
+
+.stamp-tilted {
+  transform: rotate(-2deg);
 }
 
 @keyframes stampThump {

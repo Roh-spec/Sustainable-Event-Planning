@@ -19,13 +19,19 @@
   /* Ink / Typography */
   --c-ink: 30 42 35;                /* #1E2A23 */
   --c-ink-muted: 77 90 82;          /* #4D5A52 */
-  --c-ink-faint: 103 95 90;         /* #675F5A (WCAG AA compliant) */
+  --c-ink-faint: 88 80 75;          /* #58504B (WCAG AA compliant >4.8:1) */
 
   /* Brand / Accents */
   --c-primary: 63 93 74;            /* #3F5D4A */
   --c-primary-deep: 47 74 58;       /* #2F4A3A */
   --c-accent: 217 136 95;           /* #D9885F (apricot - fills only) */
-  --c-accent-deep: 143 74 44;       /* #8F4A2C (clay - text and stamp) */
+  --c-accent-deep: 143 74 44;       /* #8F4A2C (clay - warm badges only) */
+
+  /* Semantic Danger & Deficit (Distinct from warm clay accent) */
+  --c-danger: 190 42 43;            /* #BE2A2B */
+  --c-danger-deep: 155 35 36;       /* #9B2324 */
+  --c-danger-bg: 254 242 242;       /* #FEF2F2 */
+  --c-danger-border: 248 180 180;   /* #F8B4B4 */
 
   /* Rules & Boundaries */
   --c-line: 221 212 198;            /* #DDD4C6 */
@@ -73,6 +79,12 @@
   --c-accent: 240 178 122;          /* #F0B27A (amber) */
   --c-accent-deep: 226 155 90;      /* #E29B5A */
 
+  /* Semantic Danger & Deficit */
+  --c-danger: 248 113 113;          /* #F87171 */
+  --c-danger-deep: 239 68 68;       /* #EF4444 */
+  --c-danger-bg: 48 24 24;          /* #301818 */
+  --c-danger-border: 120 40 40;     /* #782828 */
+
   /* Rules & Boundaries */
   --c-line: 36 71 67;               /* #244743 */
   --c-line-strong: 51 94 88;        /* #335E58 */
@@ -109,6 +121,12 @@
   --c-primary-deep: 30 80 77;       /* #1E504D */
   --c-accent: 200 100 59;           /* #C8643B (terracotta fill) */
   --c-accent-deep: 154 69 36;       /* #9A4524 (terracotta text) */
+
+  /* Semantic Danger & Deficit */
+  --c-danger: 185 28 28;            /* #B91C1C */
+  --c-danger-deep: 153 27 27;       /* #991B1B */
+  --c-danger-bg: 254 242 242;       /* #FEF2F2 */
+  --c-danger-border: 248 180 180;   /* #F8B4B4 */
 
   /* Rules & Boundaries */
   --c-line: 220 211 195;            /* #DCD3C3 */

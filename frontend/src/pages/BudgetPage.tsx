@@ -93,9 +93,9 @@ export const BudgetPage: React.FC = () => {
         {error && (
           <div
             role="alert"
-            className="mb-8 p-4 rounded-control bg-clay-50 border-l-2 border-clay-700 text-clay-900 text-xs font-mono flex items-start space-x-3"
+            className="mb-8 p-4 rounded-control bg-danger-bg border-l-2 border-danger-deep text-danger-deep text-xs font-mono flex items-start space-x-3"
           >
-            <AlertCircle className="w-4 h-4 text-clay-700 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="w-4 h-4 text-danger-deep flex-shrink-0 mt-0.5" />
             <div>
               <span className="font-bold uppercase tracking-wider">Budget Validation: </span>
               <span>{error}</span>
@@ -112,7 +112,7 @@ export const BudgetPage: React.FC = () => {
                   htmlFor="total-budget-input"
                   className="block text-xs font-mono font-bold uppercase tracking-wider text-ink"
                 >
-                  Your Maximum Budget <span className="text-clay-700">*</span>
+                  Your Maximum Budget <span className="text-danger-deep">*</span>
                 </label>
                 <p className="text-xs text-ink-muted mt-0.5">
                   The planner strictly treats this as an immutable expenditure ceiling.
@@ -157,7 +157,7 @@ export const BudgetPage: React.FC = () => {
                 value={totalBudget}
                 onChange={(e) => setTotalBudget(e.target.value)}
                 placeholder="50000"
-                className="input-ruled pl-8 text-2xl font-bold tracking-tight text-ink"
+                className="input-ruled no-spin pl-8 text-2xl font-bold tracking-tight text-ink"
                 required
               />
             </div>
@@ -168,7 +168,7 @@ export const BudgetPage: React.FC = () => {
             <div className="flex items-center justify-between pb-3 mb-2 border-b border-line">
               <span className="label-kicker">Budget Variance Ledger</span>
               {isDeficit && (
-                <Stamp variant="clay" thump>
+                <Stamp variant="danger" thump>
                   {formatCurrency(deficitAmount)} over ceiling
                 </Stamp>
               )}
@@ -195,7 +195,7 @@ export const BudgetPage: React.FC = () => {
                 sublabel={isDeficit ? "Exceeds approved budget ceiling" : "Available unallocated budget"}
                 value={isDeficit ? `\u2212${formatCurrency(deficitAmount)}` : formatCurrency(remaining)}
                 delta={isDeficit ? `Deficit +\u2212${formatCurrency(deficitAmount)}` : `Surplus ${formatCurrency(remaining)}`}
-                deltaType={isDeficit ? "clay" : "moss"}
+                deltaType={isDeficit ? "danger" : "moss"}
               />
             </div>
 
@@ -208,7 +208,7 @@ export const BudgetPage: React.FC = () => {
               <div className="h-2 w-full bg-paper-inset border border-line-strong relative overflow-hidden">
                 <div
                   className={`h-full transition-all duration-300 ${
-                    isDeficit ? "bg-clay-700" : "bg-moss-700"
+                    isDeficit ? "bg-danger-deep" : "bg-moss-700"
                   }`}
                   style={{ width: `${Math.min(100, Math.max(0, isDeficit ? 100 : gaugePercent))}%` }}
                 />

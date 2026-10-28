@@ -47,8 +47,8 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
               <span>Within Allocated Budget</span>
             </span>
           ) : (
-            <span className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-clay-50 text-clay-800 border border-clay-300 text-xs font-extrabold">
-              <AlertTriangle className="w-4 h-4 text-clay-700" />
+            <span className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-full bg-danger-bg text-danger-deep border border-danger-border text-xs font-extrabold">
+              <AlertTriangle className="w-4 h-4 text-danger-deep" />
               <span>Budget Deficit</span>
             </span>
           )}
@@ -60,14 +60,14 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
         <div
           role="alert"
           aria-label="Budget deficit alert"
-          className="mb-6 p-4 rounded-control bg-clay-50 border border-clay-300 text-clay-950 text-xs space-y-2"
+          className="mb-6 p-4 rounded-control bg-danger-bg border border-danger-border text-danger-deep text-xs space-y-2"
         >
-          <div className="flex items-center space-x-2 font-bold text-sm text-clay-900">
-            <span className="stamp-clay">Budget Ceiling Exceeded</span>
+          <div className="flex items-center space-x-2 font-bold text-sm text-danger-deep">
+            <span className="stamp-danger">Budget Ceiling Exceeded</span>
           </div>
-          <p className="text-clay-800">
+          <p className="text-danger-deep">
             The estimated cost for this plan exceeds your allocated budget by{" "}
-            <strong className="font-extrabold text-clay-950 font-mono tabular-nums">
+            <strong className="font-extrabold text-danger-deep font-mono tabular-nums">
               {formatCurrency(deficit, currency)}
             </strong>
             . You may need to request an approved budget adjustment or review
@@ -111,7 +111,7 @@ export const PlanBudgetSummary: React.FC<PlanBudgetSummaryProps> = ({
           className={`p-4 rounded-sheet border ${
             isFeasible
               ? "bg-moss-50/60 border-moss-200 text-moss-950"
-              : "bg-clay-50/60 border-clay-200 text-clay-950"
+              : "bg-danger-bg border-danger-border text-danger-deep"
           }`}
         >
           <div className="flex items-center justify-between text-xs mb-1">
